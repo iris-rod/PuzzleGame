@@ -146,9 +146,11 @@
   <ItemGroup>
     <ClCompile Include="Source\GameController.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\WindowObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GameController.h" />
+    <ClInclude Include="Source\WindowObj.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
