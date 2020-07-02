@@ -6,8 +6,8 @@
 
 class EventHandler {
 public:
-	EventHandler();
-	~EventHandler();
+	//EventHandler();
+	//~EventHandler();
 	using EventCallback = std::function<void(SDL_Event const&)>;
 
 	void Subscribe(const Uint32 type, const EventCallback callback);

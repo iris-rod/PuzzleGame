@@ -87,13 +87,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\SDL_Image;$(SolutionDir)include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)lib\SDL2;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\SDL_Image;%(AdditionalLibraryDirectories);$(SolutionDir)lib\SDL2</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -145,18 +145,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\EventHandler.cpp" />
-    <ClCompile Include="Source\GameController.cpp" />
-    <ClCompile Include="Source\InputHandler.cpp" />
+    <ClCompile Include="Source\GameManager.cpp" />
+    <ClCompile Include="Source\InteractiveObject.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Object.cpp" />
+    <ClCompile Include="Source\Ore.cpp" />
+    <ClCompile Include="Source\Piece.cpp" />
+    <ClCompile Include="Source\RendererObj.cpp" />
+    <ClCompile Include="Source\TextureManager.cpp" />
     <ClCompile Include="Source\WindowObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\EventHandler.h" />
-    <ClInclude Include="Source\GameController.h" />
     <ClInclude Include="Source\GameManager.h" />
-    <ClInclude Include="Source\InputHandler.h" />
-    <ClInclude Include="Source\MapHandler.h" />
+    <ClInclude Include="Source\InteractiveObject.h" />
+    <ClInclude Include="Source\BoardHandler.h" />
     <ClInclude Include="Source\MenuHandler.h" />
+    <ClInclude Include="Source\Object.h" />
+    <ClInclude Include="Source\Ore.h" />
+    <ClInclude Include="Source\Piece.h" />
+    <ClInclude Include="Source\RendererObj.h" />
+    <ClInclude Include="Source\TextureManager.h" />
     <ClInclude Include="Source\WindowObj.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
