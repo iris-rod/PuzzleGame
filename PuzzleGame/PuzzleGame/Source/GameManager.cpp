@@ -6,13 +6,16 @@ void GameManager::Render(RendererObj* rendererObj) {
 }
 
 void GameManager::Init(RendererObj* rendererObj) {
-	std::cout << rendererObj->GetRenderer() << std::endl;
-	TextureManager::LoadTexture("blue", rendererObj->GetRenderer(), "C://Users//IrisRodrigues//Documents//personal//C++//PuzzleGame//PuzzleGame//new_column.png");
+	LoadTextures(rendererObj);
+	boardHandler = new BoardHandler();
+	/*SDL_Rect* src = new SDL_Rect();
+	SDL_Rect* dest = new SDL_Rect();
 
-	SDL_Rect src = SDL_Rect();
-	SDL_Rect dest = SDL_Rect();
+	Ore* testOre = new Ore(1, src, dest, 10, 10, 100, 100);
+	objs.push_back(testOre);*/
 
-	Ore* testOre = new Ore(1, &src, &dest, 10, 10);
-	std::cout << "add ore to objs list on game manager" << std::endl;
-	objs.push_back(testOre);
+}
+
+void GameManager::LoadTextures(RendererObj* rendererObj) {
+	TextureManager::LoadTexture("blue", rendererObj->GetRenderer(), "../new_column.png");
 }

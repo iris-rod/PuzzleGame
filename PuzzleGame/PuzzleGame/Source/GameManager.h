@@ -4,6 +4,7 @@
 #include "Ore.h"
 #include "RendererObj.h"
 #include "TextureManager.h"
+#include "BoardHandler.h"
 
 enum GameState {
 	OnGoing,
@@ -20,6 +21,9 @@ public:
 	void Render(RendererObj* rendererObj);
 
 private:
+	void LoadTextures(RendererObj* rendererObj);
+
+	BoardHandler* boardHandler;
 	GameState gameState;
 	std::deque<Object*> objs;
 };

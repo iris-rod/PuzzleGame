@@ -144,6 +144,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Board.cpp" />
+    <ClCompile Include="Source\BoardHandler.cpp" />
     <ClCompile Include="Source\EventHandler.cpp" />
     <ClCompile Include="Source\GameManager.cpp" />
     <ClCompile Include="Source\InteractiveObject.cpp" />
@@ -153,9 +155,12 @@
     <ClCompile Include="Source\Piece.cpp" />
     <ClCompile Include="Source\RendererObj.cpp" />
     <ClCompile Include="Source\TextureManager.cpp" />
+    <ClCompile Include="Source\Utils.h" />
     <ClCompile Include="Source\WindowObj.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Board.h" />
+    <ClInclude Include="Source\Consts.h" />
     <ClInclude Include="Source\EventHandler.h" />
     <ClInclude Include="Source\GameManager.h" />
     <ClInclude Include="Source\InteractiveObject.h" />

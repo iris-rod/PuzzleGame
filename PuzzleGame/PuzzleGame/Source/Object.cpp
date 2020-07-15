@@ -1,8 +1,9 @@
 #include "Object.h"
 
-Object::Object(const std::string id, SDL_Rect* _src, SDL_Rect* _dest) : ID(id), src(_src), dest(_dest) {
+Object::Object(const std::string id, SDL_Rect* _src, SDL_Rect* _dest, const int _sizeX, const int _sizeY) 
+	: ID(id), src(_src), dest(_dest), sizeX(_sizeX), sizeY(_sizeY) {
 
-	std::cout << "create object" << std::endl;
+	//std::cout << "create object" << std::endl;
 }
 
 SDL_Rect* Object::GetDestRect() {

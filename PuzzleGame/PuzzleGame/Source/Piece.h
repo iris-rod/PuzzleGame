@@ -6,7 +6,7 @@
 class Piece : public InteractiveObject {
 public:
 	Piece() = default;
-	Piece(int Id, SDL_Rect* _src, SDL_Rect* _dest, int x, int y);
+	Piece(const int Id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY);
 	//~Piece();
 
 private:
