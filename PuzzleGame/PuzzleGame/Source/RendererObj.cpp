@@ -24,14 +24,10 @@ void RendererObj::Render(std::deque<Object*> objs) {
 	SDL_RenderClear(ptr_renderer.get());
 	for (std::deque<Object*>::iterator it = objs.begin(); it != objs.end(); it++) {
 		Object* currentObj = *it;
-		//std::cout << currentObj->GetSrcRect()->x << std::endl;
-		//std::cout << currentObj->GetDestRect()->x << std::endl;
-		//std::cout << TextureManager::GetTexture(currentObj->GetTextureId()) << std::endl;
-		//std::cout << ptr_renderer.get() << std::endl;
 		SDL_RenderCopy(ptr_renderer.get(), 
 			TextureManager::GetTexture(currentObj->GetTextureId()),
 			currentObj->GetSrcRect(), 
-			currentObj->GetSrcRect());
+			currentObj->GetDestRect());
 	}
 	SDL_RenderPresent(ptr_renderer.get());	
 }

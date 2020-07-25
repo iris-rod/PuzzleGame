@@ -17,9 +17,11 @@ int main(int argc, char* args[]) {
 		// End the program
 		return 1;
 	}			
+
 	WindowObj* window_obj = new WindowObj();
 	RendererObj* renderer_obj = new RendererObj(window_obj->GetWindow());
 	gameManager.Init(renderer_obj);
+
 	while (isRunning) {
 		try {
 

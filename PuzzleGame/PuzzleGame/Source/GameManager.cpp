@@ -11,15 +11,13 @@ void GameManager::Init(RendererObj* rendererObj) {
 	boardHandler->Init();
 	for (auto obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);
-	}
-	/*SDL_Rect* src = new SDL_Rect();
-	SDL_Rect* dest = new SDL_Rect();
-
-	Ore* testOre = new Ore(1, src, dest, 10, 10, 100, 100);
-	objs.push_back(testOre);*/
-	
+	}	
 }
 
 void GameManager::LoadTextures(RendererObj* rendererObj) {
-	TextureManager::LoadTexture("blue", rendererObj->GetRenderer(), "../new_column.png");
+	TextureManager::LoadTexture("red", rendererObj->GetRenderer(), "../red.png");
+	TextureManager::LoadTexture("blue", rendererObj->GetRenderer(), "../blue.png");
+	TextureManager::LoadTexture("yellow", rendererObj->GetRenderer(), "../yellow.png");
+	TextureManager::LoadTexture("green", rendererObj->GetRenderer(), "../green.png");
+	TextureManager::LoadTexture("orange", rendererObj->GetRenderer(), "../orange.png");
 }
