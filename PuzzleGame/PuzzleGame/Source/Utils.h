@@ -1,6 +1,7 @@
+#pragma once
 #include <iostream>
 #include <string>
-#include "Ore.h"
+
 
 enum class Colors {
 	RED,

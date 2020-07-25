@@ -8,12 +8,16 @@ void GameManager::Render(RendererObj* rendererObj) {
 void GameManager::Init(RendererObj* rendererObj) {
 	LoadTextures(rendererObj);
 	boardHandler = new BoardHandler();
+	boardHandler->Init();
+	for (auto obj : boardHandler->GetObjs()) {
+		objs.push_back(obj);
+	}
 	/*SDL_Rect* src = new SDL_Rect();
 	SDL_Rect* dest = new SDL_Rect();
 
 	Ore* testOre = new Ore(1, src, dest, 10, 10, 100, 100);
 	objs.push_back(testOre);*/
-
+	
 }
 
 void GameManager::LoadTextures(RendererObj* rendererObj) {
