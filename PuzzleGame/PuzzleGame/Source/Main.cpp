@@ -20,21 +20,24 @@ int main(int argc, char* args[]) {
 
 	WindowObj* window_obj = new WindowObj();
 	RendererObj* renderer_obj = new RendererObj(window_obj->GetWindow());
-	gameManager.Init(renderer_obj);
+	EventHandler event_handler = EventHandler();
+	gameManager.Init(renderer_obj, event_handler);
 
-	while (isRunning) {
+	while (gameManager.IsGameOnGoing()) {
 		try {
 
 			gameManager.Render(renderer_obj);
-			//SDL_Surface* surface = window_obj->GetSurface();
-			SDL_Event _event;
+			event_handler.HandleEvents();
+			
+			/*SDL_Event _event;
 			SDL_PollEvent(&_event);
 
 			switch (_event.type) {
 			case SDL_QUIT:
+				std::cout<<"quit"<<std::endl;
 				isRunning = false;
 				break;
-			}
+			}*/
 		}
 		catch (const char* msg) {
 			std::cout << msg << std::endl;

@@ -1,4 +1,9 @@
 #include "EventHandler.h"
+#include <iostream>
+
+EventHandler::EventHandler() {
+
+}
 
 void EventHandler::Subscribe(const Uint32 type, const EventCallback callback) {
 	_subscribedCallbacks[type].push_back(callback);

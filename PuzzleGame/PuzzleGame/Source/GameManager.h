@@ -5,23 +5,31 @@
 #include "RendererObj.h"
 #include "TextureManager.h"
 #include "BoardHandler.h"
+#include "EventHandler.h"
 
-enum GameState {
-	OnGoing,
-	OnPause,
-	Finished
+enum class GameState {
+	ON_GOING,
+	ON_PAUSE,
+	FINISHED,
+	QUIT
 };
 
 class GameManager {
 public:
 	GameManager() = default;
 	//~GameManager();
-	void Init(RendererObj* rendererObj);
+	void Init(RendererObj* rendererObj, EventHandler& handler);
 	//void Update();
 	void Render(RendererObj* rendererObj);
 
+	bool IsGameOnGoing();
+	bool IsGameFinished();
+	bool IsGameOnPause();
+
 private:
 	void LoadTextures(RendererObj* rendererObj);
+	void RegisterEvent(EventHandler& handler);
+	void Quit();
 
 	BoardHandler* boardHandler;
 	GameState gameState;
