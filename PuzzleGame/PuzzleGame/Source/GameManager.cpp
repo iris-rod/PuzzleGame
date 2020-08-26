@@ -8,7 +8,7 @@ void GameManager::Render(RendererObj* rendererObj) {
 void GameManager::Init(RendererObj* rendererObj, EventHandler& handler) {
 	LoadTextures(rendererObj);
 	boardHandler = new BoardHandler();
-	boardHandler->Init();
+	boardHandler->Init(handler);
 	for (auto obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);
 	}	
@@ -28,13 +28,16 @@ void GameManager::LoadTextures(RendererObj* rendererObj) {
 
 void GameManager::RegisterEvent(EventHandler& handler) {
 	handler.Subscribe(SDL_QUIT, [this](SDL_Event const& event) {
-		if (event.key.keysym.sym == SDLK_ESCAPE) {
-			Quit();
-		}
 		if (event.type == SDL_QUIT) {
 			Quit();
 		}
 	});
+
+	handler.Subscribe(SDL_KEYDOWN, [this](SDL_Event const& event) {
+		if (event.key.keysym.sym == SDLK_ESCAPE) {
+			Quit();
+		}
+	});	
 }
 
 bool GameManager::IsGameFinished() {

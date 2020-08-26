@@ -12,4 +12,8 @@ Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const i
 	dest->h = _sizeY;
 }
 
+std::vector<int> Piece::GetPosition() {
+	return position;
+}
+
 
