@@ -2,9 +2,6 @@
 
 BoardHandler::BoardHandler() {
 	pieces.resize(mapSize[0] * mapSize[1]);
-	/*for (int i = 0; i < mapSize[0]; i++) {
-		pieces.resize(mapSize[1]);
-	}*/
 }
 
 void BoardHandler::GeneratePieces() {
@@ -33,15 +30,15 @@ void BoardHandler::RegisterEvents(EventHandler& handler) {
 	handler.Subscribe(SDL_MOUSEBUTTONDOWN, [this](SDL_Event const& event) {
 		int x, y;
 		SDL_GetMouseState(&x, &y);
-		FindPiece(x, y);
+		Piece* clickedPiece = FindPiece(x, y);
 	});
 }
 
 Piece* BoardHandler::FindPiece(int& x, int& y) {
 	for (auto& piece : pieces) {
-		auto coordinates = piece->GetPosition();
-		if (x >= coordinates[0] && x < coordinates[0] + PIECE_SIZE_X
-			&& y >= coordinates[1] && y < coordinates[1] + PIECE_SIZE_Y) {
+		auto coordinates = piece->GetCoordinates();
+		if (x >= coordinates->x && x < coordinates->x + PIECE_SIZE_X
+			&& y >= coordinates->y && y < coordinates->y + PIECE_SIZE_Y) {
 			std::cout << "on piece: " << piece->GetTextureId() << std::endl;
 			return piece;
 		}

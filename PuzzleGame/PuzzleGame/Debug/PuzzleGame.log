@@ -1,6 +1,2 @@
-﻿  BoardHandler.cpp
-  GameManager.cpp
-  Main.cpp
-  Generating Code...
-C:\Users\IrisRodrigues\Documents\personal\C++\PuzzleGame\PuzzleGame\PuzzleGame\Source\Main.cpp(58): warning C4715: 'SDL_main': not all control paths return a value
+﻿  Piece.cpp
   PuzzleGame.vcxproj -> C:\Users\IrisRodrigues\Documents\personal\C++\PuzzleGame\PuzzleGame\Debug\PuzzleGame.exe

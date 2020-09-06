@@ -16,6 +16,7 @@ private:
 	void GeneratePieces();
 	void RegisterEvents(EventHandler& handler);
 	Piece* FindPiece(int& x, int& y);
+	void RemovePieces(Piece& piece);
 	void AddColumn();
 	void MoveColumn();
 	void UpdateRow();

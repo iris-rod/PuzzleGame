@@ -1,7 +1,10 @@
 #include "Piece.h"
 
 Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY) 
-	: position({ x,y }), InteractiveObject("piece" + id, _src, _dest, _sizeX, _sizeY) {
+	: coordinates( new Coordinates(x, y) ), 
+	boardPosition( new BoardPosition(x == 0 ? 0 : x/_sizeX, y == 0 ? 0 : y/_sizeY) ), 
+	InteractiveObject("piece" + id, _src, _dest, _sizeX, _sizeY) {
+	std::cout << (x == 0 ? 0 : x / _sizeX) << ", " << (y == 0 ? 0 : y / _sizeY) << std::endl;
 	src->x = 0;
 	src->y = 0;
 	dest->x = x;
@@ -10,10 +13,28 @@ Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const i
 	src->h = _sizeY;
 	dest->w = _sizeX;
 	dest->h = _sizeY;
+	SetNeighbours();
 }
 
-std::vector<int> Piece::GetPosition() {
-	return position;
+BoardPosition* Piece::GetBoardPosition() {
+	return boardPosition;
+}
+
+Coordinates* Piece::GetCoordinates() {
+	return coordinates;
+}
+
+void Piece::SetNeighbours() {
+	std::cout << "piece: " << boardPosition->x << ", " << boardPosition->y << std::endl;
+	for (int i = -1; i <= 1; i ++) {
+		for (int j = -1; j <= 1; j ++) {
+			int newX = boardPosition->x + i;
+			int newY = boardPosition->y + j;
+			neighbours.push(new BoardPosition(newX > 0 ? newX : 0 , newY > 0 ? newY : 0));
+			std::cout << "new neighbour: " << (newX > 0 ? newX : 0) << ", " << (newY > 0 ? newY : 0) << std::endl;
+		}
+	}
+	std::cout << std::endl;
 }
 
 
