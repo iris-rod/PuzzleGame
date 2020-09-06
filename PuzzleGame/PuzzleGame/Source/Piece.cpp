@@ -13,28 +13,29 @@ Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const i
 	src->h = _sizeY;
 	dest->w = _sizeX;
 	dest->h = _sizeY;
-	SetNeighbours();
 }
 
-BoardPosition* Piece::GetBoardPosition() {
-	return boardPosition;
+const BoardPosition* Piece::GetBoardPosition() const {
+	return boardPosition.get();
 }
 
-Coordinates* Piece::GetCoordinates() {
-	return coordinates;
+const Coordinates* Piece::GetCoordinates() const {
+	return coordinates.get();
 }
 
-void Piece::SetNeighbours() {
-	std::cout << "piece: " << boardPosition->x << ", " << boardPosition->y << std::endl;
-	for (int i = -1; i <= 1; i ++) {
-		for (int j = -1; j <= 1; j ++) {
-			int newX = boardPosition->x + i;
-			int newY = boardPosition->y + j;
-			neighbours.push(new BoardPosition(newX > 0 ? newX : 0 , newY > 0 ? newY : 0));
-			std::cout << "new neighbour: " << (newX > 0 ? newX : 0) << ", " << (newY > 0 ? newY : 0) << std::endl;
+void Piece::SetNeighbours(const int& boardWidth, const int& boardHeight) {
+	for (int i = -1; i <= 1; i += 2) {
+		int newX = boardPosition->x + i;
+		int newY = boardPosition->y + i;
+
+		if (newY >= 0 && newY < boardHeight) {
+			neighbours.push(new BoardPosition(boardPosition->x, newY));
 		}
+		if (newX >= 0 && newX < boardWidth) {
+			neighbours.push(new BoardPosition(newX, boardPosition->y));
+		}
+
 	}
-	std::cout << std::endl;
 }
 
 
