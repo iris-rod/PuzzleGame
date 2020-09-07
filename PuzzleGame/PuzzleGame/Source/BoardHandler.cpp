@@ -11,9 +11,14 @@ void BoardHandler::GeneratePieces() {
 			SDL_Rect* src = new SDL_Rect();
 			SDL_Rect* dest = new SDL_Rect();
 			pieces[id] = new Ore(id, src, dest, c * PIECE_SIZE_X, r * PIECE_SIZE_Y, PIECE_SIZE_X, PIECE_SIZE_Y);
-			pieces[id]->SetNeighbours(mapSize[0], mapSize[1]);
 			id++;
 		}
+	}
+}
+
+void BoardHandler::SetPiecesNeighbours() {
+	for (auto& piece : pieces) {
+		piece->SetNeighbours(mapSize[0], mapSize[1], pieces);
 	}
 }
 
@@ -35,12 +40,21 @@ void BoardHandler::RegisterEvents(EventHandler& handler) {
 	});
 }
 
-Piece* BoardHandler::FindPiece(int& x, int& y) {
+Piece* BoardHandler::FindPiece(const int& x, const int& y) const {
 	for (auto& piece : pieces) {
 		auto coordinates = piece->GetCoordinates();
 		if (x >= coordinates->x && x < coordinates->x + PIECE_SIZE_X
 			&& y >= coordinates->y && y < coordinates->y + PIECE_SIZE_Y) {
-			std::cout << "on piece: " << piece->GetTextureId() << std::endl;
+			return piece;
+		}
+	}
+	return nullptr;
+}
+
+const Piece* BoardHandler::FindPieceFromBoardPosition(const int& x, const int& y) const {
+	for (auto& piece : pieces) {
+		auto coordinates = piece->GetBoardPosition();
+		if (x == coordinates->x && y == coordinates->y) {
 			return piece;
 		}
 	}

@@ -14,8 +14,10 @@ private:
 	std::vector<int> mapSize {MAP_SIZE_X, MAP_SIZE_Y};
 	
 	void GeneratePieces();
+	void SetPiecesNeighbours();
 	void RegisterEvents(EventHandler& handler);
-	Piece* FindPiece(int& x, int& y);
+	Piece* FindPiece(const int& x, const int& y) const;
+	const Piece* FindPieceFromBoardPosition(const int& x, const int& y) const;
 	void RemovePieces(Piece& piece);
 	void AddColumn();
 	void MoveColumn();

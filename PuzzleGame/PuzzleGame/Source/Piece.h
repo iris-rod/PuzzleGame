@@ -2,6 +2,7 @@
 #include "InteractiveObject.h"
 #include <vector>
 #include <stack>
+#include <list>
 
 struct BoardPosition {
 	int x;
@@ -23,6 +24,16 @@ struct Coordinates {
 	}
 };
 
+struct NeighboursInfo {
+	bool canRemove;
+	BoardPosition* position;
+
+	NeighboursInfo(const bool _canRemove, const int _x, const int _y) {
+		position = new BoardPosition(_x, _y);
+		canRemove = _canRemove;
+	}
+};
+
 class Piece : public InteractiveObject {
 public:
 	Piece() = default;
@@ -30,12 +41,12 @@ public:
 	//~Piece();
 	const BoardPosition* GetBoardPosition() const;
 	const Coordinates* GetCoordinates() const;
-	void SetNeighbours(const int& boardWidth, const int& boardHeight);
+	void SetNeighbours(const int& boardWidth, const int& boardHeight, const std::vector<Piece*> pieces);
 
 private:
 	std::unique_ptr<BoardPosition> boardPosition;
 	std::unique_ptr<Coordinates> coordinates;
-	std::stack<BoardPosition*> neighbours;
+	std::list<NeighboursInfo*> neighbours;
 	bool canRemove = false;
 
 	void CanBeRemoved();
