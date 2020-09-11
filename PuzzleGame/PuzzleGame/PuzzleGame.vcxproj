@@ -169,6 +169,7 @@
     <ClInclude Include="Source\Object.h" />
     <ClInclude Include="Source\Ore.h" />
     <ClInclude Include="Source\Piece.h" />
+    <ClInclude Include="Source\PieceUtils.h" />
     <ClInclude Include="Source\RendererObj.h" />
     <ClInclude Include="Source\TextureManager.h" />
     <ClInclude Include="Source\WindowObj.h" />

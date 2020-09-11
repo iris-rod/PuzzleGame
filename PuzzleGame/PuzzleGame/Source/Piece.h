@@ -24,11 +24,11 @@ struct Coordinates {
 	}
 };
 
-struct NeighboursInfo {
+struct NeighbourInfo {
 	bool canRemove;
 	BoardPosition* position;
 
-	NeighboursInfo(const bool _canRemove, const int _x, const int _y) {
+	NeighbourInfo(const bool _canRemove, const int _x, const int _y) {
 		position = new BoardPosition(_x, _y);
 		canRemove = _canRemove;
 	}
@@ -42,12 +42,17 @@ public:
 	const BoardPosition* GetBoardPosition() const;
 	const Coordinates* GetCoordinates() const;
 	void SetNeighbours(const int& boardWidth, const int& boardHeight, const std::vector<Piece*> pieces);
+	const void AddNeighbour(NeighbourInfo* neighbour);
+
+	bool operator==(const Piece& a) {
+		return this->boardPosition->x == a.boardPosition->x && this->boardPosition->y == a.boardPosition->y
+			&& this->coordinates->x == a.coordinates->x && this->coordinates->y == a.coordinates->y;
+	}
+
+	virtual bool CanBeRemoved();
 
 private:
 	std::unique_ptr<BoardPosition> boardPosition;
 	std::unique_ptr<Coordinates> coordinates;
-	std::list<NeighboursInfo*> neighbours;
-	bool canRemove = false;
-
-	void CanBeRemoved();
+	std::list<NeighbourInfo*> neighbours;
 };

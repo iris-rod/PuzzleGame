@@ -23,7 +23,7 @@ const Coordinates* Piece::GetCoordinates() const {
 	return coordinates.get();
 }
 
-void Piece::SetNeighbours(const int& boardWidth, const int& boardHeight, const std::vector<Piece*> pieces) {
+/*void Piece::SetNeighbours(const int& boardWidth, const int& boardHeight, const std::vector<Piece*> pieces) {
 	for (int i = -1; i <= 1; i += 2) {
 		int newX = boardPosition->x + i;
 		int newY = boardPosition->y + i;
@@ -39,12 +39,10 @@ void Piece::SetNeighbours(const int& boardWidth, const int& boardHeight, const s
 	}
 
 	CanBeRemoved();
-}
+}*/
 
-void Piece::CanBeRemoved() {
-	for (auto& neighbour : neighbours) {
-		
-	}
+const void Piece::AddNeighbour(NeighbourInfo* neighbour) {
+	neighbours.push_front(neighbour);
 }
 
 
