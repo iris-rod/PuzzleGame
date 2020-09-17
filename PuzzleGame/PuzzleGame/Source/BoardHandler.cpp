@@ -23,17 +23,18 @@ void BoardHandler::SetPiecesNeighbours() {
 			int newY = piece->GetBoardPosition()->y + i;
 
 			if (newY >= 0 && newY < mapSize[1]) {
-				piece->AddNeighbour(new NeighbourInfo(
-					false, 
-					piece->GetBoardPosition()->x, newY));
+				SetNeighbour(piece, piece->GetBoardPosition()->x, newY);
 			}
 			if (newX >= 0 && newX < mapSize[0]) {
-				piece->AddNeighbour(new NeighbourInfo(
-					false, 
-					newX, piece->GetBoardPosition()->y));
+				SetNeighbour(piece, newX, piece->GetBoardPosition()->y);
 			}
 		}
 	}
+}
+
+void BoardHandler::SetNeighbour(Piece* piece, const int& x, const int& y) {
+	bool canBeRemoved = piece->GetTextureId() == FindPieceFromBoardPosition(x, y)->GetTextureId();
+	piece->AddNeighbour(new NeighbourInfo(canBeRemoved, x, y));
 }
 
 std::vector<Piece*> BoardHandler::GetObjs() {

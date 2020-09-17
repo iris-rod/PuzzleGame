@@ -41,7 +41,6 @@ public:
 	//~Piece();
 	const BoardPosition* GetBoardPosition() const;
 	const Coordinates* GetCoordinates() const;
-	void SetNeighbours(const int& boardWidth, const int& boardHeight, const std::vector<Piece*> pieces);
 	const void AddNeighbour(NeighbourInfo* neighbour);
 
 	bool operator==(const Piece& a) {
@@ -49,7 +48,7 @@ public:
 			&& this->coordinates->x == a.coordinates->x && this->coordinates->y == a.coordinates->y;
 	}
 
-	virtual bool CanBeRemoved();
+	bool CanBeRemoved();
 
 private:
 	std::unique_ptr<BoardPosition> boardPosition;

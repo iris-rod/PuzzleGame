@@ -6,14 +6,14 @@ Object::Object(const std::string id, SDL_Rect* _src, SDL_Rect* _dest, const int 
 	//std::cout << "create object" << std::endl;
 }
 
-SDL_Rect* Object::GetDestRect() {
+const SDL_Rect* Object::GetDestRect() const {
 	return dest;
 }
 
-SDL_Rect* Object::GetSrcRect() {
+const SDL_Rect* Object::GetSrcRect() const {
 	return src;
 }
 
-std::string Object::GetTextureId() {
+const std::string Object::GetTextureId() const {
 	return textureId;
 }

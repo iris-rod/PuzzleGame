@@ -15,6 +15,7 @@ private:
 	
 	void GeneratePieces();
 	void SetPiecesNeighbours();
+	void SetNeighbour(Piece* piece, const int& x, const int& y);
 	void RegisterEvents(EventHandler& handler);
 	Piece* FindPiece(const int& x, const int& y) const;
 	const Piece* FindPieceFromBoardPosition(const int& x, const int& y) const;
