@@ -1,27 +1,24 @@
 #include "EventHandler.h"
 #include <iostream>
 
-EventHandler::EventHandler() {
+EventListener::EventListener() {
 
 }
 
-void EventHandler::Subscribe(const Uint32 type, const EventCallback callback) {
+void EventListener::Subscribe(const int type, const Handler callback) {
 	_subscribedCallbacks[type].push_back(callback);
 }
 
-void EventHandler::UnsubscribeEventType(const Uint32 type) {
+void EventListener::UnsubscribeEventType(const int type) {
 	_subscribedCallbacks.erase(type);
 }
 
-void EventHandler::UnsubscribeAll() {
+void EventListener::UnsubscribeAll() {
 	_subscribedCallbacks.clear();
 }
 
-void EventHandler::HandleEvents() {
-	SDL_Event current_event;
-	while (SDL_PollEvent(&current_event) != 0) {
-		for (auto& cb : _subscribedCallbacks[current_event.type]) {
-			cb(current_event);
-		}
+void EventListener::Notify(Event current_event) {
+	for (auto& cb : _subscribedCallbacks[current_event]) {
+		cb(current_event);
 	}
 }

@@ -42,13 +42,14 @@ public:
 	const BoardPosition* GetBoardPosition() const;
 	const Coordinates* GetCoordinates() const;
 	const void AddNeighbour(NeighbourInfo* neighbour);
+	virtual void Remove();
+	//remove - change piece to empty
+	//onNeighbourRemoved event - subscribe when adding neighbours, so when neighbour piece is removed it will be triggered
 
 	bool operator==(const Piece& a) {
 		return this->boardPosition->x == a.boardPosition->x && this->boardPosition->y == a.boardPosition->y
 			&& this->coordinates->x == a.coordinates->x && this->coordinates->y == a.coordinates->y;
 	}
-
-	bool CanBeRemoved();
 
 private:
 	std::unique_ptr<BoardPosition> boardPosition;

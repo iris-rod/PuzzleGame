@@ -147,6 +147,7 @@
     <ClCompile Include="Source\Board.cpp" />
     <ClCompile Include="Source\BoardHandler.cpp" />
     <ClCompile Include="Source\EventHandler.cpp" />
+    <ClCompile Include="Source\SDLEventHandler.cpp" />
     <ClCompile Include="Source\GameManager.cpp" />
     <ClCompile Include="Source\InteractiveObject.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Source\Board.h" />
     <ClInclude Include="Source\Consts.h" />
     <ClInclude Include="Source\EventHandler.h" />
+    <ClInclude Include="Source\SDLEventHandler.h" />
     <ClInclude Include="Source\GameManager.h" />
     <ClInclude Include="Source\InteractiveObject.h" />
     <ClInclude Include="Source\BoardHandler.h" />

@@ -9,3 +9,8 @@ Ore::Ore(int Id, SDL_Rect* _src, SDL_Rect* _dest, int x, int y, const int _sizeX
 const Colors& Ore::GetColor() const {
 	return color;
 }
+
+void Ore::Remove() {
+	color = Colors::EMPTY;
+	textureId = ConvertColorToTextureId(color);
+}

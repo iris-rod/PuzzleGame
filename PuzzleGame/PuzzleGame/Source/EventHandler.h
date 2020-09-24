@@ -1,21 +1,24 @@
 #pragma once
-#include "SDL.h"
 #include <functional>
 #include <map>
 #include <vector>
 
-class EventHandler {
-public:
-	EventHandler();
-	//~EventHandler();
-	using EventCallback = std::function<void(SDL_Event const&)>;
+enum Event {
+	PIECE_REMOVED
+};
 
-	void Subscribe(const Uint32 type, const EventCallback callback);
-	void UnsubscribeEventType(const Uint32 type);
+class EventListener {
+public:
+	EventListener();
+	//~EventHandler();
+	using Handler = std::function<void(Event const&)>;
+
+	void Subscribe(const int type, const Handler callback);
+	void UnsubscribeEventType(const int type);
 	void UnsubscribeAll();
 
-	void HandleEvents();
+	void Notify(Event current_event);
 
 private:
-	std::map<Uint32, std::vector<EventCallback>> _subscribedCallbacks;	
+	std::map<int, std::vector<Handler>> _subscribedCallbacks;
 };

@@ -8,7 +8,8 @@ public:
 	//~Ore();
 
 	const Colors& GetColor() const;
-	bool CanBeRemoved(const Ore& a);
+
+	void Remove();
 
 private:
 	Colors color;
