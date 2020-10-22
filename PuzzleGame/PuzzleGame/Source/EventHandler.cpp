@@ -17,7 +17,7 @@ void EventListener::UnsubscribeAll() {
 	_subscribedCallbacks.clear();
 }
 
-void EventListener::Notify(Event current_event) {
+void EventListener::HandleEvents(Event current_event) {
 	for (auto& cb : _subscribedCallbacks[current_event]) {
 		cb(current_event);
 	}

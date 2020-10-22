@@ -5,7 +5,6 @@
 #include "RendererObj.h"
 #include "TextureManager.h"
 #include "BoardHandler.h"
-#include "EventHandler.h"
 
 enum class GameState {
 	ON_GOING,
@@ -18,7 +17,7 @@ class GameManager {
 public:
 	GameManager() = default;
 	//~GameManager();
-	void Init(RendererObj* rendererObj, EventHandler& handler);
+	void Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler);
 	//void Update();
 	void Render(RendererObj* rendererObj);
 
@@ -28,7 +27,7 @@ public:
 
 private:
 	void LoadTextures(RendererObj* rendererObj);
-	void RegisterEvent(EventHandler& handler);
+	void RegisterEvent(SDLEventHandler& handler);
 	void Quit();
 
 	BoardHandler* boardHandler;

@@ -20,13 +20,15 @@ int main(int argc, char* args[]) {
 
 	WindowObj* window_obj = new WindowObj();
 	RendererObj* renderer_obj = new RendererObj(window_obj->GetWindow());
-	EventHandler event_handler = EventHandler();
-	gameManager.Init(renderer_obj, event_handler);
+	SDLEventHandler event_handler = SDLEventHandler();
+	EventListener other_handler = EventListener();
+	gameManager.Init(renderer_obj, event_handler, other_handler);
 
 	while (gameManager.IsGameOnGoing()) {
 		try {
 
 			gameManager.Render(renderer_obj);
+			other_handler.HandleEvents();
 			event_handler.HandleEvents();
 			
 			/*SDL_Event _event;

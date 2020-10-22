@@ -17,7 +17,7 @@ public:
 	void UnsubscribeEventType(const int type);
 	void UnsubscribeAll();
 
-	void Notify(Event current_event);
+	void HandleEvents(Event current_event);
 
 private:
 	std::map<int, std::vector<Handler>> _subscribedCallbacks;

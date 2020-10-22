@@ -5,10 +5,10 @@ void GameManager::Render(RendererObj* rendererObj) {
 	rendererObj->Render(objs);
 }
 
-void GameManager::Init(RendererObj* rendererObj, EventHandler& handler) {
+void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler) {
 	LoadTextures(rendererObj);
 	boardHandler = new BoardHandler();
-	boardHandler->Init(handler);
+	boardHandler->Init(handler, otherHandler);
 	for (auto obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);
 	}	
@@ -26,7 +26,7 @@ void GameManager::LoadTextures(RendererObj* rendererObj) {
 	TextureManager::LoadTexture("empty", rendererObj->GetRenderer(), "../orange.png");
 }
 
-void GameManager::RegisterEvent(EventHandler& handler) {
+void GameManager::RegisterEvent(SDLEventHandler& handler) {
 	handler.Subscribe(SDL_QUIT, [this](SDL_Event const& event) {
 		if (event.type == SDL_QUIT) {
 			Quit();

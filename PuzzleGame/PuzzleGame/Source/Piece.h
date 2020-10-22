@@ -43,6 +43,7 @@ public:
 	const Coordinates* GetCoordinates() const;
 	const void AddNeighbour(NeighbourInfo* neighbour);
 	virtual void Remove();
+	void RegisterEvents(EventListener& handler);
 	//remove - change piece to empty
 	//onNeighbourRemoved event - subscribe when adding neighbours, so when neighbour piece is removed it will be triggered
 

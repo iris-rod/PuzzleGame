@@ -28,3 +28,10 @@ const void Piece::AddNeighbour(NeighbourInfo* neighbour) {
 }
 
 
+void Piece::RegisterEvents(EventListener& handler) {
+	handler.Subscribe(PIECE_REMOVED, [this](Event const& _event) {
+		std::cout << "trigger removed" << std::endl;
+	});
+}
+
+
