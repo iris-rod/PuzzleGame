@@ -19,8 +19,8 @@ static std::string ConvertColorToTextureId(Colors color) {
 		return "blue";
 	case Colors::GREEN:
 		return "green";
-	//case Colors::ORANGE:
-		//return "orange";
+	case Colors::ORANGE:
+		return "orange";
 	case Colors::RED:
 		return "red";
 	case Colors::YELLOW:

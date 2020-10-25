@@ -4,7 +4,7 @@ Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const i
 	: coordinates( new Coordinates(x, y) ), 
 	boardPosition( new BoardPosition(x == 0 ? 0 : x/_sizeX, y == 0 ? 0 : y/_sizeY) ), 
 	InteractiveObject("piece" + id, _src, _dest, _sizeX, _sizeY) {
-	std::cout << (x == 0 ? 0 : x / _sizeX) << ", " << (y == 0 ? 0 : y / _sizeY) << std::endl;
+	//std::cout << (x == 0 ? 0 : x / _sizeX) << ", " << (y == 0 ? 0 : y / _sizeY) << std::endl;
 	src->x = 0;
 	src->y = 0;
 	dest->x = x;
