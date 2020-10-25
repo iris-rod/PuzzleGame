@@ -51,7 +51,7 @@ void BoardHandler::Init(SDLEventHandler& sdl_handler, EventListener& otherHandle
 	// init board (basically just an object with a background texture
 	GeneratePieces(otherHandler);
 	SetPiecesNeighbours();
-	RegisterEvents(sdl_handler);
+	RegisterEvents(sdl_handler, otherHandler);
 }
 
 void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& otherHandler) {
@@ -59,7 +59,7 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 		Piece* clickedPiece = FindPiece(x, y);
-		
+		otherHandler.NotifyEvent(PIECE_REMOVED);
 	});
 }
 
