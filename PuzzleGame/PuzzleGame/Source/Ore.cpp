@@ -10,7 +10,12 @@ const Colors& Ore::GetColor() const {
 	return color;
 }
 
+bool Ore::CanRemove() {
+	return Piece::CanRemove();
+}
+
 void Ore::Remove() {
+	Piece::Remove();
 	color = Colors::EMPTY;
 	textureId = ConvertColorToTextureId(color);
 }

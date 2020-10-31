@@ -24,7 +24,7 @@ void EventListener::NotifyEvent(Event e) {
 void EventListener::HandleEvents() {
 	while (!triggeredEvents.empty()) {
 		auto current_event = triggeredEvents.front();
-		for (auto& cb : _subscribedCallbacks[current_event]) {
+		for (auto& cb : _subscribedCallbacks[current_event.type]) {
 			cb(current_event);
 		}
 		triggeredEvents.pop_front();		

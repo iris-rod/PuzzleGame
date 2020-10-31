@@ -59,7 +59,10 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 		Piece* clickedPiece = FindPiece(x, y);
-		otherHandler.NotifyEvent(PIECE_REMOVED);
+		Piece& p = *clickedPiece;
+		//if(p->canRemove)
+			//p->Remove
+			//otherHandler.NotifyEvent(EventPieceRemoved(p));
 	});
 }
 

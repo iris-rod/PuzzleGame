@@ -3,10 +3,7 @@
 #include <map>
 #include <vector>
 #include <deque>
-
-enum Event {
-	PIECE_REMOVED
-};
+#include "Event.h"
 
 class EventListener {
 public:

@@ -9,6 +9,7 @@ public:
 
 	const Colors& GetColor() const;
 
+	bool CanRemove();
 	void Remove();
 
 private:
