@@ -1,5 +1,6 @@
 #pragma once
 #include "InteractiveObject.h"
+#include "EventHandler.h"
 #include <vector>
 #include <stack>
 #include <list>
@@ -59,4 +60,14 @@ private:
 	std::unique_ptr<BoardPosition> boardPosition;
 	std::unique_ptr<Coordinates> coordinates;
 	std::list<NeighbourInfo*> neighbours;
+};
+
+
+class EventPieceRemoved : public Event {
+private:
+	Piece& piece;
+
+public:
+	EventPieceRemoved(Piece& _piece);
+	const Piece& GetPiece() const;
 };

@@ -30,8 +30,9 @@ const void Piece::AddNeighbour(NeighbourInfo* neighbour) {
 }
 
 const bool Piece::HasNeighbour(const Piece* piece) {
-	auto a =  find_if(neighbours.begin(), neighbours.end(), [piece](const NeighbourInfo& arg) {
-		return arg.position == piece->GetBoardPosition();
+	std::cout << "has neighbout" << std::endl;
+	auto a =  find_if(neighbours.begin(), neighbours.end(), [piece](NeighbourInfo* arg) {
+		return arg->position == piece->GetBoardPosition();
 	});
 
 	cout << *a << endl;
@@ -40,8 +41,9 @@ const bool Piece::HasNeighbour(const Piece* piece) {
 }
 
 bool Piece::CanRemove() {
-	auto a = find_if(neighbours.begin(), neighbours.end(), [](const NeighbourInfo& arg) {
-		return CanRemove;
+	std::cout << "can remove" << std::endl;
+	auto a = find_if(neighbours.begin(), neighbours.end(), [](NeighbourInfo* arg) {
+		return arg->canRemove;
 	});
 
 	return a != neighbours.end();
@@ -63,7 +65,7 @@ void Piece::RegisterEvents(EventListener& handler) {
 	handler.Subscribe(PIECE_REMOVED, [this](Event const& _event) {
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventPieceRemoved& p = static_cast<EventPieceRemoved&>(nonConstEvent);
-		if (HasNeighbour(p.GetPiece())) {
+		if (HasNeighbour(&(p.GetPiece()))) {
 			std::cout << "trigger removed" << std::endl;
 			//remove from neighbours
 		}
@@ -71,3 +73,13 @@ void Piece::RegisterEvents(EventListener& handler) {
 }
 
 
+
+
+EventPieceRemoved::EventPieceRemoved(Piece& _piece) : piece(_piece), Event(PIECE_REMOVED)
+{
+
+}
+
+const Piece& EventPieceRemoved::GetPiece() const {
+	return piece;
+}
