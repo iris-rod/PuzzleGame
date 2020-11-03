@@ -17,15 +17,15 @@ void EventListener::UnsubscribeAll() {
 	_subscribedCallbacks.clear();
 }
 
-void EventListener::NotifyEvent(Event e) {
+void EventListener::NotifyEvent(const Event* e) {
 	triggeredEvents.push_back(e);
 }
 
 void EventListener::HandleEvents() {
 	while (!triggeredEvents.empty()) {
 		auto current_event = triggeredEvents.front();
-		for (auto& cb : _subscribedCallbacks[current_event.type]) {
-			cb(current_event);
+		for (auto& cb : _subscribedCallbacks[current_event->type]) {
+			cb(*current_event);
 		}
 		triggeredEvents.pop_front();		
 	}

@@ -64,7 +64,7 @@ void Piece::Remove() {
 void Piece::RegisterEvents(EventListener& handler) {
 	handler.Subscribe(PIECE_REMOVED, [this](Event const& _event) {
 		Event& nonConstEvent = const_cast<Event&>(_event);
-		EventPieceRemoved& p = static_cast<EventPieceRemoved&>(nonConstEvent);
+		EventPieceRemoved& p = dynamic_cast<EventPieceRemoved&>(nonConstEvent);
 		if (HasNeighbour(&(p.GetPiece()))) {
 			std::cout << "trigger removed" << std::endl;
 			//remove from neighbours

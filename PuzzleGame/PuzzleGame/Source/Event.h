@@ -8,4 +8,5 @@ class Event {
 public:
 	EventType type;
 	Event(EventType _type);
+	virtual ~Event() = default;
 };
