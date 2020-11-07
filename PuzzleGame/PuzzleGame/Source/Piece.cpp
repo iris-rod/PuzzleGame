@@ -30,18 +30,15 @@ const void Piece::AddNeighbour(NeighbourInfo* neighbour) {
 }
 
 const bool Piece::HasNeighbour(const Piece* piece) {
-	std::cout << "has neighbout" << std::endl;
-	auto a =  find_if(neighbours.begin(), neighbours.end(), [piece](NeighbourInfo* arg) {
-		return arg->position == piece->GetBoardPosition();
+	auto position = piece->GetBoardPosition();
+	auto a =  find_if(neighbours.begin(), neighbours.end(), [position](NeighbourInfo* arg) {
+		return *(arg->position) == *position;
 	});
-
-	cout << *a << endl;
 
 	return a != neighbours.end();
 }
 
 bool Piece::CanRemove() {
-	std::cout << "can remove" << std::endl;
 	auto a = find_if(neighbours.begin(), neighbours.end(), [](NeighbourInfo* arg) {
 		return arg->canRemove;
 	});
@@ -50,7 +47,8 @@ bool Piece::CanRemove() {
 }
 
 void Piece::Remove() {
-	//clean neighbours
+	textureId = "empty";
+	neighbours.clear();
 }
 
 
@@ -66,13 +64,20 @@ void Piece::RegisterEvents(EventListener& handler) {
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventPieceRemoved& p = dynamic_cast<EventPieceRemoved&>(nonConstEvent);
 		if (HasNeighbour(&(p.GetPiece()))) {
-			std::cout << "trigger removed" << std::endl;
+			//std::cout << "trigger removed" << std::endl;
+			RemoveNeighbour(&(p.GetPiece()));
 			//remove from neighbours
 		}
 	});
 }
 
+void Piece::RemoveNeighbour(const Piece* piece) {
+	auto a = find_if(neighbours.begin(), neighbours.end(), [&piece](NeighbourInfo* arg) {
+		return *(arg->position) == *(piece->GetBoardPosition());
+	});
 
+	//replace(neighbours.begin(), neighbours.end(), a, new NeighbourInfo(*a->position, false));
+}
 
 
 EventPieceRemoved::EventPieceRemoved(Piece& _piece) : piece(_piece), Event(PIECE_REMOVED)

@@ -25,11 +25,9 @@ static std::string ConvertColorToTextureId(Colors color) {
 		return "red";
 	case Colors::YELLOW:
 		return "yellow";
-	case Colors::EMPTY:
-		return "empty";
 	}
 }
 
 static Colors GetRandomColor() {
-	return static_cast<Colors>(rand() % (int)Colors::last);
+	return static_cast<Colors>(rand() % (int)Colors::EMPTY);
 }

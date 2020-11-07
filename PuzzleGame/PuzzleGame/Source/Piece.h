@@ -14,6 +14,14 @@ struct BoardPosition {
 		x = _x;
 		y = _y;
 	}
+
+	bool operator==(const BoardPosition& a) {
+		return this->x == a.x && this->y == a.y;
+	}
+
+	bool operator==(const BoardPosition& a) const {
+		return this->x == a.x && this->y == a.y;
+	}
 };
 
 struct Coordinates {
@@ -28,11 +36,19 @@ struct Coordinates {
 
 struct NeighbourInfo {
 	bool canRemove;
-	BoardPosition* position;
+	const BoardPosition* position;
 
 	NeighbourInfo(const bool _canRemove, const int _x, const int _y) {
 		position = new BoardPosition(_x, _y);
 		canRemove = _canRemove;
+	}
+
+	bool operator==(const NeighbourInfo& a) {
+		return this->position == a.position && this->canRemove == a.canRemove;
+	}
+
+	bool operator==(const NeighbourInfo& a) const {
+		return this->position == a.position && this->canRemove == a.canRemove;
 	}
 };
 
@@ -60,6 +76,8 @@ private:
 	std::unique_ptr<BoardPosition> boardPosition;
 	std::unique_ptr<Coordinates> coordinates;
 	std::list<NeighbourInfo*> neighbours;
+
+	void RemoveNeighbour(const Piece* piece);
 };
 
 

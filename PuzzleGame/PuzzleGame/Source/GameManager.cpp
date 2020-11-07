@@ -23,7 +23,8 @@ void GameManager::LoadTextures(RendererObj* rendererObj) {
 	TextureManager::LoadTexture("blue", rendererObj->GetRenderer(), "../blue.png");
 	TextureManager::LoadTexture("yellow", rendererObj->GetRenderer(), "../yellow.png");
 	TextureManager::LoadTexture("green", rendererObj->GetRenderer(), "../green.png");
-	TextureManager::LoadTexture("empty", rendererObj->GetRenderer(), "../orange.png");
+	TextureManager::LoadTexture("orange", rendererObj->GetRenderer(), "../orange.png");
+	TextureManager::LoadTexture("empty", rendererObj->GetRenderer(), "../empty.png");
 }
 
 void GameManager::RegisterEvent(SDLEventHandler& handler) {
