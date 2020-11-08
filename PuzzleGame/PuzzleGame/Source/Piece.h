@@ -78,6 +78,7 @@ private:
 	std::list<NeighbourInfo*> neighbours;
 
 	void RemoveNeighbour(const Piece* piece);
+	NeighbourInfo* GetNeighbour(const Piece* piece);
 };
 
 
