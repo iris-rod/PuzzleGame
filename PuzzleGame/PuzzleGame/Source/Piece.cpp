@@ -35,9 +35,12 @@ const bool Piece::HasNeighbour(const Piece* piece) {
 
 NeighbourInfo* Piece::GetNeighbour(const Piece* piece) {
 	auto position = piece->GetBoardPosition();
-	return *find_if(neighbours.begin(), neighbours.end(), [position](NeighbourInfo* arg) {
+	auto a = find_if(neighbours.begin(), neighbours.end(), [position](NeighbourInfo* arg) {
 		return *(arg->position) == *position;
 	});
+	if(a != neighbours.end())
+		return *a;
+	return nullptr;
 }
 
 bool Piece::CanRemove() {
@@ -82,8 +85,9 @@ void Piece::RemoveNeighbour(const Piece* piece) {
 	auto a = find_if(neighbours.begin(), neighbours.end(), [&piece](NeighbourInfo* arg) {
 		return *(arg->position) == *(piece->GetBoardPosition());
 	});
-
-	replace(neighbours.begin(), neighbours.end(), *a, new NeighbourInfo(false, (*a)->position->x, (*a)->position->y));
+	
+	if(a != neighbours.end())
+		replace(neighbours.begin(), neighbours.end(), *a, new NeighbourInfo(false, (*a)->position->x, (*a)->position->y));
 }
 
 
