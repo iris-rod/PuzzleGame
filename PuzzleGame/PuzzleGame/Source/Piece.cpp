@@ -65,18 +65,23 @@ void Piece::Remove() {
 */
 
 void Piece::RegisterEvents(EventListener& handler) {
-	handler.Subscribe(PIECE_REMOVED, [this](Event const& _event) {
+	handler.Subscribe(PIECE_REMOVED, [this, &handler](Event const& _event) {
+		//cout << "entered piece removed event triggered" << endl;
+		auto pos = this->GetBoardPosition();
+		//cout << pos->x << ", " << pos->y << endl;
+		//cout << endl;
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventPieceRemoved& event_p = dynamic_cast<EventPieceRemoved&>(nonConstEvent);
 		auto piece = &(event_p.GetPiece());
+
 		if (HasNeighbour(piece)) {
-			//std::cout << "trigger removed" << std::endl;
 			auto neigh = GetNeighbour(piece);
 			if (neigh != nullptr && neigh->canRemove) {
-			
+				Event* event_p = new EventPieceRemoved(this);
+				handler.NotifyEvent(event_p);
+				Remove();
 			}
 			RemoveNeighbour(piece);
-			//remove from neighbours
 		}
 	});
 }
