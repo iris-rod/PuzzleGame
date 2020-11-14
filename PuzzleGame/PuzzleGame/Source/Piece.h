@@ -84,9 +84,9 @@ private:
 
 class EventPieceRemoved : public Event {
 private:
-	Piece& piece;
+	const Piece* piece;
 
 public:
-	EventPieceRemoved(Piece& _piece);
+	EventPieceRemoved(const Piece* _piece);
 	const Piece& GetPiece() const;
 };

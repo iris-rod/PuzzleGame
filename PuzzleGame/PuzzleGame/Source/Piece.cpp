@@ -91,11 +91,11 @@ void Piece::RemoveNeighbour(const Piece* piece) {
 }
 
 
-EventPieceRemoved::EventPieceRemoved(Piece& _piece) : piece(_piece), Event(PIECE_REMOVED)
+EventPieceRemoved::EventPieceRemoved(const Piece* _piece) : piece(_piece), Event(PIECE_REMOVED)
 {
 
 }
 
 const Piece& EventPieceRemoved::GetPiece() const {
-	return piece;
+	return *piece;
 }
