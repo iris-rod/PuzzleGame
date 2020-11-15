@@ -8,7 +8,7 @@
 class EventListener {
 public:
 	EventListener();
-	//~EventHandler();
+	~EventListener();
 	using Handler = std::function<void(Event const&)>;
 
 	void Subscribe(const int type, const Handler callback);

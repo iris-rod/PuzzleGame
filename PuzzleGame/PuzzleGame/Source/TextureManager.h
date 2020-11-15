@@ -8,6 +8,7 @@ class TextureManager {
 public:
 	static void LoadTexture(std::string textureId, SDL_Renderer* renderer, const char* texture_path);
 	static SDL_Texture* GetTexture(std::string textureId);
+	static void Clean();
 
 private:
 	static std::map<std::string, SDL_Texture*> loadedTextures;

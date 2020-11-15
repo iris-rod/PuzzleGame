@@ -20,3 +20,7 @@ void TextureManager::LoadTexture(std::string textureId, SDL_Renderer* renderer, 
 SDL_Texture* TextureManager::GetTexture(std::string textureId) {
 	return loadedTextures[textureId];
 }
+
+void TextureManager::Clean() {
+	loadedTextures.clear();
+}

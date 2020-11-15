@@ -1,11 +1,19 @@
 #include "GameManager.h"
 #include <iostream>
+#include <time.h>
 
 void GameManager::Render(RendererObj* rendererObj) {
 	rendererObj->Render(objs);
 }
 
+GameManager::~GameManager() {
+	TextureManager::Clean();
+	boardHandler->~BoardHandler();
+	boardHandler = nullptr;
+}
+
 void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler) {
+	srand(time(NULL));
 	LoadTextures(rendererObj);
 	boardHandler = new BoardHandler();
 	boardHandler->Init(handler, otherHandler);

@@ -56,7 +56,7 @@ class Piece : public InteractiveObject {
 public:
 	Piece() = default;
 	Piece(const int Id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY);
-	//~Piece();
+	virtual ~Piece();
 	const BoardPosition* GetBoardPosition() const;
 	const Coordinates* GetCoordinates() const;
 	const void AddNeighbour(NeighbourInfo* neighbour);

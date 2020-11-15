@@ -5,6 +5,12 @@ EventListener::EventListener() {
 
 }
 
+EventListener::~EventListener() {
+	UnsubscribeAll();
+	triggeredEvents.clear();
+	triggeredEvents.resize(0);
+}
+
 void EventListener::Subscribe(const int type, const Handler callback) {
 	_subscribedCallbacks[type].push_back(callback);
 }

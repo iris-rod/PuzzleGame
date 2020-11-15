@@ -16,10 +16,11 @@ enum class GameState {
 class GameManager {
 public:
 	GameManager() = default;
-	//~GameManager();
+	~GameManager();
 	void Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler);
 	//void Update();
 	void Render(RendererObj* rendererObj);
+	void Clear();
 
 	bool IsGameOnGoing();
 	bool IsGameFinished();
