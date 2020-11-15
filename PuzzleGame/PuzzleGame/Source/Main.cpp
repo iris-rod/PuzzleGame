@@ -31,15 +31,6 @@ int main(int argc, char* args[]) {
 			other_handler.HandleEvents();
 			event_handler.HandleEvents();
 			
-			/*SDL_Event _event;
-			SDL_PollEvent(&_event);
-
-			switch (_event.type) {
-			case SDL_QUIT:
-				std::cout<<"quit"<<std::endl;
-				isRunning = false;
-				break;
-			}*/
 		}
 		catch (const char* msg) {
 			std::cout << msg << std::endl;
