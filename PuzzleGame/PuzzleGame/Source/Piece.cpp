@@ -1,12 +1,12 @@
 #include "Piece.h"
 
 using namespace std;
+using namespace PieceStuff;
 
 Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY) 
 	: coordinates( new Coordinates(x, y) ), 
 	boardPosition( new BoardPosition(x == 0 ? 0 : x/_sizeX, y == 0 ? 0 : y/_sizeY) ), 
 	InteractiveObject("piece" + id, _src, _dest, _sizeX, _sizeY) {
-	//std::cout << (x == 0 ? 0 : x / _sizeX) << ", " << (y == 0 ? 0 : y / _sizeY) << std::endl;
 	src->x = 0;
 	src->y = 0;
 	dest->x = x;
@@ -20,6 +20,18 @@ Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const i
 Piece::~Piece() {
 	neighbours.clear();
 	neighbours.resize(0);
+}
+
+void Piece::operator=(const Piece& rhs) {
+	this->textureId = rhs.textureId;
+	RedefineNeighbours();
+}
+
+void Piece::RedefineNeighbours() {
+	for (auto it = neighbours.begin(); it != neighbours.end(); ++it) {
+		std::cout << (*it)->canRemove;
+		//update can remove neighbour after assingning a new color
+	}
 }
 
 const BoardPosition* Piece::GetBoardPosition() const {
@@ -48,6 +60,10 @@ NeighbourInfo* Piece::GetNeighbour(const Piece* piece) {
 	return nullptr;
 }
 
+bool Piece::IsEmpty() {
+	return textureId == "empty";
+}
+
 bool Piece::CanRemove() {
 	auto a = find_if(neighbours.begin(), neighbours.end(), [](NeighbourInfo* arg) {
 		return arg->canRemove;
@@ -56,37 +72,31 @@ bool Piece::CanRemove() {
 	return a != neighbours.end();
 }
 
+void Piece::Remove(EventListener* otherHandler) {
+	Remove();
+	otherHandler->NotifyEvent(new EventColumnUpdate(GetBoardPosition()->x));
+}
+
 void Piece::Remove() {
 	textureId = "empty";
 	neighbours.clear();
 }
 
-
-/*
- bool CanRemove(EventHandler otherHandler) {
-	
-	otherHandler.notifyEvent();
- }
-*/
-
 void Piece::RegisterEvents(EventListener& handler) {
 	handler.Subscribe(PIECE_REMOVED, [this, &handler](Event const& _event) {
-		//cout << "entered piece removed event triggered" << endl;
 		auto pos = this->GetBoardPosition();
-		//cout << pos->x << ", " << pos->y << endl;
-		//cout << endl;
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventPieceRemoved& event_p = dynamic_cast<EventPieceRemoved&>(nonConstEvent);
 		auto piece = &(event_p.GetPiece());
-
 		if (HasNeighbour(piece)) {
 			auto neigh = GetNeighbour(piece);
 			if (neigh != nullptr && neigh->canRemove) {
 				Event* event_p = new EventPieceRemoved(this);
 				handler.NotifyEvent(event_p);
-				Remove();
+				Remove(&handler);
 			}
 			RemoveNeighbour(piece);
+			cout << "piece removed" << endl;
 		}
 	});
 }
@@ -97,7 +107,7 @@ void Piece::RemoveNeighbour(const Piece* piece) {
 	});
 	
 	if(a != neighbours.end())
-		replace(neighbours.begin(), neighbours.end(), *a, new NeighbourInfo(false, (*a)->position->x, (*a)->position->y));
+		replace(neighbours.begin(), neighbours.end(), *a, new NeighbourInfo(false, (*a)->position->x, (*a)->position->y, (*a)->direction));
 }
 
 
