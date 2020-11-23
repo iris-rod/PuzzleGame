@@ -1,5 +1,7 @@
 #include "BoardHandler.h"
 
+using namespace std;
+
 BoardHandler::BoardHandler() {
 	pieces.resize(mapSize[0] * mapSize[1]);
 }
@@ -14,7 +16,7 @@ BoardHandler::~BoardHandler() {
 
 void BoardHandler::GeneratePieces(EventListener& otherHandler) {
 	int id = 0;
-	for (int c = 0; c < mapSize[0]; c++) {
+	for (int c = 0; c < mapSize[0]; c++) { 
 		for (int r = 0; r < mapSize[1]; r++) {
 			SDL_Rect* src = new SDL_Rect();
 			SDL_Rect* dest = new SDL_Rect();
@@ -27,7 +29,6 @@ void BoardHandler::GeneratePieces(EventListener& otherHandler) {
 
 void BoardHandler::SetPiecesNeighbours() {
 	for (auto& piece : pieces) {
-		//std::cout << "piece: " << piece->GetTextureId() << ", " << ", " << piece->GetBoardPosition()->x << ", " << piece->GetBoardPosition()->y << std::endl;
 		for (int i = -1; i <= 1; i += 2) {
 			int newX = piece->GetBoardPosition()->x + i;
 			int newY = piece->GetBoardPosition()->y + i;
@@ -39,16 +40,12 @@ void BoardHandler::SetPiecesNeighbours() {
 				SetNeighbour(piece, newX, piece->GetBoardPosition()->y);
 			}
 		}
-		//std::cout << std::endl;
 	}
 }
 
 void BoardHandler::SetNeighbour(Piece* piece, const int& x, const int& y) {
 	bool canBeRemoved = piece->GetTextureId() == FindPieceFromBoardPosition(x, y)->GetTextureId();
-	piece->AddNeighbour(new NeighbourInfo(canBeRemoved, x, y));
-	//std::string r = "false";
-	//if (canBeRemoved) r = "true";
-	//std::cout << "neigbour: " << FindPieceFromBoardPosition(x, y)->GetTextureId() << ", " << ", " << x << ", " << y << ", " << r << std::endl;
+	piece->AddNeighbour(new NeighbourInfo(canBeRemoved, x, y, ConvertBoardPositionToDirection(piece->GetBoardPosition()->x, piece->GetBoardPosition()->y, x, y)));
 }
 
 std::vector<Piece*> BoardHandler::GetObjs() {
@@ -72,9 +69,19 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 			Event* event_p = new EventPieceRemoved(clickedPiece);
 			if (clickedPiece->CanRemove()) {
 				otherHandler.NotifyEvent(event_p);
-				clickedPiece->Remove();
+				clickedPiece->Remove(&otherHandler);
 			}
 		}
+	});
+
+	otherHandler.Subscribe(COLUMN_UPDATE, [this](Event const& _event) {
+		cout << "column update" << endl;
+		Event& nonConstEvent = const_cast<Event&>(_event);
+		EventColumnUpdate& event_p = dynamic_cast<EventColumnUpdate&>(nonConstEvent);
+		cout << event_p.GetColumn() << endl;
+		OrganiseColumn(event_p.GetColumn());
+
+
 	});
 }
 
@@ -97,4 +104,28 @@ const Piece* BoardHandler::FindPieceFromBoardPosition(const int& x, const int& y
 		}
 	}
 	return nullptr;
+}
+
+void BoardHandler::OrganiseColumn(int c) {
+	int numElems = pieces.size() / MAP_SIZE_X;
+	int begin = (numElems * c) + numElems;
+	int med = (numElems * c) + numElems;
+
+	for (int i = (numElems * c) + numElems; i > numElems * c; --i) {
+		Piece* p = pieces[i];
+		if (!p->IsEmpty()) {
+			if (begin != med) {
+				cout << "swap: " << begin << ", " << pieces[begin]->GetTextureId() << ", " << med << ", " << pieces[med]->GetTextureId() << endl;
+				swap(pieces[begin], pieces[med]);
+			}
+			--begin;
+		}
+		--med;
+	}
+
+	for (int i = numElems * c; i < (numElems * c) + numElems; ++i) {
+		Piece* p = pieces[i];
+		cout << p->GetTextureId() << endl;
+	}
+	cout << endl;
 }
