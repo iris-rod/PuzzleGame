@@ -2,6 +2,13 @@
 #include <iostream>
 #include <string>
 
+enum class Direction {
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+	last
+};
 
 enum class Colors {
 	RED,
@@ -12,6 +19,15 @@ enum class Colors {
 	EMPTY,
 	last
 };
+
+static Direction ConvertBoardPositionToDirection(int pivot_x, int pivot_y, int x, int y) {
+	if (x > pivot_x) return Direction::EAST;
+	else if (x < pivot_x) return Direction::WEST;
+
+	if (y > pivot_y) return Direction::SOUTH;
+	else if (y < pivot_y) return Direction::NORTH;
+
+}
 
 static std::string ConvertColorToTextureId(Colors color) {
 	switch (color) {
