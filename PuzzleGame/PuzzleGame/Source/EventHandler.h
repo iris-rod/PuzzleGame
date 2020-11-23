@@ -3,7 +3,14 @@
 #include <map>
 #include <vector>
 #include <deque>
+#include <queue>
 #include "Event.h"
+
+struct comparator {
+	bool operator()(const Event* i, const Event* j) {
+		return i->type > j->type;
+	}
+};
 
 class EventListener {
 public:
@@ -19,5 +26,6 @@ public:
 
 private:
 	std::map<int, std::vector<Handler>> _subscribedCallbacks;
-	std::deque<const Event*> triggeredEvents;
+	//std::deque<const Event*> triggeredEvents;
+	std::priority_queue<const Event*, std::vector<const Event*>, comparator> triggeredEvents;
 };

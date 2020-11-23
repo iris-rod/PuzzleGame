@@ -1,14 +1,15 @@
 #include "EventHandler.h"
 #include <iostream>
 
+using namespace std;
+
 EventListener::EventListener() {
 
 }
 
 EventListener::~EventListener() {
 	UnsubscribeAll();
-	triggeredEvents.clear();
-	triggeredEvents.resize(0);
+	triggeredEvents = std::priority_queue<const Event*, std::vector<const Event*>, comparator>();
 }
 
 void EventListener::Subscribe(const int type, const Handler callback) {
@@ -24,15 +25,16 @@ void EventListener::UnsubscribeAll() {
 }
 
 void EventListener::NotifyEvent(const Event* e) {
-	triggeredEvents.push_back(e);
+	triggeredEvents.push(e);
 }
 
 void EventListener::HandleEvents() {
 	while (!triggeredEvents.empty()) {
-		auto current_event = triggeredEvents.front();
+		auto current_event = triggeredEvents.top();
+		cout << current_event->type << endl;
 		for (auto& cb : _subscribedCallbacks[current_event->type]) {
 			cb(*current_event);
 		}
-		triggeredEvents.pop_front();		
+		triggeredEvents.pop();		
 	}
 }
