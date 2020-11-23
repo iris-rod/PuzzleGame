@@ -5,6 +5,8 @@
 #include "SDLEventHandler.h"
 #include "EventHandler.h"
 
+using namespace PieceStuff;
+
 class BoardHandler {
 public:
 	BoardHandler();
@@ -22,8 +24,7 @@ private:
 	void RegisterEvents(SDLEventHandler& sdl_handler, EventListener& otherHandler);
 	Piece* FindPiece(const int& x, const int& y) const;
 	const Piece* FindPieceFromBoardPosition(const int& x, const int& y) const;
-	void RemovePieces(Piece& piece);
 	void AddColumn();
 	void MoveColumn();
-	void UpdateRow();
+	void OrganiseColumn(int c);
 };
