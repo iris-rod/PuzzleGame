@@ -3,6 +3,8 @@
 #include "SDL.h"
 #include <iostream>
 
+using namespace std;
+
 class Object {
 public: 
 	Object() = default;
@@ -10,11 +12,11 @@ public:
 	~Object();
 	const SDL_Rect* GetSrcRect() const;
 	const SDL_Rect* GetDestRect() const;
-	const std::string GetTextureId() const;
+	const std::string& GetTextureId() const;
 
 protected:
-	std::string textureId = "";
-	std::string ID = "";
+	string textureId;
+	string ID;
 	SDL_Rect* src = nullptr;
 	SDL_Rect* dest = nullptr;
 	int sizeX = 0;
