@@ -22,14 +22,14 @@ void BoardHandler::GeneratePieces(EventListener& otherHandler) {
 void BoardHandler::SetPiecesNeighbours() {
 	for (auto& piece : pieces) {
 		for (int i = -1; i <= 1; i += 2) {
-			int newX = piece->GetBoardPosition()->x + i;
-			int newY = piece->GetBoardPosition()->y + i;
+			int newX = piece->GetBoardPosition().x + i;
+			int newY = piece->GetBoardPosition().y + i;
 
 			if (newY >= 0 && newY < mapSize[1]) {
-				SetNeighbour(piece, piece->GetBoardPosition()->x, newY);
+				SetNeighbour(piece, piece->GetBoardPosition().x, newY);
 			}
 			if (newX >= 0 && newX < mapSize[0]) {
-				SetNeighbour(piece, newX, piece->GetBoardPosition()->y);
+				SetNeighbour(piece, newX, piece->GetBoardPosition().y);
 			}
 		}
 	}
@@ -37,7 +37,7 @@ void BoardHandler::SetPiecesNeighbours() {
 
 void BoardHandler::SetNeighbour(Piece* piece, const int& x, const int& y) {
 	bool canBeRemoved = piece->GetTextureId() == FindPieceFromBoardPosition(x, y)->GetTextureId();
-	piece->AddNeighbour(new NeighbourInfo(canBeRemoved, x, y, ConvertBoardPositionToDirection(piece->GetBoardPosition()->x, piece->GetBoardPosition()->y, x, y)));
+	piece->AddNeighbour(new NeighbourInfo(canBeRemoved, x, y, ConvertBoardPositionToDirection(piece->GetBoardPosition().x, piece->GetBoardPosition().y, x, y)));
 }
 
 std::vector<Piece*> BoardHandler::GetObjs() {
@@ -71,7 +71,7 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventColumnUpdate& event_p = dynamic_cast<EventColumnUpdate&>(nonConstEvent);
 		cout << event_p.GetColumn() << endl;
-		OrganiseColumn(event_p.GetColumn());
+		//OrganiseColumn(event_p.GetColumn());
 
 
 	});
@@ -80,8 +80,8 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 Piece* BoardHandler::FindPiece(const int& x, const int& y) const {
 	for (auto& piece : pieces) {
 		auto coordinates = piece->GetCoordinates();
-		if (x >= coordinates->x && x < coordinates->x + PIECE_SIZE_X
-			&& y >= coordinates->y && y < coordinates->y + PIECE_SIZE_Y) {
+		if (x >= coordinates.x && x < coordinates.x + PIECE_SIZE_X
+			&& y >= coordinates.y && y < coordinates.y + PIECE_SIZE_Y) {
 			return piece;
 		}
 	}
@@ -91,7 +91,7 @@ Piece* BoardHandler::FindPiece(const int& x, const int& y) const {
 const Piece* BoardHandler::FindPieceFromBoardPosition(const int& x, const int& y) const {
 	for (auto& piece : pieces) {
 		auto coordinates = piece->GetBoardPosition();
-		if (x == coordinates->x && y == coordinates->y) {
+		if (x == coordinates.x && y == coordinates.y) {
 			return piece;
 		}
 	}

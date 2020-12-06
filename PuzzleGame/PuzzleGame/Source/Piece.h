@@ -7,6 +7,8 @@
 #include <list>
 #include <algorithm>
 
+using namespace std;
+
 namespace PieceStuff {
 
 	struct BoardPosition {
@@ -62,8 +64,8 @@ namespace PieceStuff {
 		Piece() = default;
 		Piece(const int Id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY);
 		virtual ~Piece();
-		const BoardPosition* GetBoardPosition() const;
-		const Coordinates* GetCoordinates() const;
+		const BoardPosition& GetBoardPosition() const;
+		const Coordinates& GetCoordinates() const;
 		const void AddNeighbour(NeighbourInfo* neighbour);
 		const bool HasNeighbour(const Piece* piece);
 		virtual bool CanRemove();
@@ -82,9 +84,9 @@ namespace PieceStuff {
 		virtual void Remove();
 
 	private:
-		std::unique_ptr<BoardPosition> boardPosition;
-		std::unique_ptr<Coordinates> coordinates;
-		std::list<NeighbourInfo*> neighbours;
+		unique_ptr<BoardPosition> boardPosition;
+		unique_ptr<Coordinates> coordinates;
+		list<NeighbourInfo*> neighbours;
 
 		void RemoveNeighbour(const Piece* piece);
 		NeighbourInfo* GetNeighbour(const Piece* piece);
