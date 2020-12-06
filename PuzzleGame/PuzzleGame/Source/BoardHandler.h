@@ -10,7 +10,6 @@ using namespace PieceStuff;
 class BoardHandler {
 public:
 	BoardHandler();
-	~BoardHandler();
 	void Init(SDLEventHandler& sdl_handler, EventListener& other_handler);
 	std::vector<Piece*> GetObjs();
 

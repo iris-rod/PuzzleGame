@@ -6,14 +6,6 @@ BoardHandler::BoardHandler() {
 	pieces.resize(mapSize[0] * mapSize[1]);
 }
 
-BoardHandler::~BoardHandler() {
-	for (int id = 0; id < pieces.size(); id++) {
-		pieces[id]->~Piece();
-	}
-	pieces.clear();
-	pieces.resize(0);
-}
-
 void BoardHandler::GeneratePieces(EventListener& otherHandler) {
 	int id = 0;
 	for (int c = 0; c < mapSize[0]; c++) { 

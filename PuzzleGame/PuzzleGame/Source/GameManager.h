@@ -6,6 +6,8 @@
 #include "TextureManager.h"
 #include "BoardHandler.h"
 
+using namespace std;
+
 enum class GameState {
 	ON_GOING,
 	ON_PAUSE,
@@ -33,5 +35,5 @@ private:
 
 	BoardHandler* boardHandler;
 	GameState gameState;
-	std::deque<Object*> objs;
+	deque<Object*> objs;
 };
