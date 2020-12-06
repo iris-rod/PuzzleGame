@@ -2,20 +2,18 @@
 #include <iostream>
 #include <time.h>
 
-void GameManager::Render(RendererObj* rendererObj) {
-	rendererObj->Render(objs);
+GameManager::GameManager() : boardHandler(nullptr) {
+
 }
 
-GameManager::~GameManager() {
-	TextureManager::Clean();
-	boardHandler->~BoardHandler();
-	boardHandler = nullptr;
+void GameManager::Render(RendererObj* rendererObj) {
+	rendererObj->Render(objs);
 }
 
 void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler) {
 	srand(time(NULL));
 	LoadTextures(rendererObj);
-	boardHandler = new BoardHandler();
+	boardHandler = make_unique<BoardHandler>(BoardHandler());
 	boardHandler->Init(handler, otherHandler);
 	for (auto obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);

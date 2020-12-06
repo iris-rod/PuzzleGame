@@ -17,8 +17,7 @@ enum class GameState {
 
 class GameManager {
 public:
-	GameManager() = default;
-	~GameManager();
+	GameManager();
 	void Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler);
 	//void Update();
 	void Render(RendererObj* rendererObj);
@@ -33,7 +32,7 @@ private:
 	void RegisterEvent(SDLEventHandler& handler);
 	void Quit();
 
-	BoardHandler* boardHandler;
+	unique_ptr<BoardHandler> boardHandler;
 	GameState gameState;
 	deque<Object*> objs;
 };
