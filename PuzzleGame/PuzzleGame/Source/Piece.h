@@ -67,7 +67,7 @@ namespace PieceStuff {
 		const BoardPosition& GetBoardPosition() const;
 		const Coordinates& GetCoordinates() const;
 		const void AddNeighbour(NeighbourInfo* neighbour);
-		const bool HasNeighbour(const Piece* piece);
+		const bool HasNeighbour(const Piece& piece);
 		virtual bool CanRemove();
 		void Remove(EventListener* otherHandler);
 		void RegisterEvents(EventListener& handler);
@@ -88,8 +88,8 @@ namespace PieceStuff {
 		unique_ptr<Coordinates> coordinates;
 		list<NeighbourInfo*> neighbours;
 
-		void RemoveNeighbour(const Piece* piece);
-		NeighbourInfo* GetNeighbour(const Piece* piece);
+		void RemoveNeighbour(const Piece& piece);
+		NeighbourInfo* GetNeighbour(const Piece& piece);
 		void RedefineNeighbours();
 	};
 
@@ -99,7 +99,7 @@ namespace PieceStuff {
 		const Piece* piece;
 
 	public:
-		EventPieceRemoved(const Piece* _piece);
+		EventPieceRemoved(const Piece& _piece);
 		const Piece& GetPiece() const;
 	};
 }

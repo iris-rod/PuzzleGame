@@ -58,7 +58,7 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		Piece* clickedPiece = FindPiece(x, y);
 
 		if (clickedPiece != nullptr) {
-			Event* event_p = new EventPieceRemoved(clickedPiece);
+			Event* event_p = new EventPieceRemoved(*clickedPiece);
 			if (clickedPiece->CanRemove()) {
 				otherHandler.NotifyEvent(event_p);
 				clickedPiece->Remove(&otherHandler);
