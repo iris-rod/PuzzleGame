@@ -3,6 +3,7 @@
 #include "Utils.h"
 
 using namespace PieceStuff;
+using namespace std;
 
 class Ore : public Piece {
 public:
@@ -12,5 +13,5 @@ public:
 	const Colors& GetColor() const;
 
 private:
-	Colors color;
+	unique_ptr<Colors> color;
 };
