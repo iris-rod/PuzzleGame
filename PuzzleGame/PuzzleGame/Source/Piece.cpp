@@ -108,7 +108,6 @@ void Piece::RemoveNeighbour(const Piece& piece) {
 	});
 
 	if (a != neighbours.end()) {
-		//replace(neighbours.begin(), neighbours.end(), (*a), make_unique<NeighbourInfo>(NeighbourInfo(false, (*a)->position->x, (*a)->position->y, (*a)->direction)));
 		for (auto& neigh : neighbours) {
 			if (neigh.get() == (*a).get()) {
 				neigh = move(make_unique<NeighbourInfo>(NeighbourInfo(false, (*a)->position->x, (*a)->position->y, (*a)->direction)));
