@@ -15,6 +15,7 @@ Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const i
 	src->h = _sizeY;
 	dest->w = _sizeX;
 	dest->h = _sizeY;
+	neighbours = list<unique_ptr<NeighbourInfo>>();
 }
 
 Piece::~Piece() {
@@ -42,8 +43,8 @@ const Coordinates& Piece::GetCoordinates() const {
 	return *coordinates.get();
 }
 
-const void Piece::AddNeighbour(NeighbourInfo* neighbour) {
-	neighbours.push_front(neighbour);
+const void Piece::AddNeighbour(const bool _canRemove, const int _x, const int _y, const Direction dir) {
+	neighbours.push_front(make_unique<NeighbourInfo>(NeighbourInfo(_canRemove, _x, _y, dir)));
 }
 
 const bool Piece::HasNeighbour(const Piece& piece) {
@@ -52,11 +53,11 @@ const bool Piece::HasNeighbour(const Piece& piece) {
 
 NeighbourInfo* Piece::GetNeighbour(const Piece& piece) {
 	auto position = piece.GetBoardPosition();
-	auto a = find_if(neighbours.begin(), neighbours.end(), [position](NeighbourInfo* arg) {
-		return *(arg->position) == position;
+	auto a = find_if(neighbours.begin(), neighbours.end(), [position](unique_ptr<NeighbourInfo>& arg) {
+		return *(arg.get()->position) == position;
 	});
 	if(a != neighbours.end())
-		return *a;
+		return (*a).get();
 	return nullptr;
 }
 
@@ -65,8 +66,8 @@ bool Piece::IsEmpty() {
 }
 
 bool Piece::CanRemove() {
-	auto a = find_if(neighbours.begin(), neighbours.end(), [](NeighbourInfo* arg) {
-		return arg->canRemove;
+	auto a = find_if(neighbours.begin(), neighbours.end(), [](unique_ptr<NeighbourInfo>& arg) {
+		return arg.get()->canRemove;
 	});
 
 	return a != neighbours.end();
@@ -102,12 +103,19 @@ void Piece::RegisterEvents(EventListener& handler) {
 }
 
 void Piece::RemoveNeighbour(const Piece& piece) {
-	auto a = find_if(neighbours.begin(), neighbours.end(), [&piece](NeighbourInfo* arg) {
-		return *(arg->position) == piece.GetBoardPosition();
+	auto a = find_if(neighbours.begin(), neighbours.end(), [&piece](unique_ptr<NeighbourInfo>& arg) {
+		return *(arg.get()->position) == piece.GetBoardPosition();
 	});
-	
-	if(a != neighbours.end())
-		replace(neighbours.begin(), neighbours.end(), *a, new NeighbourInfo(false, (*a)->position->x, (*a)->position->y, (*a)->direction));
+
+	if (a != neighbours.end()) {
+		//replace(neighbours.begin(), neighbours.end(), (*a), make_unique<NeighbourInfo>(NeighbourInfo(false, (*a)->position->x, (*a)->position->y, (*a)->direction)));
+		for (auto& neigh : neighbours) {
+			if (neigh.get() == (*a).get()) {
+				neigh = move(make_unique<NeighbourInfo>(NeighbourInfo(false, (*a)->position->x, (*a)->position->y, (*a)->direction)));
+				break;
+			}
+		}
+	}
 }
 
 

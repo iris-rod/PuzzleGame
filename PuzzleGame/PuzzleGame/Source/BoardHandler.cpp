@@ -37,7 +37,7 @@ void BoardHandler::SetPiecesNeighbours() {
 
 void BoardHandler::SetNeighbour(Piece* piece, const int& x, const int& y) {
 	bool canBeRemoved = piece->GetTextureId() == FindPieceFromBoardPosition(x, y)->GetTextureId();
-	piece->AddNeighbour(new NeighbourInfo(canBeRemoved, x, y, ConvertBoardPositionToDirection(piece->GetBoardPosition().x, piece->GetBoardPosition().y, x, y)));
+	piece->AddNeighbour(canBeRemoved, x, y, ConvertBoardPositionToDirection(piece->GetBoardPosition().x, piece->GetBoardPosition().y, x, y));
 }
 
 std::vector<Piece*> BoardHandler::GetObjs() {

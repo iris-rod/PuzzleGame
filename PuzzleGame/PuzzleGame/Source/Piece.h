@@ -66,7 +66,7 @@ namespace PieceStuff {
 		virtual ~Piece();
 		const BoardPosition& GetBoardPosition() const;
 		const Coordinates& GetCoordinates() const;
-		const void AddNeighbour(NeighbourInfo* neighbour);
+		const void AddNeighbour(const bool _canRemove, const int _x, const int _y, const Direction dir);
 		const bool HasNeighbour(const Piece& piece);
 		virtual bool CanRemove();
 		void Remove(EventListener* otherHandler);
@@ -86,7 +86,7 @@ namespace PieceStuff {
 	private:
 		unique_ptr<BoardPosition> boardPosition;
 		unique_ptr<Coordinates> coordinates;
-		list<NeighbourInfo*> neighbours;
+		list<unique_ptr<NeighbourInfo>> neighbours;
 
 		void RemoveNeighbour(const Piece& piece);
 		NeighbourInfo* GetNeighbour(const Piece& piece);
