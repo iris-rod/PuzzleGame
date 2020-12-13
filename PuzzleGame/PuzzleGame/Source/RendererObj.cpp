@@ -19,11 +19,11 @@ SDL_Renderer* RendererObj::GetRenderer() {
 	return ptr_renderer.get();
 }
 
-void RendererObj::Render(std::deque<Object*> objs) {
+void RendererObj::Render(deque<shared_ptr<Object>>& objs) {
 	//std::cout << "Render" << std::endl;
 	SDL_RenderClear(ptr_renderer.get());
-	for (std::deque<Object*>::iterator it = objs.begin(); it != objs.end(); it++) {
-		Object* currentObj = *it;
+	for (std::deque<shared_ptr<Object>>::iterator it = objs.begin(); it != objs.end(); it++) {
+		auto& currentObj = *it;
 		SDL_RenderCopy(ptr_renderer.get(), 
 			TextureManager::GetTexture(currentObj->GetTextureId()),
 			currentObj->GetSrcRect(), 

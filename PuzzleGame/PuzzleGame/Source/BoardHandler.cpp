@@ -12,7 +12,7 @@ void BoardHandler::GeneratePieces(EventListener& otherHandler) {
 		for (int r = 0; r < mapSize[1]; r++) {
 			SDL_Rect* src = new SDL_Rect();
 			SDL_Rect* dest = new SDL_Rect();
-			pieces[id] = make_unique<Ore>(id, src, dest, c * PIECE_SIZE_X, r * PIECE_SIZE_Y, PIECE_SIZE_X, PIECE_SIZE_Y);
+			pieces[id] = make_shared<Ore>(id, src, dest, c * PIECE_SIZE_X, r * PIECE_SIZE_Y, PIECE_SIZE_X, PIECE_SIZE_Y);
 			pieces[id]->RegisterEvents(otherHandler);
 			id++;
 		}
@@ -40,7 +40,7 @@ void BoardHandler::SetNeighbour(Piece& piece, const int& x, const int& y) {
 	piece.AddNeighbour(canBeRemoved, x, y, ConvertBoardPositionToDirection(piece.GetBoardPosition().x, piece.GetBoardPosition().y, x, y));
 }
 
-std::vector<unique_ptr<Piece>>& BoardHandler::GetObjs() {
+std::vector<shared_ptr<Piece>>& BoardHandler::GetObjs() {
 	return pieces;
 }
 

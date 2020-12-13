@@ -6,13 +6,15 @@
 #include <memory>
 #include <deque>
 
+using namespace std;
+
 class RendererObj {
 public:
 	RendererObj(SDL_Window* window_obj);
 	//~RendererObj();
 
 	SDL_Renderer* GetRenderer();
-	void Render(std::deque<Object*> objs);
+	void Render(deque<shared_ptr<Object>>& objs);
 
 	RendererObj(const RendererObj&) = delete;
 	RendererObj& operator=(const RendererObj&) = delete;

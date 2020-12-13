@@ -11,10 +11,10 @@ class BoardHandler {
 public:
 	BoardHandler();
 	void Init(SDLEventHandler& sdl_handler, EventListener& other_handler);
-	std::vector<unique_ptr<Piece>>& GetObjs();
+	std::vector<shared_ptr<Piece>>& GetObjs();
 
 private:
-	std::vector<unique_ptr<Piece>> pieces;
+	std::vector<shared_ptr<Piece>> pieces;
 	std::vector<int> mapSize {MAP_SIZE_X, MAP_SIZE_Y};
 	
 	void GeneratePieces(EventListener& otherHandler);

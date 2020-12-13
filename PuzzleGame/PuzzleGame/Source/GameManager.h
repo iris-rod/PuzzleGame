@@ -34,5 +34,5 @@ private:
 
 	unique_ptr<BoardHandler> boardHandler;
 	GameState gameState;
-	deque<Object*> objs;
+	deque<shared_ptr<Object>> objs;
 };

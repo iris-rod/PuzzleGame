@@ -16,7 +16,7 @@ void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, Event
 	boardHandler = make_unique<BoardHandler>();
 	boardHandler->Init(handler, otherHandler);
 	for (auto& obj : boardHandler->GetObjs()) {
-		objs.push_back(obj.get());
+		objs.push_back(obj);
 	}	
 
 	RegisterEvent(handler);
