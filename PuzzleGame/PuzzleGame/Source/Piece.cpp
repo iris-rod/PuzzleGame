@@ -44,7 +44,7 @@ const Coordinates& Piece::GetCoordinates() const {
 }
 
 const void Piece::AddNeighbour(const bool _canRemove, const int _x, const int _y, const Direction dir) {
-	neighbours.push_front(make_unique<NeighbourInfo>(NeighbourInfo(_canRemove, _x, _y, dir)));
+	neighbours.push_front(make_unique<NeighbourInfo>(_canRemove, _x, _y, dir));
 }
 
 const bool Piece::HasNeighbour(const Piece& piece) {
@@ -110,7 +110,7 @@ void Piece::RemoveNeighbour(const Piece& piece) {
 	if (a != neighbours.end()) {
 		for (auto& neigh : neighbours) {
 			if (neigh.get() == (*a).get()) {
-				neigh = move(make_unique<NeighbourInfo>(NeighbourInfo(false, (*a)->position->x, (*a)->position->y, (*a)->direction)));
+				neigh = move(make_unique<NeighbourInfo>(false, (*a)->position->x, (*a)->position->y, (*a)->direction));
 				break;
 			}
 		}

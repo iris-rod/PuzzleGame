@@ -13,10 +13,10 @@ void GameManager::Render(RendererObj* rendererObj) {
 void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler) {
 	srand(time(NULL));
 	LoadTextures(rendererObj);
-	boardHandler = make_unique<BoardHandler>(BoardHandler());
+	boardHandler = make_unique<BoardHandler>();
 	boardHandler->Init(handler, otherHandler);
-	for (auto obj : boardHandler->GetObjs()) {
-		objs.push_back(obj);
+	for (auto& obj : boardHandler->GetObjs()) {
+		objs.push_back(obj.get());
 	}	
 
 	RegisterEvent(handler);

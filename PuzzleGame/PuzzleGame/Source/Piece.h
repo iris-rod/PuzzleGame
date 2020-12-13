@@ -15,7 +15,7 @@ namespace PieceStuff {
 		int x;
 		int y;
 
-		BoardPosition(const int _x, const int _y) {
+		BoardPosition(const int _x, const int _y) : x(0), y(0) {
 			x = _x;
 			y = _y;
 		}
@@ -33,7 +33,7 @@ namespace PieceStuff {
 		int x;
 		int y;
 
-		Coordinates(const int _x, const int _y) {
+		Coordinates(const int _x, const int _y) : x(0), y(0) {
 			x = _x;
 			y = _y;
 		}
@@ -44,7 +44,8 @@ namespace PieceStuff {
 		const BoardPosition* position;
 		Direction direction;
 
-		NeighbourInfo(const bool _canRemove, const int _x, const int _y, const Direction dir) {
+		NeighbourInfo(const bool _canRemove, const int _x, const int _y, const Direction dir) 
+			: position(nullptr), canRemove(false), direction(Direction::last) {
 			position = new BoardPosition(_x, _y);
 			canRemove = _canRemove;
 			direction = dir;
