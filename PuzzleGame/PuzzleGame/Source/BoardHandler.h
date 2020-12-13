@@ -11,15 +11,15 @@ class BoardHandler {
 public:
 	BoardHandler();
 	void Init(SDLEventHandler& sdl_handler, EventListener& other_handler);
-	std::vector<Piece*> GetObjs();
+	std::vector<unique_ptr<Piece>>& GetObjs();
 
 private:
-	std::vector<Piece*> pieces;
+	std::vector<unique_ptr<Piece>> pieces;
 	std::vector<int> mapSize {MAP_SIZE_X, MAP_SIZE_Y};
 	
 	void GeneratePieces(EventListener& otherHandler);
 	void SetPiecesNeighbours();
-	void SetNeighbour(Piece* piece, const int& x, const int& y);
+	void SetNeighbour(Piece& piece, const int& x, const int& y);
 	void RegisterEvents(SDLEventHandler& sdl_handler, EventListener& otherHandler);
 	Piece* FindPiece(const int& x, const int& y) const;
 	const Piece* FindPieceFromBoardPosition(const int& x, const int& y) const;
