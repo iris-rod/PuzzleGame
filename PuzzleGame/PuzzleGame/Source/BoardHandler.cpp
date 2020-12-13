@@ -70,8 +70,8 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		cout << "column update" << endl;
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventColumnUpdate& event_p = dynamic_cast<EventColumnUpdate&>(nonConstEvent);
-		cout << event_p.GetColumn() << endl;
-		//OrganiseColumn(event_p.GetColumn());
+		cout << "column to update: " << event_p.GetColumn() << endl;
+		OrganiseColumn(event_p.GetColumn());
 
 
 	});
@@ -100,10 +100,13 @@ const Piece* BoardHandler::FindPieceFromBoardPosition(const int& x, const int& y
 
 void BoardHandler::OrganiseColumn(int c) {
 	int numElems = pieces.size() / MAP_SIZE_X;
-	int begin = (numElems * c) + numElems;
-	int med = (numElems * c) + numElems;
+	int begin = (numElems * c) + numElems - 1;
+	int med = (numElems * c) + numElems - 1;
 
-	for (int i = (numElems * c) + numElems; i > numElems * c; --i) {
+	int init = (numElems * c) + numElems - 1;
+	int end = numElems * c;
+
+	for (int i = init; i >= end; --i) {
 		auto& p = pieces[i];
 		if (!p->IsEmpty()) {
 			if (begin != med) {
@@ -115,7 +118,8 @@ void BoardHandler::OrganiseColumn(int c) {
 		--med;
 	}
 
-	for (int i = numElems * c; i < (numElems * c) + numElems; ++i) {
+	cout << "new collumn " << endl;
+	for (int i = end; i <= init; ++i) {
 		auto& p = pieces[i];
 		cout << p->GetTextureId() << endl;
 	}

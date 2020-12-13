@@ -26,6 +26,5 @@ public:
 
 private:
 	std::map<int, std::vector<Handler>> _subscribedCallbacks;
-	//std::deque<const Event*> triggeredEvents;
 	std::priority_queue<const Event*, std::vector<const Event*>, comparator> triggeredEvents;
 };
