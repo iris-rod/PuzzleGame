@@ -89,16 +89,19 @@ void Piece::RegisterEvents(EventListener& handler) {
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventPieceRemoved& event_p = dynamic_cast<EventPieceRemoved&>(nonConstEvent);
 		auto& piece = event_p.GetPiece();
-		if (HasNeighbour(piece)) {
-			auto neigh = GetNeighbour(piece);
-			if (neigh != nullptr && neigh->canRemove) {
-				Event* event_p = new EventPieceRemoved(*this);
-				handler.NotifyEvent(event_p);
-				Remove(&handler);
+
+		auto neigh = GetNeighbour(piece);
+		if (neigh != nullptr && neigh->canRemove) {
+			Event* event_p = new EventPieceRemoved(*this);
+			handler.NotifyEvent(event_p);
+
+			if (neigh->direction == Direction::EAST || neigh->direction == Direction::WEST) {
 			}
+
+			Remove(&handler);
 			RemoveNeighbour(piece);
-			cout << "piece removed" << endl;
 		}
+
 	});
 }
 
