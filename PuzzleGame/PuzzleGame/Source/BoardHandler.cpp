@@ -111,7 +111,10 @@ void BoardHandler::OrganiseColumn(int c) {
 		if (!p->IsEmpty()) {
 			if (begin != med) {
 				cout << "swap: " << begin << ", " << pieces[begin]->GetTextureId() << ", " << med << ", " << pieces[med]->GetTextureId() << endl;
-				swap(pieces[begin], pieces[med]);
+				//swap(pieces[begin], pieces[med]);
+				
+				//pieces[begin].swap(pieces[med]);
+				pieces[begin].get()->Swap(*pieces[med].get());
 			}
 			--begin;
 		}
