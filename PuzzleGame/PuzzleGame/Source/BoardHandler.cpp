@@ -19,11 +19,25 @@ void BoardHandler::GeneratePieces(EventListener& otherHandler) {
 	}
 }
 
-void BoardHandler::SetPiecesNeighbours() {
-	for (auto& piece : pieces) {
-		for (int i = -1; i <= 1; i += 2) {
-			int newX = piece->GetBoardPosition().x + i;
-			int newY = piece->GetBoardPosition().y + i;
+void BoardHandler::SetPiecesNeighbours(int column = -1) {
+	int numElems = pieces.size();
+	int init = pieces.size() - 1;
+	int end = 0;
+
+	if (column != -1) {
+		numElems = pieces.size() / MAP_SIZE_X;
+		init = (numElems * column) + numElems - 1;
+		end = numElems * column;
+	}
+
+	for (int i = init; i >= end; --i) {
+
+		auto piece = pieces[i];
+		piece->ClearNeighbours();
+
+		for (int j = -1; j <= 1; j += 2) {
+			int newX = piece->GetBoardPosition().x + j;
+			int newY = piece->GetBoardPosition().y + j;
 
 			if (newY >= 0 && newY < mapSize[1]) {
 				SetNeighbour(*piece.get(), piece->GetBoardPosition().x, newY);
