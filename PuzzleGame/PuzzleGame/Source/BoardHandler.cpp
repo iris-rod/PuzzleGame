@@ -114,33 +114,28 @@ const Piece* BoardHandler::FindPieceFromBoardPosition(const int& x, const int& y
 	return nullptr;
 }
 
+// searches from the last index to the first since the map is
+// 0 7 14 21 ...
+// 1 8 15 22
+// 2 9 16 23 ..
 void BoardHandler::OrganiseColumn(int c) {
 	int numElems = pieces.size() / MAP_SIZE_X;
+
+	//set initial values for aux variables as the first index to be searched
 	int begin = (numElems * c) + numElems - 1;
 	int med = (numElems * c) + numElems - 1;
 
-	int init = (numElems * c) + numElems - 1;
-	int end = numElems * c;
+	int init = (numElems * c) + numElems - 1;//get last index of column c
+	int end = numElems * c; //get the first index of column c
 
 	for (int i = init; i >= end; --i) {
 		auto& p = pieces[i];
 		if (!p->IsEmpty()) {
 			if (begin != med) {
-				cout << "swap: " << begin << ", " << pieces[begin]->GetTextureId() << ", " << med << ", " << pieces[med]->GetTextureId() << endl;
-				//swap(pieces[begin], pieces[med]);
-				
-				//pieces[begin].swap(pieces[med]);
 				pieces[begin].get()->Swap(*pieces[med].get());
 			}
 			--begin;
 		}
 		--med;
 	}
-
-	cout << "new collumn " << endl;
-	for (int i = end; i <= init; ++i) {
-		auto& p = pieces[i];
-		cout << p->GetTextureId() << endl;
-	}
-	cout << endl;
 }
