@@ -67,20 +67,19 @@ namespace PieceStuff {
 		virtual ~Piece();
 		const BoardPosition& GetBoardPosition() const;
 		const Coordinates& GetCoordinates() const;
-		const void AddNeighbour(const bool _canRemove, const int _x, const int _y, const Direction dir);
-		const bool HasNeighbour(const Piece& piece);
+		void ClearNeighbours();
+		void AddNeighbour(const bool _canRemove, const int _x, const int _y, const Direction dir);
 		virtual bool CanRemove();
 		void Remove(EventListener* otherHandler);
 		void RegisterEvents(EventListener& handler);
+		void Swap(Piece& b);
 		bool IsEmpty();
+		void printNeigh();
 
 		bool operator==(const Piece& a) {
 			return this->boardPosition->x == a.boardPosition->x && this->boardPosition->y == a.boardPosition->y
 				&& this->coordinates->x == a.coordinates->x && this->coordinates->y == a.coordinates->y;
 		}
-
-		void operator=(const Piece& rhs);
-		void Swap(Piece& b);
 
 	protected:
 		virtual void Remove();
@@ -92,7 +91,6 @@ namespace PieceStuff {
 
 		void RemoveNeighbour(const Piece& piece);
 		NeighbourInfo* GetNeighbour(const Piece& piece);
-		void RedefineNeighbours();
 	};
 
 

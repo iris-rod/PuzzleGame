@@ -23,18 +23,6 @@ Piece::~Piece() {
 	neighbours.resize(0);
 }
 
-void Piece::operator=(const Piece& rhs) {
-	this->textureId = rhs.textureId;
-	RedefineNeighbours();
-}
-
-void Piece::RedefineNeighbours() {
-	for (auto it = neighbours.begin(); it != neighbours.end(); ++it) {
-		std::cout << (*it)->canRemove;
-		//update can remove neighbour after assingning a new color
-	}
-}
-
 void Piece::Swap(Piece& b) {
 	auto text = b.textureId;
 	b.textureId = textureId;
@@ -49,12 +37,32 @@ const Coordinates& Piece::GetCoordinates() const {
 	return *coordinates.get();
 }
 
-const void Piece::AddNeighbour(const bool _canRemove, const int _x, const int _y, const Direction dir) {
+void Piece::ClearNeighbours() {
+	neighbours.clear();
+	neighbours.resize(0);
+}
+
+void Piece::AddNeighbour(const bool _canRemove, const int _x, const int _y, const Direction dir) {
 	neighbours.push_front(make_unique<NeighbourInfo>(_canRemove, _x, _y, dir));
 }
 
-const bool Piece::HasNeighbour(const Piece& piece) {
-	return GetNeighbour(piece) != nullptr;
+void Piece::printNeigh() {
+	cout << "number of neighs: " << neighbours.size() << endl;
+	for (auto i = neighbours.begin(); i != neighbours.end(); ++i) {
+		cout << i->get()->canRemove << " - ";
+		if(i->get()->direction == Direction::EAST)
+			cout << "east" << endl;
+
+		if (i->get()->direction == Direction::WEST)
+			cout << "west" << endl;
+
+		if (i->get()->direction == Direction::NORTH)
+			cout << "north" << endl;
+
+		if (i->get()->direction == Direction::SOUTH)
+			cout << "south" << endl;
+
+	}
 }
 
 NeighbourInfo* Piece::GetNeighbour(const Piece& piece) {
