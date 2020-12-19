@@ -81,13 +81,15 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 	});
 
 	otherHandler.Subscribe(COLUMN_UPDATE, [this](Event const& _event) {
-		cout << "column update" << endl;
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventColumnUpdate& event_p = dynamic_cast<EventColumnUpdate&>(nonConstEvent);
-		cout << "column to update: " << event_p.GetColumn() << endl;
 		OrganiseColumn(event_p.GetColumn());
-
-
+		int c = event_p.GetColumn();
+		SetPiecesNeighbours(c);
+		if(c > 0)
+			SetPiecesNeighbours(c - 1);
+		if(c < MAP_SIZE_Y - 1)
+			SetPiecesNeighbours(c + 1);
 	});
 }
 
