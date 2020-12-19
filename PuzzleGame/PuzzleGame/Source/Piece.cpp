@@ -35,6 +35,12 @@ void Piece::RedefineNeighbours() {
 	}
 }
 
+void Piece::Swap(Piece& b) {
+	auto text = b.textureId;
+	b.textureId = textureId;
+	textureId = text;
+}
+
 const BoardPosition& Piece::GetBoardPosition() const {
 	return *boardPosition.get();
 }

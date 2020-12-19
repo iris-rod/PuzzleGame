@@ -80,6 +80,7 @@ namespace PieceStuff {
 		}
 
 		void operator=(const Piece& rhs);
+		void Swap(Piece& b);
 
 	protected:
 		virtual void Remove();
