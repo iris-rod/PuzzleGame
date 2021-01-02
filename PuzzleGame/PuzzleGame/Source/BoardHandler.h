@@ -21,6 +21,7 @@ private:
 	void SetPiecesNeighbours(int column);
 	void SetNeighbour(Piece& piece, const int& x, const int& y);
 	void RegisterEvents(SDLEventHandler& sdl_handler, EventListener& otherHandler);
+	bool IsColumnEmpty(int column);
 	Piece* FindPiece(const int& x, const int& y) const;
 	const Piece* FindPieceFromBoardPosition(const int& x, const int& y) const;
 	void AddColumn();

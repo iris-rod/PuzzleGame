@@ -114,6 +114,20 @@ const Piece* BoardHandler::FindPieceFromBoardPosition(const int& x, const int& y
 	return nullptr;
 }
 
+bool BoardHandler::IsColumnEmpty(int column) {
+	int numElems = pieces.size() / MAP_SIZE_X;
+	int init = (numElems * column) + numElems - 1;//get last index of column c
+	int end = numElems * column; //get the first index of column c
+
+	for (int i = init; i >= end; --i) {
+		auto& p = pieces[i];
+		if (!p->IsEmpty()) {
+			return false;
+		}
+	}
+
+	return true;
+}
 // searches from the last index to the first since the map is
 // 0 7 14 21 ...
 // 1 8 15 22
