@@ -128,6 +128,26 @@ bool BoardHandler::IsColumnEmpty(int column) {
 
 	return true;
 }
+
+void BoardHandler::MoveColumnsBack(int startColumn) {
+
+	int numElems = pieces.size() / MAP_SIZE_X;
+
+	for (int c = startColumn; c >= 0; --c) {
+		int init = (numElems * c) + numElems - 1;//get last index of column c
+		int end = numElems * c; //get the first index of column c
+		for (int i = init; i >= end; --i) {
+			auto& p = pieces[i];
+			auto pieceIndex = i - numElems;
+			if (pieceIndex < 0) {
+				return;
+			}
+			auto& toSwap = pieces[pieceIndex];
+			p->Swap(*toSwap.get());
+		}
+	}
+}
+
 // searches from the last index to the first since the map is
 // 0 7 14 21 ...
 // 1 8 15 22
