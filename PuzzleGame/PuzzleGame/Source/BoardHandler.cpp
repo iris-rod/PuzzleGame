@@ -84,12 +84,11 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventColumnUpdate& event_p = dynamic_cast<EventColumnUpdate&>(nonConstEvent);
 		OrganiseColumn(event_p.GetColumn());
-		int c = event_p.GetColumn();
-		SetPiecesNeighbours(c);
-		if(c > 0)
-			SetPiecesNeighbours(c - 1);
-		if(c < MAP_SIZE_Y - 1)
-			SetPiecesNeighbours(c + 1);
+
+		if (IsColumnEmpty(event_p.GetColumn())) {
+			MoveColumnsBack(event_p.GetColumn());
+		}
+		SetPiecesNeighbours();
 	});
 }
 
