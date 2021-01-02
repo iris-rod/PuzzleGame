@@ -1,9 +1,10 @@
 #include "GameManager.h"
+#include "TimeHandler.h"
 #include <iostream>
 #include <time.h>
 
 GameManager::GameManager() : boardHandler(nullptr) {
-
+	TimeHandler::Start();
 }
 
 void GameManager::Render(RendererObj* rendererObj) {
@@ -45,6 +46,12 @@ void GameManager::RegisterEvent(SDLEventHandler& handler) {
 			Quit();
 		}
 	});	
+}
+
+void GameManager::HandleTimeTriggeredEvents() {
+	if (TimeHandler::GetElapsedTime() >= NEW_COLUMN_TIME) {
+		boardHandler->AddColumn();
+	}
 }
 
 bool GameManager::IsGameFinished() {
