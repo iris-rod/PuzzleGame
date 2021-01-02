@@ -157,6 +157,7 @@
     <ClCompile Include="Source\Piece.cpp" />
     <ClCompile Include="Source\RendererObj.cpp" />
     <ClCompile Include="Source\TextureManager.cpp" />
+    <ClCompile Include="Source\TimeHandler.cpp" />
     <ClCompile Include="Source\Utils.h" />
     <ClCompile Include="Source\WindowObj.cpp" />
   </ItemGroup>
@@ -176,6 +177,7 @@
     <ClInclude Include="Source\PieceUtils.h" />
     <ClInclude Include="Source\RendererObj.h" />
     <ClInclude Include="Source\TextureManager.h" />
+    <ClInclude Include="Source\TimeHandler.h" />
     <ClInclude Include="Source\WindowObj.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
