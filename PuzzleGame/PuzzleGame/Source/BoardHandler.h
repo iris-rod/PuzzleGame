@@ -24,10 +24,8 @@ private:
 	void SetNeighbour(Piece& piece, const int& x, const int& y);
 	void RegisterEvents(SDLEventHandler& sdl_handler, EventListener& otherHandler);
 	bool IsColumnEmpty(int column);
-	void MoveColumnsBack(int startColumn);
+	void MoveColumns(int startColumn, bool back);
 	Piece* FindPiece(const int& x, const int& y) const;
 	const Piece* FindPieceFromBoardPosition(const int& x, const int& y) const;
-	void AddColumn();
-	void MoveColumn();
 	void OrganiseColumn(int c);
 };
