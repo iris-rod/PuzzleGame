@@ -30,7 +30,7 @@ void BoardHandler::SetPiecesNeighbours(int column = -1) {
 	int end = 0;
 
 	if (column != -1) {
-		numElems = pieces.size() / MAP_SIZE_X;
+		numElems = pieces.size() / TOTAL_COLUMNS;
 		init = (numElems * column) + numElems - 1;
 		end = numElems * column;
 	}
@@ -123,7 +123,7 @@ const Piece* BoardHandler::FindPieceFromBoardPosition(const int& x, const int& y
 }
 
 bool BoardHandler::IsColumnEmpty(int column) {
-	int numElems = pieces.size() / MAP_SIZE_X;
+	int numElems = pieces.size() / TOTAL_COLUMNS;
 	int init = (numElems * column) + numElems - 1;//get last index of column c
 	int end = numElems * column; //get the first index of column c
 
@@ -185,14 +185,13 @@ void BoardHandler::MoveColumns(int startColumn, bool back) {
 // 1 8 15 22
 // 2 9 16 23 ..
 void BoardHandler::OrganiseColumn(int c) {
-	int numElems = pieces.size() / MAP_SIZE_X;
 
 	//set initial values for aux variables as the first index to be searched
-	int begin = (numElems * c) + numElems - 1;
-	int med = (numElems * c) + numElems - 1;
+	int begin = (TOTAL_ROWS * c) + TOTAL_ROWS - 1;
+	int med = (TOTAL_ROWS * c) + TOTAL_ROWS - 1;
 
-	int init = (numElems * c) + numElems - 1;//get last index of column c
-	int end = numElems * c; //get the first index of column c
+	int init = (TOTAL_ROWS * c) + TOTAL_ROWS - 1;//get last index of column c
+	int end = TOTAL_ROWS * c; //get the first index of column c
 
 	for (int i = init; i >= end; --i) {
 		auto& p = pieces[i];
