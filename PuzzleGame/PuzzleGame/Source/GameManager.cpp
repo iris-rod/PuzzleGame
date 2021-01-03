@@ -48,9 +48,10 @@ void GameManager::RegisterEvent(SDLEventHandler& handler) {
 	});	
 }
 
-void GameManager::HandleTimeTriggeredEvents() {
+void GameManager::HandleTimeTriggeredEvents(EventListener& otherHandler) {
 	if (TimeHandler::GetElapsedTime() >= NEW_COLUMN_TIME) {
-		boardHandler->AddColumn();
+		boardHandler->AddColumn(otherHandler);
+		TimeHandler::Reset();
 	}
 }
 

@@ -21,7 +21,7 @@ public:
 	void Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler);
 	//void Update();
 	void Render(RendererObj* rendererObj);
-	void HandleTimeTriggeredEvents();
+	void HandleTimeTriggeredEvents(EventListener& otherHandler);
 	void Clear();
 
 	bool IsGameOnGoing();

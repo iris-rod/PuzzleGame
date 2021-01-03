@@ -26,9 +26,10 @@ int main(int argc, char* args[]) {
 
 	while (gameManager->IsGameOnGoing()) {
 		try {
-			gameManager->Render(renderer_obj);
+			gameManager->HandleTimeTriggeredEvents(other_handler);
 			other_handler.HandleEvents();
-			event_handler.HandleEvents();			
+			event_handler.HandleEvents();
+			gameManager->Render(renderer_obj);
 		}
 		catch (const char* msg) {
 			std::cout << msg << std::endl;
