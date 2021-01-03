@@ -38,25 +38,29 @@ void BoardHandler::SetPiecesNeighbours(int column = -1) {
 	for (int i = init; i >= end; --i) {
 
 		auto piece = pieces[i];
-		piece->ClearNeighbours();
+		if (!piece->IsEmpty()) {
+			piece->ClearNeighbours();
+			for (int j = -1; j <= 1; j += 2) {
+				int newX = piece->GetBoardPosition().x + j;
+				int newY = piece->GetBoardPosition().y + j;
 
-		for (int j = -1; j <= 1; j += 2) {
-			int newX = piece->GetBoardPosition().x + j;
-			int newY = piece->GetBoardPosition().y + j;
-
-			if (newY >= 0 && newY < mapSize[1]) {
-				SetNeighbour(*piece.get(), piece->GetBoardPosition().x, newY);
-			}
-			if (newX >= 0 && newX < mapSize[0]) {
-				SetNeighbour(*piece.get(), newX, piece->GetBoardPosition().y);
+				if (newY >= 0 && newY < mapSize[1]) {
+					SetNeighbour(*piece.get(), piece->GetBoardPosition().x, newY);
+				}
+				if (newX >= 0 && newX < mapSize[0]) {
+					SetNeighbour(*piece.get(), newX, piece->GetBoardPosition().y);
+				}
 			}
 		}
 	}
 }
 
 void BoardHandler::SetNeighbour(Piece& piece, const int& x, const int& y) {
-	bool canBeRemoved = piece.GetTextureId() == FindPieceFromBoardPosition(x, y)->GetTextureId();
-	piece.AddNeighbour(canBeRemoved, x, y, ConvertBoardPositionToDirection(piece.GetBoardPosition().x, piece.GetBoardPosition().y, x, y));
+	auto p = FindPieceFromBoardPosition(x, y);
+	if (p != nullptr) {
+		bool canBeRemoved = piece.GetTextureId() == p->GetTextureId();
+		piece.AddNeighbour(canBeRemoved, x, y, ConvertBoardPositionToDirection(piece.GetBoardPosition().x, piece.GetBoardPosition().y, x, y));
+	}
 }
 
 std::vector<shared_ptr<Piece>>& BoardHandler::GetObjs() {
