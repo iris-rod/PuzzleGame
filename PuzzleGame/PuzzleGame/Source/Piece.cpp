@@ -5,7 +5,7 @@ using namespace PieceStuff;
 
 Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY) 
 	: coordinates( new Coordinates(x, y) ), 
-	boardPosition( new BoardPosition(x == 0 ? 0 : x/_sizeX, y == 0 ? 0 : y/_sizeY) ), 
+	boardPosition( new BoardPosition(x == 0 ? 0 : (x - START_X)/_sizeX, y == 0 ? 0 : (y - START_Y)/_sizeY) ), 
 	InteractiveObject("piece" + id, _src, _dest, _sizeX, _sizeY) {
 	src->x = 0;
 	src->y = 0;

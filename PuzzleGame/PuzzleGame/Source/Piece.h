@@ -2,6 +2,7 @@
 #include "InteractiveObject.h"
 #include "EventHandler.h"
 #include "Utils.h"
+#include "Consts.h"
 #include <vector>
 #include <stack>
 #include <list>
