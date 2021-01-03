@@ -12,8 +12,13 @@ void BoardHandler::GeneratePieces(EventListener& otherHandler) {
 		for (int r = 0; r < mapSize[1]; r++) {
 			SDL_Rect* src = new SDL_Rect();
 			SDL_Rect* dest = new SDL_Rect();
-			pieces[id] = make_shared<Ore>(id, src, dest, c * PIECE_SIZE_X, r * PIECE_SIZE_Y, PIECE_SIZE_X, PIECE_SIZE_Y);
-			pieces[id]->RegisterEvents(otherHandler);
+			int co = c * PIECE_SIZE_X + START_X;
+			int ro = r * PIECE_SIZE_Y + START_Y;
+			if(c >= INITIAL_COLUMNS) pieces[id] = make_shared<Ore>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, true);
+			else {
+				pieces[id] = make_shared<Ore>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
+				pieces[id]->RegisterEvents(otherHandler);
+			}
 			id++;
 		}
 	}
