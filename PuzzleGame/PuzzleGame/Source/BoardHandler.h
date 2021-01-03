@@ -16,7 +16,8 @@ public:
 
 private:
 	std::vector<shared_ptr<Piece>> pieces;
-	std::vector<int> mapSize {MAP_SIZE_X, MAP_SIZE_Y};
+	std::vector<int> mapSize { TOTAL_COLUMNS, TOTAL_ROWS};
+	int currentColumns = INITIAL_COLUMNS;
 	
 	void GeneratePieces(EventListener& otherHandler);
 	void SetPiecesNeighbours(int column);
