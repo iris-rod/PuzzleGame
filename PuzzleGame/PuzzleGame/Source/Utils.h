@@ -41,6 +41,8 @@ static std::string ConvertColorToTextureId(Colors color) {
 		return "red";
 	case Colors::YELLOW:
 		return "yellow";
+	default:
+		return "empty";
 	}
 }
 
