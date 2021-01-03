@@ -95,7 +95,7 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		OrganiseColumn(event_p.GetColumn());
 
 		if (IsColumnEmpty(event_p.GetColumn())) {
-			MoveColumnsBack(event_p.GetColumn());
+			MoveColumns(event_p.GetColumn(), true);
 		}
 		SetPiecesNeighbours();
 	});
@@ -137,16 +137,40 @@ bool BoardHandler::IsColumnEmpty(int column) {
 	return true;
 }
 
-void BoardHandler::MoveColumnsBack(int startColumn) {
+void BoardHandler::AddColumn(EventListener& otherHandler) {
+	MoveColumns(currentColumns, false);
 
-	int numElems = pieces.size() / MAP_SIZE_X;
+	if (currentColumns < TOTAL_COLUMNS) {
+		int id = currentColumns * TOTAL_ROWS;
+		for (int r = 0; r < mapSize[1]; r++) {
+			SDL_Rect* src = new SDL_Rect();
+			SDL_Rect* dest = new SDL_Rect();
+			int ro = r * PIECE_SIZE_Y + START_Y;
+			int co = currentColumns * PIECE_SIZE_X + START_X;
+			pieces[id] = make_shared<Ore>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
+			pieces[id]->RegisterEvents(otherHandler);
+			id++;
+		}
+		currentColumns++;
+	}
+}
 
-	for (int c = startColumn; c >= 0; --c) {
-		int init = (numElems * c) + numElems - 1;//get last index of column c
-		int end = numElems * c; //get the first index of column c
+void BoardHandler::MoveColumns(int startColumn, bool back) {
+
+	int start = startColumn;
+	int end = 0;
+
+	if (!back) {
+		start = 0;
+		end = startColumn;
+	}
+
+	for (int c = start; c >= end; --c) {
+		int init = (TOTAL_ROWS * c) + TOTAL_ROWS - 1;//get last index of column c
+		int end = TOTAL_ROWS * c; //get the first index of column c
 		for (int i = init; i >= end; --i) {
 			auto& p = pieces[i];
-			auto pieceIndex = i - numElems;
+			auto pieceIndex = i - TOTAL_ROWS;
 			if (pieceIndex < 0) {
 				return;
 			}
