@@ -14,7 +14,7 @@ void BoardHandler::GeneratePieces(EventListener& otherHandler) {
 			SDL_Rect* dest = new SDL_Rect();
 			int co = c * PIECE_SIZE_X + START_X;
 			int ro = r * PIECE_SIZE_Y + START_Y;
-			if(c >= INITIAL_COLUMNS) pieces[id] = make_shared<Ore>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, true);
+			if(c < TOTAL_COLUMNS - INITIAL_COLUMNS) pieces[id] = make_shared<Ore>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, true);
 			else {
 				pieces[id] = make_shared<Ore>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
 				pieces[id]->RegisterEvents(otherHandler);
@@ -101,6 +101,15 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 	});
 }
 
+void BoardHandler::ResetNeighbours(int c) {
+	SetPiecesNeighbours(c);
+	if (c > 0)
+		SetPiecesNeighbours(c - 1);
+	if (c < TOTAL_ROWS - 1)
+		SetPiecesNeighbours(c + 1);
+}
+
+
 Piece* BoardHandler::FindPiece(const int& x, const int& y) const {
 	for (auto& piece : pieces) {
 		auto coordinates = piece->GetCoordinates();
@@ -141,42 +150,54 @@ void BoardHandler::AddColumn(EventListener& otherHandler) {
 	MoveColumns(currentColumns, false);
 
 	if (currentColumns < TOTAL_COLUMNS) {
-		int id = currentColumns * TOTAL_ROWS;
+		int id = pieces.size() - mapSize[1]; //currentColumns * TOTAL_ROWS;
 		for (int r = 0; r < mapSize[1]; r++) {
 			SDL_Rect* src = new SDL_Rect();
 			SDL_Rect* dest = new SDL_Rect();
 			int ro = r * PIECE_SIZE_Y + START_Y;
-			int co = currentColumns * PIECE_SIZE_X + START_X;
-			pieces[id] = make_shared<Ore>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
-			pieces[id]->RegisterEvents(otherHandler);
+			int co = (currentColumns-1) * PIECE_SIZE_X + START_X;
+			auto p = make_shared<Ore>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false); 
+			pieces[id].get()->Swap(*p.get());
 			id++;
 		}
 		currentColumns++;
 	}
+	
+	SetPiecesNeighbours();
 }
 
 void BoardHandler::MoveColumns(int startColumn, bool back) {
+	if (!back) 
+		HandleMoveForward(TOTAL_COLUMNS - currentColumns, TOTAL_COLUMNS);
+	else 
+		HandleMoveBack(startColumn, TOTAL_COLUMNS - currentColumns);	
+}
 
-	int start = startColumn;
-	int end = 0;
-
-	if (!back) {
-		start = 0;
-		end = startColumn;
-	}
-
-	for (int c = start; c >= end; --c) {
+void BoardHandler::HandleMoveBack(int startColumn, int endColumn) {
+	for (int c = startColumn; c >= endColumn; --c) {
 		int init = (TOTAL_ROWS * c) + TOTAL_ROWS - 1;//get last index of column c
 		int end = TOTAL_ROWS * c; //get the first index of column c
-		for (int i = init; i >= end; --i) {
-			auto& p = pieces[i];
-			auto pieceIndex = i - TOTAL_ROWS;
-			if (pieceIndex < 0) {
-				return;
-			}
-			auto& toSwap = pieces[pieceIndex];
-			p->Swap(*toSwap.get());
+		SwapColumn(init, end);
+	}
+}
+
+void BoardHandler::HandleMoveForward(int startColumn, int endColumn) {
+	for (int c = startColumn; c < endColumn; ++c) {
+		int init = (TOTAL_ROWS * c) + TOTAL_ROWS - 1;//get last index of column c
+		int end = TOTAL_ROWS * c; //get the first index of column c
+		SwapColumn(init, end);
+	}
+}
+
+void BoardHandler::SwapColumn(int startIndex, int endIndex) {
+	for (int i = startIndex; i >= endIndex; --i) {
+		auto& p = pieces[i];
+		auto pieceIndex = i - TOTAL_ROWS;
+		if (pieceIndex < 0) {
+			return;
 		}
+		auto& toSwap = pieces[pieceIndex];
+		pieces[i].get()->Swap(*pieces[pieceIndex].get());
 	}
 }
 

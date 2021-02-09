@@ -3,6 +3,7 @@
 enum EventType {
 	PIECE_REMOVED = 1,
 	COLUMN_UPDATE = 2,
+	EMPTY_COLUMN = 3
 };
 
 class Event {
