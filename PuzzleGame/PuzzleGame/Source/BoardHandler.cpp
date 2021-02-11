@@ -14,9 +14,9 @@ void BoardHandler::GeneratePieces(EventListener& otherHandler) {
 			SDL_Rect* dest = new SDL_Rect();
 			int co = c * PIECE_SIZE_X + START_X;
 			int ro = r * PIECE_SIZE_Y + START_Y;
-			if(c < TOTAL_COLUMNS - INITIAL_COLUMNS) pieces[id] = make_shared<Ore>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, true);
+			if(c < TOTAL_COLUMNS - INITIAL_COLUMNS) pieces[id] = make_shared<Piece>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, true);
 			else {
-				pieces[id] = make_shared<Ore>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
+				pieces[id] = make_shared<Piece>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
 				pieces[id]->RegisterEvents(otherHandler);
 			}
 			id++;
@@ -97,8 +97,21 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		if (IsColumnEmpty(event_p.GetColumn())) {
 			MoveColumns(event_p.GetColumn(), true);
 		}
+		RemoveAllEmptyColumns();
 		SetPiecesNeighbours();
 	});
+}
+
+void BoardHandler::RemoveAllEmptyColumns() {
+	auto numberOfColumns = currentColumns;
+	currentColumns = 0;
+	for (int c = numberOfColumns; c < mapSize[0]; c++) {
+		if (IsColumnEmpty(c)) {
+			MoveColumns(c, true);
+		}
+		else
+			currentColumns++;
+	}
 }
 
 void BoardHandler::ResetNeighbours(int c) {
@@ -152,15 +165,10 @@ void BoardHandler::AddColumn(EventListener& otherHandler) {
 	if (currentColumns < TOTAL_COLUMNS) {
 		int id = pieces.size() - mapSize[1]; //currentColumns * TOTAL_ROWS;
 		for (int r = 0; r < mapSize[1]; r++) {
-			SDL_Rect* src = new SDL_Rect();
-			SDL_Rect* dest = new SDL_Rect();
-			int ro = r * PIECE_SIZE_Y + START_Y;
-			int co = (currentColumns-1) * PIECE_SIZE_X + START_X;
-			auto p = make_shared<Ore>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false); 
-			pieces[id].get()->Swap(*p.get());
+			pieces[id].get()->GenerateNewColor();
 			id++;
 		}
-		currentColumns++;
+		++currentColumns;
 	}
 	
 	SetPiecesNeighbours();
