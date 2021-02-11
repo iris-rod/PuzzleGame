@@ -64,7 +64,7 @@ namespace PieceStuff {
 	class Piece : public InteractiveObject {
 	public:
 		Piece() = default;
-		Piece(const int Id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY);
+		Piece(const int Id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY, bool empty);
 		virtual ~Piece();
 		const BoardPosition& GetBoardPosition() const;
 		const Coordinates& GetCoordinates() const;
@@ -73,7 +73,8 @@ namespace PieceStuff {
 		virtual bool CanRemove();
 		void Remove(EventListener* otherHandler);
 		void RegisterEvents(EventListener& handler);
-		void Swap(Piece& b);
+		virtual void Swap(Piece& b);
+		virtual void GenerateNewColor();
 		bool IsEmpty();
 		void printNeigh();
 
@@ -89,6 +90,7 @@ namespace PieceStuff {
 		unique_ptr<BoardPosition> boardPosition;
 		unique_ptr<Coordinates> coordinates;
 		list<unique_ptr<NeighbourInfo>> neighbours;
+		unique_ptr<Colors> color;
 
 		void RemoveNeighbour(const Piece& piece);
 		NeighbourInfo* GetNeighbour(const Piece& piece);

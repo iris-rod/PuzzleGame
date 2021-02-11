@@ -11,6 +11,8 @@ public:
 	~Ore();
 
 	const Colors& GetColor() const;
+	void GenerateNewTexture();
+	void Swap(Ore& b);
 
 private:
 	unique_ptr<Colors> color;

@@ -29,6 +29,7 @@ private:
 	void SwapColumn(int startIndex, int endIndex);
 	void HandleMoveForward(int startColum, int endColumn);
 	void HandleMoveBack(int startColum, int endColumn);
+	void RemoveAllEmptyColumns();
 	Piece* FindPiece(const int& x, const int& y) const;
 	const Piece* FindPieceFromBoardPosition(const int& x, const int& y) const;
 	void OrganiseColumn(int c);

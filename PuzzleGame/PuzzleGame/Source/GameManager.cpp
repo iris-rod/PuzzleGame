@@ -8,6 +8,11 @@ GameManager::GameManager() : boardHandler(nullptr) {
 }
 
 void GameManager::Render(RendererObj* rendererObj) {
+	objs.clear();
+	objs.resize(0);
+	for (auto& obj : boardHandler->GetObjs()) {
+		objs.push_back(obj);
+	}
 	rendererObj->Render(objs);
 }
 

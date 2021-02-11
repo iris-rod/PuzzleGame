@@ -3,7 +3,7 @@
 using namespace std;
 using namespace PieceStuff;
 
-Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY) 
+Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY, bool empty)
 	: coordinates( new Coordinates(x, y) ), 
 	boardPosition( new BoardPosition(x == 0 ? 0 : (x - START_X)/_sizeX, y == 0 ? 0 : (y - START_Y)/_sizeY) ), 
 	InteractiveObject("piece" + id, _src, _dest, _sizeX, _sizeY) {
@@ -16,6 +16,11 @@ Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const i
 	dest->w = _sizeX;
 	dest->h = _sizeY;
 	neighbours = list<unique_ptr<NeighbourInfo>>();
+
+	if (empty)	color = make_unique<Colors>(Colors::EMPTY);
+	else color = make_unique<Colors>(GetRandomColor());
+
+	textureId = ConvertColorToTextureId(*(color.get()));
 }
 
 Piece::~Piece() {
@@ -23,10 +28,18 @@ Piece::~Piece() {
 	neighbours.resize(0);
 }
 
+void Piece::GenerateNewColor() {
+	color = make_unique<Colors>(GetRandomColor());
+	textureId = ConvertColorToTextureId(*(color.get()));
+}
+
 void Piece::Swap(Piece& b) {
+	//b.color.swap(this->color);
+
 	auto text = b.textureId;
 	b.textureId = textureId;
 	textureId = text;
+
 }
 
 const BoardPosition& Piece::GetBoardPosition() const {
@@ -47,7 +60,6 @@ void Piece::AddNeighbour(const bool _canRemove, const int _x, const int _y, cons
 }
 
 void Piece::printNeigh() {
-	cout << "number of neighs: " << neighbours.size() << endl;
 	for (auto i = neighbours.begin(); i != neighbours.end(); ++i) {
 		cout << i->get()->canRemove << " - ";
 		if(i->get()->direction == Direction::EAST)
@@ -99,6 +111,7 @@ void Piece::Remove() {
 
 void Piece::RegisterEvents(EventListener& handler) {
 	handler.Subscribe(PIECE_REMOVED, [this, &handler](Event const& _event) {
+
 		auto pos = this->GetBoardPosition();
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventPieceRemoved& event_p = dynamic_cast<EventPieceRemoved&>(nonConstEvent);
@@ -115,7 +128,6 @@ void Piece::RegisterEvents(EventListener& handler) {
 			Remove(&handler);
 			RemoveNeighbour(piece);
 		}
-
 	});
 }
 
