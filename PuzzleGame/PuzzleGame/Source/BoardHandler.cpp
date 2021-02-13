@@ -89,18 +89,24 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		}
 	});
 
-	otherHandler.Subscribe(COLUMN_UPDATE, [this](Event const& _event) {
+	otherHandler.Subscribe(COLUMN_UPDATE, [&](Event const& _event) {
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventColumnUpdate& event_p = dynamic_cast<EventColumnUpdate&>(nonConstEvent);
 		OrganiseColumn(event_p.GetColumn());
-
 		if (IsColumnEmpty(event_p.GetColumn())) {
-			MoveColumnsBackFrom(event_p.GetColumn());
+			Event* event_empty = new EventEmptyColumn(event_p.GetColumn());
+			otherHandler.NotifyEvent(event_empty);
 		}
+		SetPiecesNeighbours();
+	});
+
+	otherHandler.Subscribe(EMPTY_COLUMN, [&](Event const& _event) {
+		Event& nonConstEvent = const_cast<Event&>(_event);
+		EventEmptyColumn& event_p = dynamic_cast<EventEmptyColumn&>(nonConstEvent);
+		MoveColumnsBackFrom(event_p.GetColumn());
 		ReCalculateCurrentColumns();
 		RemoveAllEmptyColumns();
 		SetPiecesNeighbours();
-		cout << currentColumns << endl;
 	});
 }
 

@@ -19,5 +19,14 @@ private:
 
 public:
 	EventColumnUpdate(const int _column) : column(_column), Event(COLUMN_UPDATE) {};
-	const int GetColumn() const;
+	int GetColumn() const;
+};
+
+class EventEmptyColumn : public Event {
+private:
+	int column;
+
+public:
+	EventEmptyColumn(const int _column) : column(_column), Event(EMPTY_COLUMN) {};
+	int GetColumn() const;
 };
