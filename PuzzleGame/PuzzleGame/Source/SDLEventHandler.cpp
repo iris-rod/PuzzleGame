@@ -23,7 +23,7 @@ void SDLEventHandler::UnsubscribeAll() {
 
 void SDLEventHandler::HandleEvents() {
 	SDL_Event current_event;
-	if (SDL_WaitEvent(&current_event) != 0) {
+	if (SDL_PollEvent(&current_event) != 0) {
 		for (auto& cb : _subscribedCallbacks[current_event.type]) {
 			cb(current_event);
 		}
