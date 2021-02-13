@@ -17,8 +17,8 @@ void BoardHandler::GeneratePieces(EventListener& otherHandler) {
 			if(c < TOTAL_COLUMNS - INITIAL_COLUMNS) pieces[id] = make_shared<Piece>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, true);
 			else {
 				pieces[id] = make_shared<Piece>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
-				pieces[id]->RegisterEvents(otherHandler);
 			}
+			pieces[id]->RegisterEvents(otherHandler);
 			id++;
 		}
 	}
@@ -80,7 +80,7 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		SDL_GetMouseState(&x, &y);
 		Piece* clickedPiece = FindPiece(x, y);
 
-		if (clickedPiece != nullptr) {
+		if (clickedPiece != nullptr && !clickedPiece->IsEmpty()) {
 			Event* event_p = new EventPieceRemoved(*clickedPiece);
 			if (clickedPiece->CanRemove()) {
 				otherHandler.NotifyEvent(event_p);
@@ -95,23 +95,34 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		OrganiseColumn(event_p.GetColumn());
 
 		if (IsColumnEmpty(event_p.GetColumn())) {
-			MoveColumns(event_p.GetColumn(), true);
+			MoveColumnsBackFrom(event_p.GetColumn());
 		}
+		ReCalculateCurrentColumns();
 		RemoveAllEmptyColumns();
 		SetPiecesNeighbours();
+		cout << currentColumns << endl;
 	});
+}
+
+inline void BoardHandler::ReCalculateCurrentColumns()
+{
+	auto a = find_if(pieces.begin(), pieces.end(), [](shared_ptr<Piece>& arg) {
+		return arg.get()->GetTextureId() != "empty";
+	});
+	if (a != pieces.end()) {
+		auto b = a->get()->GetBoardPosition().x;
+		currentColumns = mapSize[0] - b;
+	}
 }
 
 void BoardHandler::RemoveAllEmptyColumns() {
 	auto numberOfColumns = currentColumns;
-	currentColumns = 0;
-	for (int c = numberOfColumns; c < mapSize[0]; c++) {
+	for (int c = mapSize[0] - currentColumns; c < mapSize[0]; c++) {
 		if (IsColumnEmpty(c)) {
-			MoveColumns(c, true);
+			MoveColumnsBackFrom(c);
 		}
-		else
-			currentColumns++;
 	}
+	ReCalculateCurrentColumns();
 }
 
 void BoardHandler::ResetNeighbours(int c) {
@@ -160,25 +171,33 @@ bool BoardHandler::IsColumnEmpty(int column) {
 }
 
 void BoardHandler::AddColumn(EventListener& otherHandler) {
-	MoveColumns(currentColumns, false);
+	MoveColumnsForward();
 
 	if (currentColumns < TOTAL_COLUMNS) {
-		int id = pieces.size() - mapSize[1]; //currentColumns * TOTAL_ROWS;
+		int id = pieces.size() - mapSize[1];
 		for (int r = 0; r < mapSize[1]; r++) {
 			pieces[id].get()->GenerateNewColor();
 			id++;
 		}
 		++currentColumns;
 	}
-	
+
 	SetPiecesNeighbours();
 }
 
-void BoardHandler::MoveColumns(int startColumn, bool back) {
-	if (!back) 
-		HandleMoveForward(TOTAL_COLUMNS - currentColumns, TOTAL_COLUMNS);
-	else 
-		HandleMoveBack(startColumn, TOTAL_COLUMNS - currentColumns);	
+void BoardHandler::SetupRegisterEventsOnMostForwardColumn() {
+}
+
+void BoardHandler::MoveColumnsBackFrom(int startColumn) {
+	int endIndex = TOTAL_COLUMNS - currentColumns;
+	int startIndex = startColumn;
+	HandleMoveBack(startColumn, endIndex);
+}
+
+void BoardHandler::MoveColumnsForward() {
+	int startIndex = TOTAL_COLUMNS - currentColumns;
+	int endIndex = TOTAL_COLUMNS;
+	HandleMoveForward(startIndex, endIndex);
 }
 
 void BoardHandler::HandleMoveBack(int startColumn, int endColumn) {
