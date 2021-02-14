@@ -21,20 +21,23 @@ private:
 	
 	void GeneratePieces(EventListener& otherHandler);
 	void SetPiecesNeighbours(int column);
-	void ResetNeighbours(int column);
 	void SetNeighbour(Piece& piece, const int& x, const int& y);
 	void RegisterEvents(SDLEventHandler& sdl_handler, EventListener& otherHandler);
+
 	bool IsColumnEmpty(int column);
+	void OrganiseColumn(int c);
 	void MoveColumnsBackFrom(int startColumn);
 	void MoveColumnsForward();
-	void SwapColumn(int startIndex, int endIndex);
 	void HandleMoveForward(int startColum, int endColumn);
 	void HandleMoveBack(int startColum, int endColumn);
+	void SwapColumn(int startIndex, int endIndex);
 	void RemoveAllEmptyColumns();
 	void ReCalculateCurrentColumns();
 	void SetupRegisterEventsOnMostForwardColumn();
+
+	void CreatePieceOnBoard(int c, int r, int index);
+
 	Piece* FindPiece(const int& x, const int& y) const;
 	const Piece* FindPieceFromBoardPosition(const int& x, const int& y) const;
-	void OrganiseColumn(int c);
 };
 

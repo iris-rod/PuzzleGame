@@ -10,18 +10,21 @@ void BoardHandler::GeneratePieces(EventListener& otherHandler) {
 	int id = 0;
 	for (int c = 0; c < mapSize[0]; c++) { 
 		for (int r = 0; r < mapSize[1]; r++) {
-			SDL_Rect* src = new SDL_Rect();
-			SDL_Rect* dest = new SDL_Rect();
-			int co = c * PIECE_SIZE_X + START_X;
-			int ro = r * PIECE_SIZE_Y + START_Y;
-			if(c < TOTAL_COLUMNS - INITIAL_COLUMNS) pieces[id] = make_shared<Piece>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, true);
-			else {
-				pieces[id] = make_shared<Piece>(id, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
-			}
+			CreatePieceOnBoard(c, r, id);
 			pieces[id]->RegisterEvents(otherHandler);
 			id++;
 		}
 	}
+}
+
+void BoardHandler::CreatePieceOnBoard(int c, int r, int index) {
+	SDL_Rect* src = new SDL_Rect();
+	SDL_Rect* dest = new SDL_Rect();
+	int co = c * PIECE_SIZE_X + START_X;
+	int ro = r * PIECE_SIZE_Y + START_Y;
+
+	if (c < TOTAL_COLUMNS - INITIAL_COLUMNS) pieces[index] = make_shared<Piece>(index, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, true);
+	else pieces[index] = make_shared<Piece>(index, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
 }
 
 void BoardHandler::SetPiecesNeighbours(int column = -1) {
@@ -68,7 +71,6 @@ std::vector<shared_ptr<Piece>>& BoardHandler::GetObjs() {
 }
 
 void BoardHandler::Init(SDLEventHandler& sdl_handler, EventListener& otherHandler) {
-	// init board (basically just an object with a background texture
 	GeneratePieces(otherHandler);
 	SetPiecesNeighbours();
 	RegisterEvents(sdl_handler, otherHandler);
@@ -129,14 +131,6 @@ void BoardHandler::RemoveAllEmptyColumns() {
 		}
 	}
 	ReCalculateCurrentColumns();
-}
-
-void BoardHandler::ResetNeighbours(int c) {
-	SetPiecesNeighbours(c);
-	if (c > 0)
-		SetPiecesNeighbours(c - 1);
-	if (c < TOTAL_ROWS - 1)
-		SetPiecesNeighbours(c + 1);
 }
 
 
