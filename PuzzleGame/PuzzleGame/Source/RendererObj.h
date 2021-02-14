@@ -2,6 +2,7 @@
 #include "WindowObj.h"
 #include "Object.h"
 #include "TextureManager.h"
+#include "Text.h"
 #include <SDL.h>
 #include <memory>
 #include <deque>
@@ -14,7 +15,7 @@ public:
 	//~RendererObj();
 
 	SDL_Renderer* GetRenderer();
-	void Render(deque<shared_ptr<Object>>& objs);
+	void Render(deque<shared_ptr<Object>>& objs, Text* text);
 
 	RendererObj(const RendererObj&) = delete;
 	RendererObj& operator=(const RendererObj&) = delete;

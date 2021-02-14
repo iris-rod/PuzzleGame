@@ -3,7 +3,7 @@
 #include <iostream>
 #include <time.h>
 
-GameManager::GameManager() : boardHandler(nullptr) {
+GameManager::GameManager() : boardHandler(nullptr), pointsText(nullptr), fontsManager(nullptr) {
 	TimeHandler::Start();
 }
 
@@ -13,13 +13,21 @@ void GameManager::Render(RendererObj* rendererObj) {
 	for (auto& obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);
 	}
-	rendererObj->Render(objs);
+
+	rendererObj->Render(objs, pointsText.get());
+	//pointsText->Render(rendererObj->GetRenderer());
 }
 
 void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler) {
 	srand(time(NULL));
 	LoadTextures(rendererObj);
 	boardHandler = make_unique<BoardHandler>();
+
+	fontsManager = make_unique<FontsManager>();
+	fontsManager->AddFont("../MAIAN.ttf");
+	auto font = fontsManager->GetFont("../MAIAN.ttf");
+	pointsText = make_unique<Text>(20, 20, "here", vector<int>{ 0,0,0,255 }, font, rendererObj->GetRenderer());
+
 	boardHandler->Init(handler, otherHandler);
 	for (auto& obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);
@@ -72,5 +80,6 @@ bool GameManager::IsGameOnPause() {
 	return gameState == GameState::ON_PAUSE;
 }
 void GameManager::Quit() {
+	TTF_Quit();
 	gameState = GameState::QUIT;
 }

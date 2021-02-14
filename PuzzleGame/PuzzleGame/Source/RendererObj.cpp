@@ -19,7 +19,7 @@ SDL_Renderer* RendererObj::GetRenderer() {
 	return ptr_renderer.get();
 }
 
-void RendererObj::Render(deque<shared_ptr<Object>>& objs) {
+void RendererObj::Render(deque<shared_ptr<Object>>& objs, Text* texts) {
 	//std::cout << "Render" << std::endl;
 	SDL_RenderClear(ptr_renderer.get());
 	for (std::deque<shared_ptr<Object>>::iterator it = objs.begin(); it != objs.end(); it++) {
@@ -29,5 +29,7 @@ void RendererObj::Render(deque<shared_ptr<Object>>& objs) {
 			currentObj->GetSrcRect(), 
 			currentObj->GetDestRect());
 	}
+
+	SDL_RenderCopy(ptr_renderer.get(), texts->GetMessage(), NULL, &texts->GetRect());
 	SDL_RenderPresent(ptr_renderer.get());	
 }

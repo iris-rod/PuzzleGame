@@ -5,6 +5,8 @@
 #include "RendererObj.h"
 #include "TextureManager.h"
 #include "BoardHandler.h"
+#include "Text.h"
+#include "FontsManager.h"
 
 using namespace std;
 
@@ -19,7 +21,6 @@ class GameManager {
 public:
 	GameManager();
 	void Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler);
-	//void Update();
 	void Render(RendererObj* rendererObj);
 	void HandleTimeTriggeredEvents(EventListener& otherHandler);
 	void Clear();
@@ -27,13 +28,15 @@ public:
 	bool IsGameOnGoing();
 	bool IsGameFinished();
 	bool IsGameOnPause();
+	void Quit();
 
 private:
 	void LoadTextures(RendererObj* rendererObj);
 	void RegisterEvent(SDLEventHandler& handler);
-	void Quit();
 
 	unique_ptr<BoardHandler> boardHandler;
+	unique_ptr<Text> pointsText;
+	unique_ptr<FontsManager> fontsManager;
 	GameState gameState;
 	deque<shared_ptr<Object>> objs;
 };

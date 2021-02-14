@@ -18,6 +18,13 @@ int main(int argc, char* args[]) {
 		return 1;
 	}			
 
+	if (TTF_Init() < 0) {
+		cout << "Error initializing TTF: " << TTF_GetError() << endl;
+		system("pause");
+		// End the program
+		return 1;
+	}
+
 	WindowObj* window_obj = new WindowObj();
 	RendererObj* renderer_obj = new RendererObj(window_obj->GetWindow());
 	SDLEventHandler event_handler = SDLEventHandler();
@@ -33,7 +40,7 @@ int main(int argc, char* args[]) {
 		}
 		catch (const char* msg) {
 			std::cout << msg << std::endl;
-			isRunning = false;
+			gameManager->Quit();
 		}
 	}
 
