@@ -1,13 +1,13 @@
 #include "Text.h"
 
-Text::Text(int x, int y, string text, vector<int> rgba, TTF_Font* _font, SDL_Renderer* renderer) : message(), rect() {
+Text::Text(int x, int y, string text, vector<int> rgba, TTF_Font* _font, SDL_Renderer* renderer) {
 
 	font = _font;
 
-	SDL_Rect _rect = SDL_Rect();
-	_rect.x = x;
-	_rect.y = y;
-	_rect.h = 30;
+	SDL_Rect* _rect = new SDL_Rect();
+	_rect->x = x;
+	_rect->y = y;
+	_rect->h = 30;
 
 	color = SDL_Color();
 	if (rgba.size() == 4) {
@@ -23,10 +23,10 @@ Text::Text(int x, int y, string text, vector<int> rgba, TTF_Font* _font, SDL_Ren
 
 	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text.c_str(), color); 
 	if (surfaceMessage != nullptr) {
-		_rect.w = surfaceMessage->w;
-		rect = _rect;
+		_rect->w = surfaceMessage->w;
+		dest = _rect;
 
-		message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
+		texture = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
 		SDL_FreeSurface(surfaceMessage);
 	}
 	else {
@@ -36,25 +36,14 @@ Text::Text(int x, int y, string text, vector<int> rgba, TTF_Font* _font, SDL_Ren
 
 }
 
-void Text::Render(SDL_Renderer* renderer) {
-	SDL_RenderCopy(renderer, message, NULL, &rect);
-}
-
 void Text::Update(string newText, SDL_Renderer* renderer) {
 
 	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, newText.c_str(), color); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 
-	rect.w = surfaceMessage->w;
+	dest->w = surfaceMessage->w;
 
-	message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
+	texture = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
 	SDL_FreeSurface(surfaceMessage);
 }
 
-SDL_Texture* Text::GetMessage() {
-	return message;
-}
-
-SDL_Rect Text::GetRect() {
-	return rect;
-}
 
