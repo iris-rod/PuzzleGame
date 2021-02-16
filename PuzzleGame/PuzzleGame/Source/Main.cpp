@@ -26,7 +26,7 @@ int main(int argc, char* args[]) {
 	}
 
 	WindowObj* window_obj = new WindowObj();
-	RendererObj* renderer_obj = new RendererObj(window_obj->GetWindow());
+	shared_ptr<RendererObj> renderer_obj = make_shared<RendererObj>(window_obj->GetWindow());
 	SDLEventHandler event_handler = SDLEventHandler();
 	EventListener other_handler = EventListener();
 	gameManager->Init(renderer_obj, event_handler, other_handler);
@@ -36,7 +36,7 @@ int main(int argc, char* args[]) {
 			gameManager->HandleTimeTriggeredEvents(other_handler);
 			other_handler.HandleEvents();
 			event_handler.HandleEvents();
-			gameManager->Render(renderer_obj);
+			gameManager->Render();
 		}
 		catch (const char* msg) {
 			std::cout << msg << std::endl;
@@ -44,7 +44,6 @@ int main(int argc, char* args[]) {
 		}
 	}
 
-	delete renderer_obj;
 	delete window_obj;
 	delete gameManager;
 	

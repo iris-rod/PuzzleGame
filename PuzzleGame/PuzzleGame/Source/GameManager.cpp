@@ -3,34 +3,39 @@
 #include <iostream>
 #include <time.h>
 
-GameManager::GameManager() : boardHandler(nullptr), pointsText(nullptr), fontsManager(nullptr) {
+GameManager::GameManager() : boardHandler(nullptr), pointSystem(nullptr), fontsManager(nullptr) {
 	TimeHandler::Start();
 }
 
-void GameManager::Render(RendererObj* rendererObj) {
+void GameManager::Render() {
 	objs.clear();
 	objs.resize(0);
 	for (auto& obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);
 	}
-	objs.push_back(pointsText);
+	objs.push_back(pointSystem->GetTextObj());
 	rendererObj->Render(objs);
 }
 
-void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler) {
+void GameManager::Init(shared_ptr<RendererObj>& _rendererObj, SDLEventHandler& handler, EventListener& otherHandler) {
 	srand(time(NULL));
-	LoadTextures(rendererObj);
+
+	rendererObj = _rendererObj;
+	LoadTextures();
+
 	boardHandler = make_unique<BoardHandler>();
 	fontsManager = make_unique<FontsManager>();
-
-	pointsText = make_shared<Text>(20, 20, "here", vector<int>{ 0,0,0,255 }, fontsManager->GetFont("../MAIAN.ttf"), rendererObj->GetRenderer());
-
+	LoadFonts();
+	pointSystem = make_unique<PointSystem>(otherHandler);
+	pointSystem->InitPointsText(fontsManager.get(), rendererObj.get());
+	
 	boardHandler->Init(handler, otherHandler);
 	for (auto& obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);
 	}	
 
-	RegisterEvent(handler);
+	RegisterSDLEvent(handler);
+	RegisterGameEvent(otherHandler);
 
 	gameState = GameState::ON_GOING;
 }
@@ -39,7 +44,7 @@ void GameManager::LoadFonts() {
 	fontsManager->AddFont("../MAIAN.ttf");
 }
 
-void GameManager::LoadTextures(RendererObj* rendererObj) {
+void GameManager::LoadTextures() {
 	TextureManager::LoadTexture("red", rendererObj->GetRenderer(), "../red.png");
 	TextureManager::LoadTexture("blue", rendererObj->GetRenderer(), "../blue.png");
 	TextureManager::LoadTexture("yellow", rendererObj->GetRenderer(), "../yellow.png");
@@ -48,7 +53,7 @@ void GameManager::LoadTextures(RendererObj* rendererObj) {
 	TextureManager::LoadTexture("empty", rendererObj->GetRenderer(), "../empty.png");
 }
 
-void GameManager::RegisterEvent(SDLEventHandler& handler) {
+void GameManager::RegisterSDLEvent(SDLEventHandler& handler) {
 	handler.Subscribe(SDL_QUIT, [this](SDL_Event const& event) {
 		if (event.type == SDL_QUIT) {
 			Quit();
@@ -60,6 +65,12 @@ void GameManager::RegisterEvent(SDLEventHandler& handler) {
 			Quit();
 		}
 	});	
+}
+
+void GameManager::RegisterGameEvent(EventListener& handler) {
+	handler.Subscribe(ADD_POINTS, [&](Event const& _event) {
+		pointSystem->UpdatePointsText(rendererObj->GetRenderer());
+	});
 }
 
 void GameManager::HandleTimeTriggeredEvents(EventListener& otherHandler) {

@@ -7,6 +7,7 @@
 #include "BoardHandler.h"
 #include "Text.h"
 #include "FontsManager.h"
+#include "PointSystem.h"
 
 using namespace std;
 
@@ -20,8 +21,8 @@ enum class GameState {
 class GameManager {
 public:
 	GameManager();
-	void Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler);
-	void Render(RendererObj* rendererObj);
+	void Init(shared_ptr<RendererObj>& rendererObj, SDLEventHandler& handler, EventListener& otherHandler);
+	void Render();
 	void HandleTimeTriggeredEvents(EventListener& otherHandler);
 	void Clear();
 
@@ -31,13 +32,15 @@ public:
 	void Quit();
 
 private:
-	void LoadTextures(RendererObj* rendererObj);
+	void LoadTextures();
 	void LoadFonts();
-	void RegisterEvent(SDLEventHandler& handler);
+	void RegisterSDLEvent(SDLEventHandler& handler);
+	void RegisterGameEvent(EventListener& handler);
 
 	unique_ptr<BoardHandler> boardHandler;
-	shared_ptr<Text> pointsText;
 	unique_ptr<FontsManager> fontsManager;
+	unique_ptr<PointSystem> pointSystem;
 	GameState gameState;
 	deque<shared_ptr<Object>> objs;
+	shared_ptr<RendererObj> rendererObj;
 };
