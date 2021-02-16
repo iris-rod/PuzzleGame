@@ -21,6 +21,7 @@ Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const i
 	else color = make_unique<Colors>(GetRandomColor());
 
 	textureId = ConvertColorToTextureId(*(color.get()));
+	texture = TextureManager::GetTexture(textureId);
 }
 
 Piece::~Piece() {
@@ -31,15 +32,17 @@ Piece::~Piece() {
 void Piece::GenerateNewColor() {
 	color = make_unique<Colors>(GetRandomColor());
 	textureId = ConvertColorToTextureId(*(color.get()));
+	texture = TextureManager::GetTexture(textureId);
 }
 
 void Piece::Swap(Piece& b) {
-	//b.color.swap(this->color);
 
 	auto text = b.textureId;
 	b.textureId = textureId;
 	textureId = text;
 
+	texture = TextureManager::GetTexture(textureId);
+	b.texture = TextureManager::GetTexture(b.textureId);
 }
 
 const BoardPosition& Piece::GetBoardPosition() const {
@@ -106,6 +109,7 @@ void Piece::Remove(EventListener* otherHandler) {
 
 void Piece::Remove() {
 	textureId = "empty";
+	texture = TextureManager::GetTexture(textureId);
 	neighbours.clear();
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "InteractiveObject.h"
 #include "EventHandler.h"
+#include "TextureManager.h"
 #include "Utils.h"
 #include "Consts.h"
 #include <vector>

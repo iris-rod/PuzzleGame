@@ -8,6 +8,7 @@ Object::Object(const std::string id, SDL_Rect* _src, SDL_Rect* _dest, const int 
 Object::~Object() {
 	src = nullptr;
 	dest = nullptr;
+	texture = nullptr;
 	textureId = "";
 	sizeX = 0;
 	sizeY = 0;
@@ -24,4 +25,8 @@ const SDL_Rect* Object::GetSrcRect() const {
 
 const std::string& Object::GetTextureId() const {
 	return textureId;
+}
+
+SDL_Texture* Object::GetTexture() const {
+	return texture;
 }
