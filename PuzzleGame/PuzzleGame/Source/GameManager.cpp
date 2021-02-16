@@ -14,7 +14,7 @@ void GameManager::Render(RendererObj* rendererObj) {
 		objs.push_back(obj);
 	}
 	objs.push_back(pointsText);
-	rendererObj->Render(objs, pointsText.get());
+	rendererObj->Render(objs);
 }
 
 void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler) {
