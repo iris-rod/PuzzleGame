@@ -149,6 +149,7 @@
     <ClCompile Include="Source\Event.cpp" />
     <ClCompile Include="Source\EventHandler.cpp" />
     <ClCompile Include="Source\FontsManager.cpp" />
+    <ClCompile Include="Source\PointSystem.cpp" />
     <ClCompile Include="Source\Text.cpp" />
     <ClCompile Include="Source\SDLEventHandler.cpp" />
     <ClCompile Include="Source\GameManager.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\EventHandler.h" />
     <ClInclude Include="Source\FontsManager.h" />
+    <ClInclude Include="Source\PointSystem.h" />
     <ClInclude Include="Source\Text.h" />
     <ClInclude Include="Source\SDLEventHandler.h" />
     <ClInclude Include="Source\GameManager.h" />
