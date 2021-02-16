@@ -13,9 +13,8 @@ void GameManager::Render(RendererObj* rendererObj) {
 	for (auto& obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);
 	}
-
+	objs.push_back(pointsText);
 	rendererObj->Render(objs, pointsText.get());
-	//pointsText->Render(rendererObj->GetRenderer());
 }
 
 void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, EventListener& otherHandler) {
@@ -26,7 +25,7 @@ void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, Event
 	fontsManager = make_unique<FontsManager>();
 	fontsManager->AddFont("../MAIAN.ttf");
 	auto font = fontsManager->GetFont("../MAIAN.ttf");
-	pointsText = make_unique<Text>(20, 20, "here", vector<int>{ 0,0,0,255 }, font, rendererObj->GetRenderer());
+	pointsText = make_shared<Text>(20, 20, "here", vector<int>{ 0,0,0,255 }, font, rendererObj->GetRenderer());
 
 	boardHandler->Init(handler, otherHandler);
 	for (auto& obj : boardHandler->GetObjs()) {

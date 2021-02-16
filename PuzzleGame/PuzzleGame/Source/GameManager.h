@@ -35,7 +35,7 @@ private:
 	void RegisterEvent(SDLEventHandler& handler);
 
 	unique_ptr<BoardHandler> boardHandler;
-	unique_ptr<Text> pointsText;
+	shared_ptr<Text> pointsText;
 	unique_ptr<FontsManager> fontsManager;
 	GameState gameState;
 	deque<shared_ptr<Object>> objs;
