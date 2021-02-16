@@ -183,9 +183,6 @@ void BoardHandler::AddColumn(EventListener& otherHandler) {
 	HandlePiecesNeighbours();
 }
 
-void BoardHandler::SetupRegisterEventsOnMostForwardColumn() {
-}
-
 void BoardHandler::MoveColumnsBackFrom(int startColumn) {
 	int endIndex = TOTAL_COLUMNS - currentColumns;
 	int startIndex = startColumn;

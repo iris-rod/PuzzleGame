@@ -34,7 +34,6 @@ private:
 	void SwapColumn(int startIndex, int endIndex);
 	void RemoveAllEmptyColumns();
 	void ReCalculateCurrentColumns();
-	void SetupRegisterEventsOnMostForwardColumn();
 
 	void CreatePieceOnBoard(int c, int r, int index);
 
