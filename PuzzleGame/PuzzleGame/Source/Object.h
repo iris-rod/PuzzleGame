@@ -13,7 +13,7 @@ public:
 	const SDL_Rect* GetSrcRect() const;
 	const SDL_Rect* GetDestRect() const;
 	const std::string& GetTextureId() const;
-	SDL_Texture* GetTexture() const;
+	virtual SDL_Texture* GetTexture() const;
 
 
 protected:
@@ -21,7 +21,6 @@ protected:
 	string ID = "";
 	SDL_Rect* src = nullptr;
 	SDL_Rect* dest = nullptr;
-	SDL_Texture* texture = nullptr;
 	int sizeX = 0;
 	int sizeY = 0;
 

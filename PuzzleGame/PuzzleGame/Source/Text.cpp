@@ -3,6 +3,7 @@
 Text::Text(int x, int y, string text, vector<int> rgba, TTF_Font* _font, SDL_Renderer* renderer) {
 
 	font = _font;
+	textureId = "text";
 
 	SDL_Rect* _rect = new SDL_Rect();
 	_rect->x = x;
@@ -26,7 +27,7 @@ Text::Text(int x, int y, string text, vector<int> rgba, TTF_Font* _font, SDL_Ren
 		_rect->w = surfaceMessage->w;
 		dest = _rect;
 
-		texture = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
+		messageText = { SDL_CreateTextureFromSurface(renderer, surfaceMessage), &SDL_DestroyTexture }; //now you can convert it into a texture
 		SDL_FreeSurface(surfaceMessage);
 	}
 	else {
@@ -42,8 +43,12 @@ void Text::Update(string newText, SDL_Renderer* renderer) {
 
 	dest->w = surfaceMessage->w;
 
-	texture = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
+	messageText.reset(SDL_CreateTextureFromSurface(renderer, surfaceMessage)); //now you can convert it into a texture
 	SDL_FreeSurface(surfaceMessage);
+}
+
+SDL_Texture* Text::GetTexture() const {
+	return messageText.get();
 }
 
 

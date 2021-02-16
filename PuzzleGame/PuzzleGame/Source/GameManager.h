@@ -32,6 +32,7 @@ public:
 
 private:
 	void LoadTextures(RendererObj* rendererObj);
+	void LoadFonts();
 	void RegisterEvent(SDLEventHandler& handler);
 
 	unique_ptr<BoardHandler> boardHandler;

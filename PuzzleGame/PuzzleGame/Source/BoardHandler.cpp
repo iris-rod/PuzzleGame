@@ -27,33 +27,31 @@ void BoardHandler::CreatePieceOnBoard(int c, int r, int index) {
 	else pieces[index] = make_shared<Piece>(index, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
 }
 
-void BoardHandler::SetPiecesNeighbours(int column = -1) {
+void BoardHandler::HandlePiecesNeighbours() {
 	int numElems = pieces.size();
 	int init = pieces.size() - 1;
 	int end = 0;
-
-	if (column != -1) {
-		numElems = pieces.size() / TOTAL_COLUMNS;
-		init = (numElems * column) + numElems - 1;
-		end = numElems * column;
-	}
 
 	for (int i = init; i >= end; --i) {
 
 		auto piece = pieces[i];
 		if (!piece->IsEmpty()) {
 			piece->ClearNeighbours();
-			for (int j = -1; j <= 1; j += 2) {
-				int newX = piece->GetBoardPosition().x + j;
-				int newY = piece->GetBoardPosition().y + j;
+			SetNeighboursForPiece(piece);
+		}
+	}
+}
 
-				if (newY >= 0 && newY < mapSize[1]) {
-					SetNeighbour(*piece.get(), piece->GetBoardPosition().x, newY);
-				}
-				if (newX >= 0 && newX < mapSize[0]) {
-					SetNeighbour(*piece.get(), newX, piece->GetBoardPosition().y);
-				}
-			}
+void BoardHandler::SetNeighboursForPiece(shared_ptr<Piece> piece) {
+	for (int j = -1; j <= 1; j += 2) {
+		int newX = piece->GetBoardPosition().x + j;
+		int newY = piece->GetBoardPosition().y + j;
+
+		if (newY >= 0 && newY < mapSize[1]) {
+			SetNeighbour(*piece.get(), piece->GetBoardPosition().x, newY);
+		}
+		if (newX >= 0 && newX < mapSize[0]) {
+			SetNeighbour(*piece.get(), newX, piece->GetBoardPosition().y);
 		}
 	}
 }
@@ -72,7 +70,7 @@ std::vector<shared_ptr<Piece>>& BoardHandler::GetObjs() {
 
 void BoardHandler::Init(SDLEventHandler& sdl_handler, EventListener& otherHandler) {
 	GeneratePieces(otherHandler);
-	SetPiecesNeighbours();
+	HandlePiecesNeighbours();
 	RegisterEvents(sdl_handler, otherHandler);
 }
 
@@ -99,7 +97,7 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 			Event* event_empty = new EventEmptyColumn(event_p.GetColumn());
 			otherHandler.NotifyEvent(event_empty);
 		}
-		SetPiecesNeighbours();
+		HandlePiecesNeighbours();
 	});
 
 	otherHandler.Subscribe(EMPTY_COLUMN, [&](Event const& _event) {
@@ -108,7 +106,7 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		MoveColumnsBackFrom(event_p.GetColumn());
 		ReCalculateCurrentColumns();
 		RemoveAllEmptyColumns();
-		SetPiecesNeighbours();
+		HandlePiecesNeighbours();
 	});
 }
 
@@ -182,7 +180,7 @@ void BoardHandler::AddColumn(EventListener& otherHandler) {
 		++currentColumns;
 	}
 
-	SetPiecesNeighbours();
+	HandlePiecesNeighbours();
 }
 
 void BoardHandler::SetupRegisterEventsOnMostForwardColumn() {

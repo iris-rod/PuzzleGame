@@ -21,11 +21,9 @@ void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, Event
 	srand(time(NULL));
 	LoadTextures(rendererObj);
 	boardHandler = make_unique<BoardHandler>();
-
 	fontsManager = make_unique<FontsManager>();
-	fontsManager->AddFont("../MAIAN.ttf");
-	auto font = fontsManager->GetFont("../MAIAN.ttf");
-	pointsText = make_shared<Text>(20, 20, "here", vector<int>{ 0,0,0,255 }, font, rendererObj->GetRenderer());
+
+	pointsText = make_shared<Text>(20, 20, "here", vector<int>{ 0,0,0,255 }, fontsManager->GetFont("../MAIAN.ttf"), rendererObj->GetRenderer());
 
 	boardHandler->Init(handler, otherHandler);
 	for (auto& obj : boardHandler->GetObjs()) {
@@ -35,6 +33,10 @@ void GameManager::Init(RendererObj* rendererObj, SDLEventHandler& handler, Event
 	RegisterEvent(handler);
 
 	gameState = GameState::ON_GOING;
+}
+
+void GameManager::LoadFonts() {
+	fontsManager->AddFont("../MAIAN.ttf");
 }
 
 void GameManager::LoadTextures(RendererObj* rendererObj) {

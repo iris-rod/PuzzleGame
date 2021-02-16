@@ -23,15 +23,20 @@ void RendererObj::Render(deque<shared_ptr<Object>>& objs) {
 	SDL_RenderClear(ptr_renderer.get());
 	for (std::deque<shared_ptr<Object>>::iterator it = objs.begin(); it != objs.end(); it++) {
 		auto& currentObj = *it;
-		if (currentObj->GetSrcRect() != nullptr) {
-			SDL_RenderCopy(ptr_renderer.get(),
-				currentObj->GetTexture(),
-				currentObj->GetSrcRect(),
-				currentObj->GetDestRect());
-		}
-		else
-			SDL_RenderCopy(ptr_renderer.get(), currentObj->GetTexture(), NULL, currentObj->GetDestRect());
+
+		if (currentObj->GetTextureId() != "text") 
+			RenderPiece(currentObj);
+		else 
+			RenderText(currentObj);
 	}
 
 	SDL_RenderPresent(ptr_renderer.get());	
+}
+
+void RendererObj::RenderPiece(shared_ptr<Object> obj) {
+	SDL_RenderCopy(ptr_renderer.get(), obj->GetTexture(), obj->GetSrcRect(), obj->GetDestRect());
+}
+
+void RendererObj::RenderText(shared_ptr<Object> obj) {
+	SDL_RenderCopy(ptr_renderer.get(), obj->GetTexture(), NULL, obj->GetDestRect());
 }

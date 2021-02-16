@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "TextureManager.h"
 
 Object::Object(const std::string id, SDL_Rect* _src, SDL_Rect* _dest, const int _sizeX, const int _sizeY) 
 	: ID(id), src(_src), dest(_dest), sizeX(_sizeX), sizeY(_sizeY) {
@@ -8,7 +9,6 @@ Object::Object(const std::string id, SDL_Rect* _src, SDL_Rect* _dest, const int 
 Object::~Object() {
 	src = nullptr;
 	dest = nullptr;
-	texture = nullptr;
 	textureId = "";
 	sizeX = 0;
 	sizeY = 0;
@@ -28,5 +28,5 @@ const std::string& Object::GetTextureId() const {
 }
 
 SDL_Texture* Object::GetTexture() const {
-	return texture;
+	return TextureManager::GetTexture(textureId);
 }

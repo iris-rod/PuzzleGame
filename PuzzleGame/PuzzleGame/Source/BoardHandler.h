@@ -20,7 +20,8 @@ private:
 	int currentColumns = INITIAL_COLUMNS;
 	
 	void GeneratePieces(EventListener& otherHandler);
-	void SetPiecesNeighbours(int column);
+	void HandlePiecesNeighbours();
+	void SetNeighboursForPiece(shared_ptr<Piece> piece);
 	void SetNeighbour(Piece& piece, const int& x, const int& y);
 	void RegisterEvents(SDLEventHandler& sdl_handler, EventListener& otherHandler);
 

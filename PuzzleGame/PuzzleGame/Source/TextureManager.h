@@ -4,12 +4,16 @@
 #include <string>
 #include <memory>
 
+using namespace std;
+
+void SDL_DestroyTexture(SDL_Texture*);
+
 class TextureManager {
 public:
-	static void LoadTexture(std::string textureId, SDL_Renderer* renderer, const char* texture_path);
-	static SDL_Texture* GetTexture(std::string textureId);
+	static void LoadTexture(string textureId, SDL_Renderer* renderer, const char* texture_path);
+	static SDL_Texture* GetTexture(string textureId);
 	static void Clean();
 
 private:
-	static std::map<std::string, SDL_Texture*> loadedTextures;
+	static map<string, shared_ptr<SDL_Texture>> loadedTextures;
 };

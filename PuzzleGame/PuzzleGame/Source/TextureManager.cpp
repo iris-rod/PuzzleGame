@@ -2,23 +2,28 @@
 #include "SDL_image.h"
 #include <iostream>
 
-std::map<std::string, SDL_Texture*> TextureManager::loadedTextures;
+map<string, shared_ptr<SDL_Texture>> TextureManager::loadedTextures;
 
-void TextureManager::LoadTexture(std::string textureId, SDL_Renderer* renderer, const char* texture_path) {
+void TextureManager::LoadTexture(string textureId, SDL_Renderer* renderer, const char* texture_path) {
 	if (loadedTextures.find(textureId) != loadedTextures.end()) {
 		throw "The texture with this texture ID already exists.";
 	}
 
 	SDL_Surface* tempSurface = IMG_Load(texture_path);
-	if (tempSurface == nullptr) printf("%s", SDL_GetError());
-	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, tempSurface);
-	SDL_FreeSurface(tempSurface);
 
-	loadedTextures[textureId] = tex;
+	if (tempSurface == nullptr) {
+		printf("%s", SDL_GetError());
+		return;
+	}
+
+	unique_ptr< SDL_Texture, decltype(&SDL_DestroyTexture)> text = { SDL_CreateTextureFromSurface(renderer, tempSurface), &SDL_DestroyTexture };
+	loadedTextures.try_emplace(textureId, move(text));
+
+	SDL_FreeSurface(tempSurface);
 }
 
-SDL_Texture* TextureManager::GetTexture(std::string textureId) {
-	return loadedTextures[textureId];
+SDL_Texture* TextureManager::GetTexture(string textureId) {
+	return loadedTextures[textureId].get();
 }
 
 void TextureManager::Clean() {
