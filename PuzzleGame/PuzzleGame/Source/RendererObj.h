@@ -15,7 +15,7 @@ public:
 	//~RendererObj();
 
 	SDL_Renderer* GetRenderer();
-	void Render(deque<shared_ptr<Object>>& objs, Text* text);
+	void Render(deque<shared_ptr<Object>>& objs);
 
 	RendererObj(const RendererObj&) = delete;
 	RendererObj& operator=(const RendererObj&) = delete;
