@@ -101,6 +101,7 @@ bool Piece::CanRemove() {
 void Piece::Remove(EventListener* otherHandler) {
 	Remove();
 	otherHandler->NotifyEvent(new EventColumnUpdate(GetBoardPosition().x));
+	otherHandler->NotifyEvent(new Event(ADD_POINTS));
 }
 
 void Piece::Remove() {
