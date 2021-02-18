@@ -71,6 +71,14 @@ void GameManager::RegisterGameEvent(EventListener& handler) {
 	handler.Subscribe(ADD_POINTS, [&](Event const& _event) {
 		pointSystem->UpdatePointsText(rendererObj->GetRenderer());
 	});
+
+	handler.Subscribe(NEXT_LEVEL, [&](Event const& _event) {
+		boardHandler->Restart();
+		pointSystem->UpdatePointsText(rendererObj->GetRenderer());
+		objs.clear();
+		objs.resize(0);
+		TimeHandler::Reset();
+	});
 }
 
 void GameManager::HandleTimeTriggeredEvents(EventListener& otherHandler) {

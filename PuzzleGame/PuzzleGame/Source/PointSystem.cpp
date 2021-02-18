@@ -12,12 +12,28 @@ void PointSystem::InitPointsText(FontsManager* fontsManager, RendererObj* render
 
 void PointSystem::UpdatePointsText(SDL_Renderer* rendererObj) {
 	pointsText = to_string(points);
-	pointsTextObj->Update(title + pointsText, rendererObj);
+	pointsTextObj->Update(title + pointsText + "/" + to_string(nextLevelPoints), rendererObj);
+}
+
+void PointSystem::Restart() {
+	canAddPoints = true;
 }
 
 void PointSystem::RegisterEvents(EventListener& handler) {
 	handler.Subscribe(ADD_POINTS, [&](Event const& _event) {
-		points++;
+		if(canAddPoints)
+			points++;
+
+		if (points >= nextLevelPoints) {
+			handler.NotifyEvent(new Event(NEXT_LEVEL));
+			canAddPoints = false;
+		}
+	});
+
+	handler.Subscribe(NEXT_LEVEL, [&](Event const& _event) {
+		nextLevelPoints += 50;
+		points = 0;
+		canAddPoints = true;
 	});
 }
 

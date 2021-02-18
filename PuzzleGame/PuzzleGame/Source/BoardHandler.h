@@ -13,13 +13,15 @@ public:
 	void Init(SDLEventHandler& sdl_handler, EventListener& other_handler);
 	std::vector<shared_ptr<Piece>>& GetObjs();
 	void AddColumn(EventListener& otherHandler);
+	void Restart();
 
 private:
 	std::vector<shared_ptr<Piece>> pieces;
 	std::vector<int> mapSize { TOTAL_COLUMNS, TOTAL_ROWS};
 	int currentColumns = INITIAL_COLUMNS;
 	
-	void GeneratePieces(EventListener& otherHandler);
+	void GeneratePieces(EventListener& handler);
+	void RegeneratePieces();
 	void HandlePiecesNeighbours();
 	void SetNeighboursForPiece(shared_ptr<Piece> piece);
 	void SetNeighbour(Piece& piece, const int& x, const int& y);

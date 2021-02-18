@@ -1,10 +1,11 @@
 #pragma once
 
 enum EventType {
-	PIECE_REMOVED = 1,
-	COLUMN_UPDATE = 2,
-	EMPTY_COLUMN = 3,
-	ADD_POINTS = 4
+	ADD_POINTS = 1,
+	NEXT_LEVEL = 2,
+	PIECE_REMOVED = 3,
+	COLUMN_UPDATE = 4,
+	EMPTY_COLUMN = 5
 };
 
 class Event {

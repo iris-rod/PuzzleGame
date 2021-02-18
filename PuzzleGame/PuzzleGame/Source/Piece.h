@@ -77,7 +77,7 @@ namespace PieceStuff {
 		virtual void Swap(Piece& b);
 		virtual void GenerateNewColor();
 		bool IsEmpty();
-		void printNeigh();
+		void MakeEmpty();
 
 		bool operator==(const Piece& a) {
 			return this->boardPosition->x == a.boardPosition->x && this->boardPosition->y == a.boardPosition->y

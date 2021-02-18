@@ -58,24 +58,6 @@ void Piece::AddNeighbour(const bool _canRemove, const int _x, const int _y, cons
 	neighbours.push_front(make_unique<NeighbourInfo>(_canRemove, _x, _y, dir));
 }
 
-void Piece::printNeigh() {
-	for (auto i = neighbours.begin(); i != neighbours.end(); ++i) {
-		cout << i->get()->canRemove << " - ";
-		if(i->get()->direction == Direction::EAST)
-			cout << "east" << endl;
-
-		if (i->get()->direction == Direction::WEST)
-			cout << "west" << endl;
-
-		if (i->get()->direction == Direction::NORTH)
-			cout << "north" << endl;
-
-		if (i->get()->direction == Direction::SOUTH)
-			cout << "south" << endl;
-
-	}
-}
-
 NeighbourInfo* Piece::GetNeighbour(const Piece& piece) {
 	auto position = piece.GetBoardPosition();
 	auto a = find_if(neighbours.begin(), neighbours.end(), [position](unique_ptr<NeighbourInfo>& arg) {
@@ -88,6 +70,12 @@ NeighbourInfo* Piece::GetNeighbour(const Piece& piece) {
 
 bool Piece::IsEmpty() {
 	return textureId == "empty";
+}
+
+void Piece::MakeEmpty() {
+	color.reset();
+	color = make_unique<Colors>(Colors::EMPTY);
+	textureId = ConvertColorToTextureId(*(color.get()));
 }
 
 bool Piece::CanRemove() {

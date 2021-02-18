@@ -27,6 +27,23 @@ void BoardHandler::CreatePieceOnBoard(int c, int r, int index) {
 	else pieces[index] = make_shared<Piece>(index, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
 }
 
+void BoardHandler::Restart() {
+	currentColumns = INITIAL_COLUMNS;
+	RegeneratePieces();
+	HandlePiecesNeighbours();
+}
+
+void BoardHandler::RegeneratePieces() {
+	int id = 0;
+	for (int c = 0; c < mapSize[0]; c++) {
+		for (int r = 0; r < mapSize[1]; r++) {
+			if (c < TOTAL_COLUMNS - INITIAL_COLUMNS) pieces[id]->MakeEmpty();
+			else pieces[id]->GenerateNewColor();
+			id++;
+		}
+	}
+}
+
 void BoardHandler::HandlePiecesNeighbours() {
 	int numElems = pieces.size();
 	int init = pieces.size() - 1;

@@ -34,6 +34,14 @@ void EventListener::HandleEvents() {
 		for (auto& cb : _subscribedCallbacks[current_event->type]) {
 			cb(*current_event);
 		}
-		triggeredEvents.pop();		
+		if (current_event->type == NEXT_LEVEL) CleanEventsOnNewLevel();
+		else
+			triggeredEvents.pop();		
+	}
+}
+
+void EventListener::CleanEventsOnNewLevel() {
+	while (!triggeredEvents.empty()) {
+		triggeredEvents.pop();
 	}
 }
