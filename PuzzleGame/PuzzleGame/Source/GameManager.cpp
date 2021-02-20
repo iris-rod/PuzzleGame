@@ -1,19 +1,19 @@
 #include "GameManager.h"
-#include "TimeHandler.h"
 #include <iostream>
 #include <time.h>
 
 GameManager::GameManager() : boardHandler(nullptr), pointSystem(nullptr), fontsManager(nullptr) {
-	TimeHandler::Start();
+	timeHandlerNewColumn = make_unique<TimeHandler>();
+	timeHandlerInfoText = make_unique<TimeHandler>();
 }
 
 void GameManager::Render() {
-	objs.clear();
-	objs.resize(0);
+	ClearObjects();
 	for (auto& obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);
 	}
 	objs.push_back(pointSystem->GetTextObj());
+	objs.push_back(infoText);
 	rendererObj->Render(objs);
 }
 
@@ -33,6 +33,8 @@ void GameManager::Init(shared_ptr<RendererObj>& _rendererObj, SDLEventHandler& h
 	for (auto& obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);
 	}	
+
+	infoText = make_shared<Text>(200, 20, " ", vector<int>{ 0, 0, 0, 255 }, fontsManager->GetFont("../MAIAN.ttf"), rendererObj->GetRenderer());
 
 	RegisterSDLEvent(handler);
 	RegisterGameEvent(otherHandler);
@@ -74,17 +76,35 @@ void GameManager::RegisterGameEvent(EventListener& handler) {
 
 	handler.Subscribe(NEXT_LEVEL, [&](Event const& _event) {
 		boardHandler->Restart();
+		pointSystem->UpdatePointsText(rendererObj->GetRenderer()); 
+		ClearObjects();
+		infoText->UpdateColor(vector<int>{ 0, 200, 0, 255 });
+		infoText->Update("NICE! NEXT LEVEL", rendererObj->GetRenderer());
+		timeHandlerNewColumn->Reset();
+		timeHandlerInfoText->Reset();
+	});
+	
+	handler.Subscribe(END_GAME, [&](Event const& _event) {
+		boardHandler->Restart();
 		pointSystem->UpdatePointsText(rendererObj->GetRenderer());
-		objs.clear();
-		objs.resize(0);
-		TimeHandler::Reset();
+		ClearObjects();
+		infoText->UpdateColor(vector<int>{ 200, 0, 0, 255 });
+		infoText->Update("YOU LOST", rendererObj->GetRenderer());
+		timeHandlerNewColumn->Reset();
+		timeHandlerInfoText->Reset();
 	});
 }
 
 void GameManager::HandleTimeTriggeredEvents(EventListener& otherHandler) {
-	if (TimeHandler::GetElapsedTime() >= NEW_COLUMN_TIME) {
-		boardHandler->AddColumn(otherHandler);
-		TimeHandler::Reset();
+	if (timeHandlerNewColumn->GetElapsedTime() >= NEW_COLUMN_TIME) {
+		boardHandler->AddColumn();
+		boardHandler->HandleAddedNewColumn(otherHandler);
+		timeHandlerNewColumn->Reset();
+	}	
+
+	if (timeHandlerInfoText->GetElapsedTime() >= SHOW_INFO_TEXT_TIME && infoText->IsDisplayed() ) {
+		infoText->Update(" ", rendererObj->GetRenderer());
+		timeHandlerInfoText->Reset();
 	}
 }
 
@@ -102,4 +122,9 @@ bool GameManager::IsGameOnPause() {
 void GameManager::Quit() {
 	TTF_Quit();
 	gameState = GameState::QUIT;
+}
+
+void GameManager::ClearObjects() {
+	objs.clear();
+	objs.resize(0);
 }

@@ -1,17 +1,19 @@
 #pragma once
 #include <chrono>
 
-static class TimeHandler {
-public:
+using namespace std;
 
-	static void Start();
-	static int GetElapsedTime();
-	static void Reset();
+class TimeHandler {
+public:
+	TimeHandler();
+	int GetElapsedTime();
+	void Reset();
+	chrono::time_point<chrono::high_resolution_clock> GetCurrentTime();
 
 private:
-	static std::chrono::time_point<std::chrono::high_resolution_clock> start;
-	static std::chrono::time_point<std::chrono::high_resolution_clock> end;
+	chrono::time_point<chrono::high_resolution_clock> start;
+	chrono::time_point<chrono::high_resolution_clock> end;
 
-	static void ResetClock();
-	static void End();
+	void End();
+	void Start();
 };

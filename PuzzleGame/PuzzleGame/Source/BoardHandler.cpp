@@ -185,7 +185,7 @@ bool BoardHandler::IsColumnEmpty(int column) {
 	return true;
 }
 
-void BoardHandler::AddColumn(EventListener& otherHandler) {
+void BoardHandler::AddColumn() {
 	MoveColumnsForward();
 
 	if (currentColumns < TOTAL_COLUMNS) {
@@ -196,8 +196,12 @@ void BoardHandler::AddColumn(EventListener& otherHandler) {
 		}
 		++currentColumns;
 	}
-
 	HandlePiecesNeighbours();
+}
+
+void BoardHandler::HandleAddedNewColumn(EventListener& handler) {
+	if (currentColumns == TOTAL_COLUMNS)
+		handler.NotifyEvent(new Event(END_GAME));
 }
 
 void BoardHandler::MoveColumnsBackFrom(int startColumn) {

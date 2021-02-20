@@ -7,6 +7,7 @@ static const int PIECE_SIZE_X = 32;
 static const int PIECE_SIZE_Y = 32;
 
 static const int NEW_COLUMN_TIME = 6; //in seconds
+static const int SHOW_INFO_TEXT_TIME = 5; //in seconds
 
 static const int START_X = 300;
 static const int START_Y = 50;

@@ -19,7 +19,7 @@ public:
 private:
 	shared_ptr<Text> pointsTextObj = nullptr;
 	int points = 0;
-	int nextLevelPoints = 5;
+	int nextLevelPoints = 50;
 	string title = "Points: ";
 	string pointsText = "";
 	bool canAddPoints = true;

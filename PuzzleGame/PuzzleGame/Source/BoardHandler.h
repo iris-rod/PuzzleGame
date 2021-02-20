@@ -12,8 +12,9 @@ public:
 	BoardHandler();
 	void Init(SDLEventHandler& sdl_handler, EventListener& other_handler);
 	std::vector<shared_ptr<Piece>>& GetObjs();
-	void AddColumn(EventListener& otherHandler);
+	void AddColumn();
 	void Restart();
+	void HandleAddedNewColumn(EventListener& handler);
 
 private:
 	std::vector<shared_ptr<Piece>> pieces;

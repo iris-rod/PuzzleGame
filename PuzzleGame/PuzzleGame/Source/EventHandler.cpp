@@ -34,7 +34,7 @@ void EventListener::HandleEvents() {
 		for (auto& cb : _subscribedCallbacks[current_event->type]) {
 			cb(*current_event);
 		}
-		if (current_event->type == NEXT_LEVEL) CleanEventsOnNewLevel();
+		if (current_event->type == NEXT_LEVEL || current_event->type == END_GAME) CleanEventsOnNewLevel();
 		else
 			triggeredEvents.pop();		
 	}

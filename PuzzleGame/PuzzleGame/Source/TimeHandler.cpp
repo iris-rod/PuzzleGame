@@ -1,15 +1,19 @@
 #include "TimeHandler.h"
 
-std::chrono::time_point<std::chrono::high_resolution_clock> TimeHandler::end;
-std::chrono::time_point<std::chrono::high_resolution_clock> TimeHandler::start;
+TimeHandler::TimeHandler() : start(chrono::high_resolution_clock::now()), end(chrono::high_resolution_clock::now()) {
 
-void TimeHandler::Start() {
-	start = std::chrono::high_resolution_clock::now();
 }
 
+void TimeHandler::Start() {
+	start = chrono::high_resolution_clock::now();
+}
+
+chrono::time_point<chrono::high_resolution_clock> TimeHandler::GetCurrentTime() {
+	return chrono::high_resolution_clock::now();
+}
 
 void TimeHandler::End() {
-	end = std::chrono::high_resolution_clock::now();
+	end = chrono::high_resolution_clock::now();
 }
 
 void TimeHandler::Reset() {
@@ -18,6 +22,6 @@ void TimeHandler::Reset() {
 
 int TimeHandler::GetElapsedTime() {
 	End();
-	std::chrono::duration<double> elapsed = end - start;
+	chrono::duration<double> elapsed = end - start;
 	return elapsed.count();
 }
