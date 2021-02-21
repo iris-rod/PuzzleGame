@@ -47,12 +47,13 @@ void GameManager::LoadFonts() {
 }
 
 void GameManager::LoadTextures() {
-	TextureManager::LoadTexture("red", rendererObj->GetRenderer(), "../red.png");
-	TextureManager::LoadTexture("blue", rendererObj->GetRenderer(), "../blue.png");
-	TextureManager::LoadTexture("yellow", rendererObj->GetRenderer(), "../yellow.png");
-	TextureManager::LoadTexture("green", rendererObj->GetRenderer(), "../green.png");
-	TextureManager::LoadTexture("orange", rendererObj->GetRenderer(), "../orange.png");
-	TextureManager::LoadTexture("empty", rendererObj->GetRenderer(), "../empty.png");
+	TextureManager::LoadTexture("red", rendererObj->GetRenderer(), "../assets/red.png");
+	TextureManager::LoadTexture("blue", rendererObj->GetRenderer(), "../assets/blue.png");
+	TextureManager::LoadTexture("yellow", rendererObj->GetRenderer(), "../assets/yellow.png");
+	TextureManager::LoadTexture("green", rendererObj->GetRenderer(), "../assets/green.png");
+	TextureManager::LoadTexture("orange", rendererObj->GetRenderer(), "../assets/orange.png");
+	TextureManager::LoadTexture("empty", rendererObj->GetRenderer(), "../assets/empty.png");
+	TextureManager::LoadTexture("new_column", rendererObj->GetRenderer(), "../assets/new_column.png");
 }
 
 void GameManager::RegisterSDLEvent(SDLEventHandler& handler) {
