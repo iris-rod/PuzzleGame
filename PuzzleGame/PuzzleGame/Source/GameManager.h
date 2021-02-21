@@ -22,9 +22,9 @@ enum class GameState {
 class GameManager {
 public:
 	GameManager();
-	void Init(shared_ptr<RendererObj>& rendererObj, SDLEventHandler& handler, EventListener& otherHandler);
+	void Init(shared_ptr<RendererObj>& rendererObj, shared_ptr<SDLEventHandler>& sdlEventListener, shared_ptr<EventListener>& gameEventListener);
 	void Render();
-	void HandleTimeTriggeredEvents(EventListener& otherHandler);
+	void HandleTimeTriggeredEvents();
 
 	bool IsGameOnGoing();
 	bool IsGameFinished();
@@ -34,9 +34,11 @@ public:
 private:
 	void LoadTextures();
 	void LoadFonts();
+	void InitInterface();
 	void ClearObjects();
-	void RegisterSDLEvent(SDLEventHandler& handler);
-	void RegisterGameEvent(EventListener& handler);
+	void RegisterSDLEvent();
+	void RegisterGameEvent();
+	bool CheckClickedOnAddColumn(const int x, const int y);
 
 	unique_ptr<BoardHandler> boardHandler;
 	unique_ptr<FontsManager> fontsManager;
@@ -45,8 +47,12 @@ private:
 	GameState gameState;
 	deque<shared_ptr<Object>> objs;
 	shared_ptr<RendererObj> rendererObj;
+	shared_ptr<EventListener> gameEventListener;
+	shared_ptr<SDLEventHandler> sdlEventListener;
 
 	unique_ptr<TimeHandler> timeHandlerNewColumn;
 	unique_ptr<TimeHandler> timeHandlerInfoText;
+
+	
 
 };

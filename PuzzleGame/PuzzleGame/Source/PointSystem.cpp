@@ -1,6 +1,6 @@
 #include "PointSystem.h"
 
-PointSystem::PointSystem(EventListener& handler) {
+PointSystem::PointSystem(shared_ptr<EventListener>& handler) {
 	RegisterEvents(handler);
 }
 
@@ -19,24 +19,24 @@ void PointSystem::Restart() {
 	canAddPoints = true;
 }
 
-void PointSystem::RegisterEvents(EventListener& handler) {
-	handler.Subscribe(ADD_POINTS, [&](Event const& _event) {
+void PointSystem::RegisterEvents(shared_ptr<EventListener>& handler) {
+	handler->Subscribe(ADD_POINTS, [&](Event const& _event) {
 		if(canAddPoints)
 			points++;
 
 		if (points >= nextLevelPoints) {
-			handler.NotifyEvent(new Event(NEXT_LEVEL));
+			handler->NotifyEvent(new Event(NEXT_LEVEL));
 			canAddPoints = false;
 		}
 	});
 
-	handler.Subscribe(NEXT_LEVEL, [&](Event const& _event) {
+	handler->Subscribe(NEXT_LEVEL, [&](Event const& _event) {
 		nextLevelPoints += 50;
 		points = 0;
 		canAddPoints = true;
 	});
 
-	handler.Subscribe(END_GAME, [&](Event const& _event) {
+	handler->Subscribe(END_GAME, [&](Event const& _event) {
 		nextLevelPoints = 50;
 		points = 0;
 		canAddPoints = true;

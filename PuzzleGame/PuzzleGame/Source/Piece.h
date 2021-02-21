@@ -61,8 +61,8 @@ namespace PieceStuff {
 		void ClearNeighbours();
 		void AddNeighbour(const bool _canRemove, const int _x, const int _y, const Direction dir);
 		virtual bool CanRemove();
-		void Remove(EventListener* otherHandler);
-		void RegisterEvents(EventListener& handler);
+		void Remove(shared_ptr<EventListener>& otherHandler);
+		void RegisterEvents(shared_ptr<EventListener>& handler);
 		virtual void Swap(Piece& b);
 		virtual void GenerateNewColor();
 		bool IsEmpty();

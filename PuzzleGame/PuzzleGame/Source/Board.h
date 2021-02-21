@@ -15,7 +15,7 @@ public:
 	vector<shared_ptr<Piece>>& GetObjs();
 	const vector<int> GetBoardSize() const;
 	void CreateAndAddPiece(int c, int r, int index);
-	void GeneratePieces(EventListener& handler);
+	void GeneratePieces(shared_ptr<EventListener>& handler);
 	void RegeneratePieces();
 	const int GetNumberOfPieces() const;
 	const shared_ptr<Piece>& GetPieceByIndex(int i) const;

@@ -17,29 +17,32 @@ void GameManager::Render() {
 	rendererObj->Render(objs);
 }
 
-void GameManager::Init(shared_ptr<RendererObj>& _rendererObj, SDLEventHandler& handler, EventListener& otherHandler) {
+void GameManager::Init(shared_ptr<RendererObj>& _rendererObj, shared_ptr<SDLEventHandler>& _sdlEventListener, shared_ptr<EventListener>& _gameEventListener) {
 	srand(time(NULL));
-
 	rendererObj = _rendererObj;
+	gameEventListener = _gameEventListener;
+	sdlEventListener = _sdlEventListener;
 	LoadTextures();
 
 	boardHandler = make_unique<BoardHandler>();
+	boardHandler->Init(_sdlEventListener, _gameEventListener);
+
+	InitInterface();
+
+	RegisterSDLEvent();
+	RegisterGameEvent();
+
+	gameState = GameState::ON_GOING;
+}
+
+void GameManager::InitInterface() {
 	fontsManager = make_unique<FontsManager>();
 	LoadFonts();
-	pointSystem = make_unique<PointSystem>(otherHandler);
+	pointSystem = make_unique<PointSystem>(gameEventListener);
 	pointSystem->InitPointsText(fontsManager.get(), rendererObj.get());
-	
-	boardHandler->Init(handler, otherHandler);
-	for (auto& obj : boardHandler->GetObjs()) {
-		objs.push_back(obj);
-	}	
 
 	infoText = make_shared<Text>(200, 20, " ", vector<int>{ 0, 0, 0, 255 }, fontsManager->GetFont("../MAIAN.ttf"), rendererObj->GetRenderer());
 
-	RegisterSDLEvent(handler);
-	RegisterGameEvent(otherHandler);
-
-	gameState = GameState::ON_GOING;
 }
 
 void GameManager::LoadFonts() {
@@ -56,26 +59,27 @@ void GameManager::LoadTextures() {
 	TextureManager::LoadTexture("new_column", rendererObj->GetRenderer(), "../assets/new_column.png");
 }
 
-void GameManager::RegisterSDLEvent(SDLEventHandler& handler) {
-	handler.Subscribe(SDL_QUIT, [this](SDL_Event const& event) {
+void GameManager::RegisterSDLEvent() {
+	sdlEventListener->Subscribe(SDL_QUIT, [this](SDL_Event const& event) {
 		if (event.type == SDL_QUIT) {
 			Quit();
 		}
 	});
 
-	handler.Subscribe(SDL_KEYDOWN, [this](SDL_Event const& event) {
+	sdlEventListener->Subscribe(SDL_KEYDOWN, [this](SDL_Event const& event) {
 		if (event.key.keysym.sym == SDLK_ESCAPE) {
 			Quit();
 		}
 	});	
 }
 
-void GameManager::RegisterGameEvent(EventListener& handler) {
-	handler.Subscribe(ADD_POINTS, [&](Event const& _event) {
+
+void GameManager::RegisterGameEvent() {
+	gameEventListener->Subscribe(ADD_POINTS, [&](Event const& _event) {
 		pointSystem->UpdatePointsText(rendererObj->GetRenderer());
 	});
 
-	handler.Subscribe(NEXT_LEVEL, [&](Event const& _event) {
+	gameEventListener->Subscribe(NEXT_LEVEL, [&](Event const& _event) {
 		boardHandler->Restart();
 		pointSystem->UpdatePointsText(rendererObj->GetRenderer()); 
 		ClearObjects();
@@ -85,7 +89,7 @@ void GameManager::RegisterGameEvent(EventListener& handler) {
 		timeHandlerInfoText->Reset();
 	});
 	
-	handler.Subscribe(END_GAME, [&](Event const& _event) {
+	gameEventListener->Subscribe(END_GAME, [&](Event const& _event) {
 		boardHandler->Restart();
 		pointSystem->UpdatePointsText(rendererObj->GetRenderer());
 		ClearObjects();
@@ -96,10 +100,10 @@ void GameManager::RegisterGameEvent(EventListener& handler) {
 	});
 }
 
-void GameManager::HandleTimeTriggeredEvents(EventListener& otherHandler) {
+void GameManager::HandleTimeTriggeredEvents() {
 	if (timeHandlerNewColumn->GetElapsedTime() >= NEW_COLUMN_TIME) {
 		boardHandler->AddColumn();
-		boardHandler->HandleAddedNewColumn(otherHandler);
+		boardHandler->HandleAddedNewColumn(gameEventListener);
 		timeHandlerNewColumn->Reset();
 	}	
 

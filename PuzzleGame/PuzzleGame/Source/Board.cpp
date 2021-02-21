@@ -27,7 +27,7 @@ void Board::RegeneratePieces() {
 	}
 }
 
-void Board::GeneratePieces(EventListener& handler) {
+void Board::GeneratePieces(shared_ptr<EventListener>& handler) {
 	int id = 0;
 	for (int c = 0; c < mapSize[0]; c++) {
 		for (int r = 0; r < mapSize[1]; r++) {

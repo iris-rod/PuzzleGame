@@ -27,15 +27,15 @@ int main(int argc, char* args[]) {
 
 	WindowObj* window_obj = new WindowObj();
 	shared_ptr<RendererObj> renderer_obj = make_shared<RendererObj>(window_obj->GetWindow());
-	SDLEventHandler event_handler = SDLEventHandler();
-	EventListener other_handler = EventListener();
+	shared_ptr<SDLEventHandler> event_handler = make_shared<SDLEventHandler>();
+	shared_ptr<EventListener> other_handler = make_shared<EventListener>();
 	gameManager->Init(renderer_obj, event_handler, other_handler);
 
 	while (gameManager->IsGameOnGoing()) {
 		try {
-			gameManager->HandleTimeTriggeredEvents(other_handler);
-			other_handler.HandleEvents();
-			event_handler.HandleEvents();
+			gameManager->HandleTimeTriggeredEvents();
+			other_handler->HandleEvents();
+			event_handler->HandleEvents();
 			gameManager->Render();
 		}
 		catch (const char* msg) {

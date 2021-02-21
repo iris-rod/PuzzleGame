@@ -6,17 +6,17 @@ using namespace PieceStuff;
 class BoardHandler {
 public:
 	BoardHandler();
-	void Init(SDLEventHandler& sdl_handler, EventListener& other_handler);
+	void Init(shared_ptr<SDLEventHandler>& sdl_handler, shared_ptr<EventListener>& other_handler);
 	void AddColumn();
 	void Restart();
-	void HandleAddedNewColumn(EventListener& handler);
+	void HandleAddedNewColumn(shared_ptr<EventListener>& handler);
 	const vector<shared_ptr<Piece>>& GetObjs() const;
 
 private:
 	unique_ptr<Board> board;
 	int currentColumns = INITIAL_COLUMNS;
 
-	void RegisterEvents(SDLEventHandler& sdl_handler, EventListener& otherHandler);
+	void RegisterEvents(shared_ptr<SDLEventHandler>& sdl_handler, shared_ptr<EventListener>& otherHandler);
 
 	bool IsColumnEmpty(int column);
 	void OrganiseColumn(int c);

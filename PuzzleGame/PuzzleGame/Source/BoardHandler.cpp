@@ -15,15 +15,15 @@ const vector<shared_ptr<Piece>>& BoardHandler::GetObjs() const {
 	return board->GetObjs();
 }
 
-void BoardHandler::Init(SDLEventHandler& sdl_handler, EventListener& otherHandler) {
+void BoardHandler::Init(shared_ptr<SDLEventHandler>& sdl_handler, shared_ptr<EventListener>& otherHandler) {
 	board = make_unique<Board>();
 	board->GeneratePieces(otherHandler);
 	board->HandlePiecesNeighbours();
 	RegisterEvents(sdl_handler, otherHandler);
 }
 
-void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& otherHandler) {
-	sdl_handler.Subscribe(SDL_MOUSEBUTTONDOWN, [&](SDL_Event const& event) {
+void BoardHandler::RegisterEvents(shared_ptr<SDLEventHandler>& sdl_handler, shared_ptr<EventListener>& otherHandler) {
+	sdl_handler->Subscribe(SDL_MOUSEBUTTONDOWN, [&](SDL_Event const& event) {
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 		Piece* clickedPiece = FindPiece(x, y);
@@ -31,24 +31,24 @@ void BoardHandler::RegisterEvents(SDLEventHandler& sdl_handler, EventListener& o
 		if (clickedPiece != nullptr && !clickedPiece->IsEmpty()) {
 			Event* event_p = new EventPieceRemoved(*clickedPiece);
 			if (clickedPiece->CanRemove()) {
-				otherHandler.NotifyEvent(event_p);
-				clickedPiece->Remove(&otherHandler);
+				otherHandler->NotifyEvent(event_p);
+				clickedPiece->Remove(otherHandler);
 			}
 		}
 	});
 
-	otherHandler.Subscribe(COLUMN_UPDATE, [&](Event const& _event) {
+	otherHandler->Subscribe(COLUMN_UPDATE, [&](Event const& _event) {
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventColumnUpdate& event_p = dynamic_cast<EventColumnUpdate&>(nonConstEvent);
 		OrganiseColumn(event_p.GetColumn());
 		if (IsColumnEmpty(event_p.GetColumn())) {
 			Event* event_empty = new EventEmptyColumn(event_p.GetColumn());
-			otherHandler.NotifyEvent(event_empty);
+			otherHandler->NotifyEvent(event_empty);
 		}
 		board->HandlePiecesNeighbours();
 	});
 
-	otherHandler.Subscribe(EMPTY_COLUMN, [&](Event const& _event) {
+	otherHandler->Subscribe(EMPTY_COLUMN, [&](Event const& _event) {
 		Event& nonConstEvent = const_cast<Event&>(_event);
 		EventEmptyColumn& event_p = dynamic_cast<EventEmptyColumn&>(nonConstEvent);
 		MoveColumnsBackFrom(event_p.GetColumn());
@@ -123,9 +123,9 @@ void BoardHandler::AddColumn() {
 	board->HandlePiecesNeighbours();
 }
 
-void BoardHandler::HandleAddedNewColumn(EventListener& handler) {
+void BoardHandler::HandleAddedNewColumn(shared_ptr<EventListener>& handler) {
 	if (currentColumns == TOTAL_COLUMNS)
-		handler.NotifyEvent(new Event(END_GAME));
+		handler->NotifyEvent(new Event(END_GAME));
 }
 
 void BoardHandler::MoveColumnsBackFrom(int startColumn) {

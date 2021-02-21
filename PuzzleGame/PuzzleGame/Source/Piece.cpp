@@ -74,7 +74,7 @@ bool Piece::CanRemove() {
 	return a != neighbours.end();
 }
 
-void Piece::Remove(EventListener* otherHandler) {
+void Piece::Remove(shared_ptr<EventListener>& otherHandler) {
 	Remove();
 	otherHandler->NotifyEvent(new EventColumnUpdate(GetBoardPosition().x));
 	otherHandler->NotifyEvent(new Event(ADD_POINTS));
@@ -85,8 +85,8 @@ void Piece::Remove() {
 	neighbours.clear();
 }
 
-void Piece::RegisterEvents(EventListener& handler) {
-	handler.Subscribe(PIECE_REMOVED, [this, &handler](Event const& _event) {
+void Piece::RegisterEvents(shared_ptr<EventListener>& handler) {
+	handler->Subscribe(PIECE_REMOVED, [this, &handler](Event const& _event) {
 
 		auto pos = this->GetBoardPosition();
 		Event& nonConstEvent = const_cast<Event&>(_event);
@@ -96,12 +96,12 @@ void Piece::RegisterEvents(EventListener& handler) {
 		auto neigh = GetNeighbour(piece);
 		if (neigh != nullptr && neigh->canRemove) {
 			Event* event_p = new EventPieceRemoved(*this);
-			handler.NotifyEvent(event_p);
+			handler->NotifyEvent(event_p);
 
 			if (neigh->direction == Direction::EAST || neigh->direction == Direction::WEST) {
 			}
 
-			Remove(&handler);
+			Remove(handler);
 			RemoveNeighbour(piece);
 		}
 	});
