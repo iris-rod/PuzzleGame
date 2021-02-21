@@ -3,9 +3,9 @@
 using namespace std;
 using namespace PieceStuff;
 
-Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY, bool empty)
+Piece::Piece(const int id, const int x, const int y, const int _sizeX, const int _sizeY, bool empty)
 	: boardPosition( new BoardPosition(x == 0 ? 0 : (x - START_X)/_sizeX, y == 0 ? 0 : (y - START_Y)/_sizeY) ), 
-	InteractiveObject("piece" + id, _src, _dest, x, y, _sizeX, _sizeY) {
+	InteractiveObject("piece" + id, x, y, _sizeX, _sizeY) {
 
 	neighbours = list<unique_ptr<NeighbourInfo>>();
 

@@ -1,10 +1,11 @@
 #include "Object.h"
 #include "TextureManager.h"
 
-Object::Object(const std::string id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY)
-	: ID(id), src(_src), dest(_dest), sizeX(_sizeX), sizeY(_sizeY) {
-	//std::cout << "create object" << std::endl;
+Object::Object(const std::string id, const int x, const int y, const int _sizeX, const int _sizeY)
+	: ID(id), src(nullptr), dest(nullptr), sizeX(_sizeX), sizeY(_sizeY) {
 
+	src = make_unique<SDL_Rect>();
+	dest = make_unique<SDL_Rect>();
 	src->x = 0;
 	src->y = 0;
 	dest->x = x;
@@ -25,11 +26,11 @@ Object::~Object() {
 }
 
 const SDL_Rect* Object::GetDestRect() const {
-	return dest;
+	return dest.get();
 }
 
 const SDL_Rect* Object::GetSrcRect() const {
-	return src;
+	return src.get();
 }
 
 const std::string& Object::GetTextureId() const {

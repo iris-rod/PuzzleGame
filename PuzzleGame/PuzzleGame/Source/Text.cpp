@@ -25,7 +25,7 @@ Text::Text(int x, int y, string text, vector<int> rgba, TTF_Font* _font, SDL_Ren
 	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text.c_str(), color); 
 	if (surfaceMessage != nullptr) {
 		_rect->w = surfaceMessage->w;
-		dest = _rect;
+		dest.reset(_rect);
 
 		SetHasText(text);
 

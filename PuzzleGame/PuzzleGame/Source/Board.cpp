@@ -39,13 +39,11 @@ void Board::GeneratePieces(EventListener& handler) {
 }
 
 void Board::CreateAndAddPiece(int c, int r, int index) {
-	SDL_Rect* src = new SDL_Rect();
-	SDL_Rect* dest = new SDL_Rect();
 	int co = c * PIECE_SIZE_X + START_X;
 	int ro = r * PIECE_SIZE_Y + START_Y;
 
-	if (c < TOTAL_COLUMNS - INITIAL_COLUMNS) pieces[index] = make_shared<Piece>(index, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, true);
-	else pieces[index] = make_shared<Piece>(index, src, dest, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
+	if (c < TOTAL_COLUMNS - INITIAL_COLUMNS) pieces[index] = make_shared<Piece>(index, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, true);
+	else pieces[index] = make_shared<Piece>(index, co, ro, PIECE_SIZE_X, PIECE_SIZE_Y, false);
 }
 
 const int Board::GetNumberOfPieces() const {

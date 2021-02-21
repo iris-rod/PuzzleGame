@@ -55,7 +55,7 @@ namespace PieceStuff {
 	class Piece : public InteractiveObject {
 	public:
 		Piece() = default;
-		Piece(const int Id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY, bool empty);
+		Piece(const int Id, const int x, const int y, const int _sizeX, const int _sizeY, bool empty);
 		virtual ~Piece();
 		const BoardPosition& GetBoardPosition() const;
 		void ClearNeighbours();
