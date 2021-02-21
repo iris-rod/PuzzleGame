@@ -1,9 +1,5 @@
 #pragma once
-#include <vector>
-#include "Consts.h"
-#include "Ore.h"
-#include "SDLEventHandler.h"
-#include "EventHandler.h"
+#include "Board.h"
 
 using namespace PieceStuff;
 
@@ -11,21 +7,15 @@ class BoardHandler {
 public:
 	BoardHandler();
 	void Init(SDLEventHandler& sdl_handler, EventListener& other_handler);
-	std::vector<shared_ptr<Piece>>& GetObjs();
 	void AddColumn();
 	void Restart();
 	void HandleAddedNewColumn(EventListener& handler);
+	const vector<shared_ptr<Piece>>& GetObjs() const;
 
 private:
-	std::vector<shared_ptr<Piece>> pieces;
-	std::vector<int> mapSize { TOTAL_COLUMNS, TOTAL_ROWS};
+	unique_ptr<Board> board;
 	int currentColumns = INITIAL_COLUMNS;
-	
-	void GeneratePieces(EventListener& handler);
-	void RegeneratePieces();
-	void HandlePiecesNeighbours();
-	void SetNeighboursForPiece(shared_ptr<Piece> piece);
-	void SetNeighbour(Piece& piece, const int& x, const int& y);
+
 	void RegisterEvents(SDLEventHandler& sdl_handler, EventListener& otherHandler);
 
 	bool IsColumnEmpty(int column);
@@ -38,9 +28,6 @@ private:
 	void RemoveAllEmptyColumns();
 	void ReCalculateCurrentColumns();
 
-	void CreatePieceOnBoard(int c, int r, int index);
-
 	Piece* FindPiece(const int& x, const int& y) const;
-	const Piece* FindPieceFromBoardPosition(const int& x, const int& y) const;
 };
 

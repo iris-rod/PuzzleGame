@@ -4,17 +4,9 @@ using namespace std;
 using namespace PieceStuff;
 
 Piece::Piece(const int id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY, bool empty)
-	: coordinates( new Coordinates(x, y) ), 
-	boardPosition( new BoardPosition(x == 0 ? 0 : (x - START_X)/_sizeX, y == 0 ? 0 : (y - START_Y)/_sizeY) ), 
-	InteractiveObject("piece" + id, _src, _dest, _sizeX, _sizeY) {
-	src->x = 0;
-	src->y = 0;
-	dest->x = x;
-	dest->y = y;
-	src->w = _sizeX;
-	src->h = _sizeY;
-	dest->w = _sizeX;
-	dest->h = _sizeY;
+	: boardPosition( new BoardPosition(x == 0 ? 0 : (x - START_X)/_sizeX, y == 0 ? 0 : (y - START_Y)/_sizeY) ), 
+	InteractiveObject("piece" + id, _src, _dest, x, y, _sizeX, _sizeY) {
+
 	neighbours = list<unique_ptr<NeighbourInfo>>();
 
 	if (empty)	color = make_unique<Colors>(Colors::EMPTY);
@@ -43,10 +35,6 @@ void Piece::Swap(Piece& b) {
 
 const BoardPosition& Piece::GetBoardPosition() const {
 	return *boardPosition.get();
-}
-
-const Coordinates& Piece::GetCoordinates() const {
-	return *coordinates.get();
 }
 
 void Piece::ClearNeighbours() {

@@ -31,16 +31,6 @@ namespace PieceStuff {
 		}
 	};
 
-	struct Coordinates {
-		int x;
-		int y;
-
-		Coordinates(const int _x, const int _y) : x(0), y(0) {
-			x = _x;
-			y = _y;
-		}
-	};
-
 	struct NeighbourInfo {
 		bool canRemove;
 		const BoardPosition* position;
@@ -68,7 +58,6 @@ namespace PieceStuff {
 		Piece(const int Id, SDL_Rect* _src, SDL_Rect* _dest, const int x, const int y, const int _sizeX, const int _sizeY, bool empty);
 		virtual ~Piece();
 		const BoardPosition& GetBoardPosition() const;
-		const Coordinates& GetCoordinates() const;
 		void ClearNeighbours();
 		void AddNeighbour(const bool _canRemove, const int _x, const int _y, const Direction dir);
 		virtual bool CanRemove();
@@ -89,7 +78,6 @@ namespace PieceStuff {
 
 	private:
 		unique_ptr<BoardPosition> boardPosition;
-		unique_ptr<Coordinates> coordinates;
 		list<unique_ptr<NeighbourInfo>> neighbours;
 		unique_ptr<Colors> color;
 
