@@ -14,6 +14,7 @@ void GameManager::Render() {
 	}
 	objs.push_back(pointSystem->GetTextObj());
 	objs.push_back(infoText);
+	objs.push_back(addColumnButton);
 	rendererObj->Render(objs);
 }
 
@@ -43,6 +44,8 @@ void GameManager::InitInterface() {
 
 	infoText = make_shared<Text>(200, 20, " ", vector<int>{ 0, 0, 0, 255 }, fontsManager->GetFont("../MAIAN.ttf"), rendererObj->GetRenderer());
 
+	addColumnButton = make_shared<Button>(0, 900, 300, 30, 30);
+	addColumnButton->SetImage("new_column");
 }
 
 void GameManager::LoadFonts() {
@@ -71,8 +74,26 @@ void GameManager::RegisterSDLEvent() {
 			Quit();
 		}
 	});	
+
+	sdlEventListener->Subscribe(SDL_MOUSEBUTTONDOWN, [&](SDL_Event const& event) {
+		int x, y;
+		SDL_GetMouseState(&x, &y);
+		if (CheckClickedOnAddColumn(x, y)) {
+			boardHandler->AddColumn();
+			boardHandler->HandleAddedNewColumn(gameEventListener);
+			timeHandlerNewColumn->Reset();
+		}
+	});
 }
 
+bool GameManager::CheckClickedOnAddColumn(const int x, const int y) {
+	auto addColumnCoordinates = addColumnButton->GetCoordinates();
+	if (x >= addColumnCoordinates.x && x < addColumnCoordinates.x + PIECE_SIZE_X
+		&& y >= addColumnCoordinates.y && y < addColumnCoordinates.y + PIECE_SIZE_Y) {
+		return true;
+	}
+	return false;
+}
 
 void GameManager::RegisterGameEvent() {
 	gameEventListener->Subscribe(ADD_POINTS, [&](Event const& _event) {

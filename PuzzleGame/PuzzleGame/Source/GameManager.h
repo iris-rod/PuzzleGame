@@ -9,6 +9,7 @@
 #include "FontsManager.h"
 #include "PointSystem.h"
 #include "TimeHandler.h"
+#include "Button.h"
 
 using namespace std;
 
@@ -44,6 +45,7 @@ private:
 	unique_ptr<FontsManager> fontsManager;
 	unique_ptr<PointSystem> pointSystem;
 	shared_ptr<Text> infoText;
+	shared_ptr<Button> addColumnButton;
 	GameState gameState;
 	deque<shared_ptr<Object>> objs;
 	shared_ptr<RendererObj> rendererObj;
