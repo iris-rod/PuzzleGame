@@ -14,7 +14,7 @@ public:
 	const SDL_Rect* GetDestRect() const;
 	const std::string& GetTextureId() const;
 	virtual SDL_Texture* GetTexture() const;
-
+	void SetTexture(string name);
 
 protected:
 	string textureId = "";

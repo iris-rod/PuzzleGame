@@ -40,3 +40,7 @@ const std::string& Object::GetTextureId() const {
 SDL_Texture* Object::GetTexture() const {
 	return TextureManager::GetTexture(textureId);
 }
+
+void Object::SetTexture(string name) {
+	textureId = name;
+}

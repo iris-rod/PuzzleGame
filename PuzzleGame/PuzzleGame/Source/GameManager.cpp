@@ -9,6 +9,7 @@ GameManager::GameManager() : boardHandler(nullptr), pointSystem(nullptr), fontsM
 
 void GameManager::Render() {
 	ClearObjects();
+	objs.push_back(background);
 	for (auto& obj : boardHandler->GetObjs()) {
 		objs.push_back(obj);
 	}
@@ -25,6 +26,8 @@ void GameManager::Init(shared_ptr<RendererObj>& _rendererObj, shared_ptr<SDLEven
 	sdlEventListener = _sdlEventListener;
 	LoadTextures();
 
+	background = make_shared<Object>("background", 0, 0, 1200, 600);
+	background->SetTexture("background");
 	boardHandler = make_unique<BoardHandler>();
 	boardHandler->Init(_sdlEventListener, _gameEventListener);
 
@@ -42,14 +45,14 @@ void GameManager::InitInterface() {
 	pointSystem = make_unique<PointSystem>(gameEventListener);
 	pointSystem->InitPointsText(fontsManager.get(), rendererObj.get());
 
-	infoText = make_shared<Text>(200, 20, " ", vector<int>{ 0, 0, 0, 255 }, fontsManager->GetFont("../MAIAN.ttf"), rendererObj->GetRenderer());
+	infoText = make_shared<Text>(200, 20, " ", vector<int>{ 0, 0, 0, 255 }, fontsManager->GetFont("../assets/MAIAN.ttf"), rendererObj->GetRenderer());
 
-	addColumnButton = make_shared<Button>(0, 900, 300, 30, 30);
+	addColumnButton = make_shared<Button>(0, 960, 20, 30, 30);
 	addColumnButton->SetImage("new_column");
 }
 
 void GameManager::LoadFonts() {
-	fontsManager->AddFont("../MAIAN.ttf");
+	fontsManager->AddFont("../assets/MAIAN.ttf");
 }
 
 void GameManager::LoadTextures() {
@@ -60,6 +63,7 @@ void GameManager::LoadTextures() {
 	TextureManager::LoadTexture("orange", rendererObj->GetRenderer(), "../assets/orange.png");
 	TextureManager::LoadTexture("empty", rendererObj->GetRenderer(), "../assets/empty.png");
 	TextureManager::LoadTexture("new_column", rendererObj->GetRenderer(), "../assets/new_column.png");
+	TextureManager::LoadTexture("background", rendererObj->GetRenderer(), "../assets/background.png");
 }
 
 void GameManager::RegisterSDLEvent() {
