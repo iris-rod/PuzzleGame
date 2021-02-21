@@ -2,11 +2,11 @@
 
 enum EventType {
 	END_GAME = 1,
-	ADD_POINTS = 2,
-	NEXT_LEVEL = 3,
+	ADD_POINTS = 5,
+	NEXT_LEVEL = 6,
 	PIECE_REMOVED = 4,
-	COLUMN_UPDATE = 5,
-	EMPTY_COLUMN = 6
+	COLUMN_UPDATE = 7,
+	EMPTY_COLUMN = 8
 };
 
 class Event {
