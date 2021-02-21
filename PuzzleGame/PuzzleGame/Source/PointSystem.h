@@ -4,6 +4,7 @@
 #include "FontsManager.h"
 #include "RendererObj.h"
 #include "EventHandler.h"
+#include "Consts.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ public:
 private:
 	shared_ptr<Text> pointsTextObj = nullptr;
 	int points = 0;
-	int nextLevelPoints = 50;
+	int nextLevelPoints = STARTING_NEXT_LEVEL_POINTS;
 	string title = "Points: ";
 	string pointsText = "";
 	bool canAddPoints = true;

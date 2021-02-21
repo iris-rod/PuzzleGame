@@ -7,7 +7,7 @@ PointSystem::PointSystem(shared_ptr<EventListener>& handler) {
 
 void PointSystem::InitPointsText(FontsManager* fontsManager, RendererObj* rendererObj) {
 	pointsText = to_string(points);
-	pointsTextObj = make_shared<Text>(20, 20, title + pointsText + "/" + to_string(nextLevelPoints), vector<int>{ 0, 0, 0, 255 }, fontsManager->GetFont("../MAIAN.ttf"), rendererObj->GetRenderer());
+	pointsTextObj = make_shared<Text>(20, 20, title + pointsText + "/" + to_string(nextLevelPoints), vector<int>{ 0, 0, 0, 255 }, fontsManager->GetFont("../assets/MAIAN.ttf"), rendererObj->GetRenderer());
 }
 
 void PointSystem::UpdatePointsText(SDL_Renderer* rendererObj) {
@@ -31,13 +31,13 @@ void PointSystem::RegisterEvents(shared_ptr<EventListener>& handler) {
 	});
 
 	handler->Subscribe(NEXT_LEVEL, [&](Event const& _event) {
-		nextLevelPoints += 50;
+		nextLevelPoints += NEW_LEVEL_POINTS_INC;
 		points = 0;
 		canAddPoints = true;
 	});
 
 	handler->Subscribe(END_GAME, [&](Event const& _event) {
-		nextLevelPoints = 50;
+		nextLevelPoints = STARTING_NEXT_LEVEL_POINTS;
 		points = 0;
 		canAddPoints = true;
 	});
