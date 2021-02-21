@@ -9,19 +9,16 @@ using namespace std;
 int main(int argc, char* args[]) {
 
 	GameManager* gameManager = new GameManager();
-	bool isRunning = true;
-	// Initialize SDL. SDL_Init will return -1 if it fails.
+
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		cout << "Error initializing SDL: " << SDL_GetError() << endl;
 		system("pause");
-		// End the program
 		return 1;
 	}			
 
 	if (TTF_Init() < 0) {
 		cout << "Error initializing TTF: " << TTF_GetError() << endl;
 		system("pause");
-		// End the program
 		return 1;
 	}
 
@@ -46,15 +43,4 @@ int main(int argc, char* args[]) {
 
 	delete window_obj;
 	delete gameManager;
-	
-	// Fill the window with a white rectangle
-	//SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 255, 255, 255));
-
-	// Update the window display
-	//SDL_UpdateWindowSurface(window_obj->GetWindow());
-
-	// Wait
-
-	// Destroy the window. This will also destroy the surface
-
 }
